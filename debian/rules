@@ -6,13 +6,13 @@ VERSION_AGENT=1.2
 build:
 	mkdir -p $(DESTDIR)/tmp
 
-	git clone https://github.com/pulse-project/pulse-xmpp-agent.git
+	GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-xmpp-agent.git
 	mv pulse-xmpp-agent pulse-xmpp-agent-${VERSION_XMPP}
 	tar czvf pulse-xmpp-agent-${VERSION_XMPP}.tar.gz pulse-xmpp-agent-${VERSION_XMPP}
 	rm -fr pulse-xmpp-agent/
 	mkdir -p var/lib/pulse2/clients/win32
 	mv  $(CURDIR)/pulse-xmpp-agent-1.7.2.tar.gz var/lib/pulse2/clients/win32
-	git clone https://github.com/pulse-project/pulse-agent-plugins.git
+	GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-agent-plugins.git
 	mv pulse-agent-plugins pulse-agent-plugins-${VERSION_AGENT}
 	tar czvf pulse-agent-plugins-${VERSION_AGENT}.tar.gz pulse-agent-plugins-${VERSION_AGENT}
 	mv pulse-agent-plugins-${VERSION_AGENT}.tar.gz var/lib/pulse2/clients/win32
