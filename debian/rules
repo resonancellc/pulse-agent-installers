@@ -22,7 +22,7 @@ build:
 	cp $(DESTDIR)/tmp/pulse-xmpp-agent-1.7.2/pulse_xmpp_agent/config/agentconf.ini.in var/lib/pulse2/clients/config/
 	cp $(DESTDIR)/tmp/pulse-xmpp-agent-1.7.2/pulse_xmpp_agent/config/relayconf.ini.in var/lib/pulse2/clients/config/
 	cp $(DESTDIR)/tmp/pulse-xmpp-agent-1.7.2/pulse_xmpp_agent/scripts_installer/generate-pulse-agent.sh var/lib/pulse2/clients
-	cp $(DESTDIR)/tmp/pulse-xmpp-agent-1.7.2/pulse_xmpp_agent/scripts_installer/generate-agent-package var/lib/pulse2/clients pulse-agent-installers
+	cp $(DESTDIR)/tmp/pulse-xmpp-agent-1.7.2/pulse_xmpp_agent/scripts_installer/generate-agent-package var/lib/pulse2/clients
 	cp $(DESTDIR)/tmp/pulse-xmpp-agent-1.7.2/pulse_xmpp_agent/scripts_installer/generate-pulse-agent-win.sh var/lib/pulse2/clients/win32
 	cp $(DESTDIR)/tmp/pulse-xmpp-agent-1.7.2/pulse_xmpp_agent/scripts_installer/agent-installer.nsi.in var/lib/pulse2/clients/win32
 	cp $(DESTDIR)/tmp/pulse-xmpp-agent-1.7.2/pulse_xmpp_agent/scripts_installer/pulse-agent-task.xml var/lib/pulse2/clients/win32
