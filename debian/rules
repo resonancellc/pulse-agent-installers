@@ -7,7 +7,6 @@ build:
 	mkdir -p $(DESTDIR)/tmp
 
 	git clone https://github.com/pulse-project/pulse-xmpp-agent.git
-	#VERSION_XMPP=`grep version pulse-xmpp-agent/setup.py | cut -d'=' -f2 | cut -d"'" -f2`
 	mv pulse-xmpp-agent pulse-xmpp-agent-${VERSION_XMPP}
 	tar czvf pulse-xmpp-agent-${VERSION_XMPP}.tar.gz pulse-xmpp-agent-${VERSION_XMPP}
 	rm -fr pulse-xmpp-agent/
