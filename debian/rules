@@ -1,0 +1,66 @@
+#!/usr/bin/make -f
+
+DESTDIR = $(CURDIR)/debian/pulse-agent-installer
+VERSION_XMPP=1.7.2
+VERSION_AGENT=1.2
+build:
+	mkdir -p $(DESTDIR)/tmp
+
+	git clone https://github.com/pulse-project/pulse-xmpp-agent.git
+	#VERSION_XMPP=`grep version pulse-xmpp-agent/setup.py | cut -d'=' -f2 | cut -d"'" -f2`
+	mv pulse-xmpp-agent pulse-xmpp-agent-${VERSION_XMPP}
+	tar czvf pulse-xmpp-agent-${VERSION_XMPP}.tar.gz pulse-xmpp-agent-${VERSION_XMPP}
+	rm -fr pulse-xmpp-agent/
+	mkdir -p var/lib/pulse2/clients/win32
+	mv  $(CURDIR)/pulse-xmpp-agent-1.7.2.tar.gz var/lib/pulse2/clients/win32
+	git clone https://github.com/pulse-project/pulse-agent-plugins.git
+	mv pulse-agent-plugins pulse-agent-plugins-${VERSION_AGENT}
+	tar czvf pulse-agent-plugins-${VERSION_AGENT}.tar.gz pulse-agent-plugins-${VERSION_AGENT}
+	mv pulse-agent-plugins-${VERSION_AGENT}.tar.gz var/lib/pulse2/clients/win32
+	tar xzvf var/lib/pulse2/clients/win32/pulse-xmpp-agent-1.7.2.tar.gz -C $(DESTDIR)/tmp
+	mkdir -p etc/mmc/plugins/ 
+	mkdir -p var/lib/pulse2/clients/config/
+	cp $(DESTDIR)/tmp/pulse-xmpp-agent-1.7.2/pulse_xmpp_agent/config/agentconf.ini.in var/lib/pulse2/clients/config/
+	cp $(DESTDIR)/tmp/pulse-xmpp-agent-1.7.2/pulse_xmpp_agent/config/relayconf.ini.in var/lib/pulse2/clients/config/
+	cp $(DESTDIR)/tmp/pulse-xmpp-agent-1.7.2/pulse_xmpp_agent/scripts_installer/generate-pulse-agent.sh var/lib/pulse2/clients
+	cp $(DESTDIR)/tmp/pulse-xmpp-agent-1.7.2/pulse_xmpp_agent/scripts_installer/generate-pulse-agent-win.sh var/lib/pulse2/clients/win32
+	cp $(DESTDIR)/tmp/pulse-xmpp-agent-1.7.2/pulse_xmpp_agent/scripts_installer/agent-installer.nsi.in var/lib/pulse2/clients/win32
+	cp $(DESTDIR)/tmp/pulse-xmpp-agent-1.7.2/pulse_xmpp_agent/scripts_installer/pulse-agent-task.xml var/lib/pulse2/clients/win32
+	mkdir -p var/lib/pulse2/clients/linux
+	cp $(DESTDIR)/tmp/pulse-xmpp-agent-1.7.2/pulse_xmpp_agent/scripts_installer/*linux* var/lib/pulse2/clients/linux
+	mkdir -p var/lib/pulse2/clients/win32/libs
+	cp -fr $(DESTDIR)/tmp/pulse-xmpp-agent-1.7.2/pulse_xmpp_agent/scripts_installer/nsis_libs/* var/lib/pulse2/clients/win32/libs
+	chmod +x var/lib/pulse2/clients/*.sh
+	rm -frv $(DESTDIR)/tmp
+clean:
+	dh_testdir
+	dh_testroot
+	-$(MAKE) clean
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+binary-indep: build install
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_install
+	dh_fixperms
+	dh_installchangelogs
+	dh_installdocs
+	dh_installinit
+	# Some postinstall tools are known to fails after being stripped
+	#dh_strip
+	dh_link
+	dh_compress
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

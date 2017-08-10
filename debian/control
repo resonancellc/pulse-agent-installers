@@ -1,0 +1,12 @@
+Source: pulse-agent-installers
+Section: admin
+Priority: extra
+Maintainer: Nicolas Lécureuil <nicolas.lecureuil@siveo.net>
+Build-Depends: debhelper (>= 5.0.37.2), python-pyquery(>= 1.2)
+Standards-Version: 3.9.4
+Homepage: http://www.siveo.net/
+
+Package: pulse-agent-installers
+Architecture: all
+Depends: ${misc:Depends}, pulse-xmpp-agent-deps, dos2unix, unzip, zip, nsis-plugins-accesscontrol, nsis-plugins-inetc, nsis-plugins-pwgen, nsis-plugins-zipdll
+Description: Pulse 2 Xmpp agent
