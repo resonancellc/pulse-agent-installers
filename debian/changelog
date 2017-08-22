@@ -1,3 +1,9 @@
+pulse-agent-installers (1.8.0-1) unstable; urgency=low
+  
+  * New version 1.8.0
+
+ -- Nicolas Lécureuil <nicolas.lecureuil@siveo.net> Tue, 22 Aug 2017 00:59:02 +0100
+
 pulse-agent-installers (1.7.2-5) unstable; urgency=low
 
   * First build with buildbot
