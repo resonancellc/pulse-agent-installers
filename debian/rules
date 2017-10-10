@@ -24,10 +24,10 @@ build:
 	cp scripts_installer/generate-pulse-agent.sh var/lib/pulse2/clients
 	cp scripts_installer/generate-agent-package var/lib/pulse2/clients
 	cp scripts_installer/generate-pulse-agent-win.sh var/lib/pulse2/clients/win32
-	cp pulse_xmpp_agent/scripts_installer/agent-installer.nsi.in var/lib/pulse2/clients/win32
-	cp pulse_xmpp_agent/scripts_installer/pulse-agent-task.xml var/lib/pulse2/clients/win32
+	cp scripts_installer/agent-installer.nsi.in var/lib/pulse2/clients/win32
+	cp scripts_installer/pulse-agent-task.xml var/lib/pulse2/clients/win32
 	mkdir -p var/lib/pulse2/clients/linux
-	cp pulse_xmpp_agent/scripts_installer/*linux* var/lib/pulse2/clients/linux
+	cp scripts_installer/*linux* var/lib/pulse2/clients/linux
 	mkdir -p var/lib/pulse2/clients/win32/libs
 	cp -fr scripts_installer/nsis_libs/* var/lib/pulse2/clients/win32/libs
 	chmod +x var/lib/pulse2/clients/*.sh
