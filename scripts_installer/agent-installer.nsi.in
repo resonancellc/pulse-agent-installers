@@ -659,8 +659,8 @@ SectionEnd
 ; Installation of Pulse Agent
 Section "!${PRODUCT_NAME}" sec_app
   SetOutPath "$INSTDIR\tmp"
-  File "${PULSE_AGENT}"
-  File "${PULSE_AGENT_PLUGINS}"
+  File "../${PULSE_AGENT}"
+  File "../${PULSE_AGENT_PLUGINS}"
   ${LogString} "Pulse Agent Installation...."
   ${LogString} "------------------------------------------------------"
 
