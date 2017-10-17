@@ -36,6 +36,7 @@
 # https://github.com/PowerShell/Win32-OpenSSH/releases/download/v0.0.21.0/OpenSSH-Win64.zip
 #	https://github.com/fusioninventory/fusioninventory-agent/releases/download/2.3.20/fusioninventory-agent_windows-x86_2.3.20.exe
 # https://github.com/stascorp/rdpwrap/releases/download/v1.6.1/RDPWrap-v1.6.1.zip
+# https://www.tightvnc.com/download/2.8.8/tightvnc-2.8.8-gpl-setup-32bit.msi
 #	In /var/lib/pulse2/clients/win32/downloads/python_modules/:
 #	https://pypi.python.org/packages/cd/59/7cc2407b15bcd13d43933a5ae163de89b6f366dda8b2b7403453e61c3a05/pypiwin32-219-cp27-none-win32.whl
 #	https://pypi.python.org/packages/a7/4c/8e0771a59fd6e55aac993a7cc1b6a0db993f299514c464ae6a1ecf83b31d/netifaces-0.10.5.tar.gz
@@ -56,7 +57,7 @@
 cd "`dirname $0`"
 
 # To be defined
-AGENT_VERSION="1.8.3"
+AGENT_VERSION="1.8.4"
 PYTHON_VERSION="2.7.9"
 PY_WIN32_VERSION="219"
 PY_NETIFACES_MODULE="netifaces"
@@ -96,6 +97,8 @@ OPENSSH_NAME="OpenSSH"
 LAUNCHER_SSH_KEY="\/root\/\.ssh\/id_rsa.pub"
 FUSION_INVENTORY_AGENT_NAME="fusioninventory-agent"
 FUSION_INVENTORY_AGENT_VERSION="2.3.20"
+VNC_AGENT_NAME="tightvnc"
+VNC_AGENT_VERSION="2.8.8"
 RDPWRAP_NAME="RDPWrap"
 RDPWRAP_VERSION="1.6.1"
 DOWNLOAD_FOLDER="downloads"
@@ -172,6 +175,8 @@ compute_parameters() {
 	RDPWRAP_FILENAME="${RDPWRAP_NAME}-v${RDPWRAP_VERSION}.zip"
 	RDPWRAP_FOLDERNAME="${RDPWRAP_NAME}-v${RDPWRAP_VERSION}"
 	RDPWRAP_URL="https://agents.siveo.net/win/${RDPWRAP_FILENAME}"
+	VNC_AGENT_FILENAME="${VNC_AGENT_NAME}-${VNC_AGENT_VERSION}-gpl-setup-32bit.msi"
+	VNC_AGENT_URL="https://agents.siveo.net/win/${VNC_AGENT_FILENAME}"
 }
 
 display_usage() {
@@ -199,7 +204,7 @@ colored_echo() {
 
 exit_code() {
   return=$?
-  if [ $return -ne 0 ];then coloredEcho red "### DEBUG Exit code" $return; fi
+  if [ $return -ne 0 ];then colored_echo red "### DEBUG Exit code" $return; fi
 }
 
 sed_escape() {
@@ -262,6 +267,7 @@ update_nsi_script_full() {
 	FULL_OPENSSH64='File "${DOWNLOADS_DIR}/${OPENSSH64_FILENAME}"'
 	FULL_FUSION_INVENTORY_AGENT='File "${DOWNLOADS_DIR}/${FUSION_INVENTORY_AGENT_FILENAME}"'
 	FULL_RDPWRAP='File "${DOWNLOADS_DIR}/${RDPWRAP_FILENAME}"'
+	FULL_VNC_AGENT='File "${DOWNLOADS_DIR}/${VNC_AGENT_FILENAME}"'
 	INSTALL_FULL_PY_WIN32='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WIN32}`'
 	INSTALL_FULL_PY_NETIFACES='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_NETIFACES}`'
 	INSTALL_FULL_PY_COMTYPES='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_COMTYPES}`'
@@ -341,6 +347,8 @@ update_nsi_script_full() {
 		-e "s/@@RDPWRAP_FILENAME@@/${RDPWRAP_FILENAME}/" \
 		-e "s/@@RDPWRAP_FOLDERNAME@@/${RDPWRAP_FOLDERNAME}/" \
 		-e "s/@@FULL_OR_DL_RDPWRAP@@/$(sed_escape ${FULL_RDPWRAP})/" \
+		-e "s/@@VNC_AGENT_FILENAME@@/${VNC_AGENT_FILENAME}/" \
+		-e "s/@@FULL_OR_DL_VNC_AGENT@@/$(sed_escape ${FULL_VNC_AGENT})/" \
 		-e "s/@@PULSE_AGENT_PLUGINS@@/${PULSE_AGENT_PLUGINS}/" \
 		-e "s/@@RSYNC_FILENAME@@/rsync.zip/" \
 		-e "s/@@GENERATED_SIZE@@/FULL/" \
@@ -364,6 +372,7 @@ update_nsi_script_dl() {
 	DL_OPENSSH64='${DownloadFile} '"${OPENSSH64_URL}"' ${OPENSSH64_FILENAME}'
 	DL_FUSION_INVENTORY_AGENT='${DownloadFile} '"${FUSION_INVENTORY_AGENT_URL}"' ${FUSION_INVENTORY_AGENT_FILENAME}'
 	DL_RDPWRAP='${DownloadFile} '"$RDPWRAP_URL"' ${RDPWRAP_FILENAME}'
+	DL_VNC_AGENT='${DownloadFile} '"$VNC_AGENT_URL"' ${VNC_AGENT_FILENAME}'
 	INSTALL_DL_PY_WIN32='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WIN32}`'
 	INSTALL_DL_PY_NETIFACES='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade ${PY_NETIFACES}`'
 	INSTALL_DL_PY_COMTYPES='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade ${PY_COMTYPES}`'
@@ -443,6 +452,8 @@ update_nsi_script_dl() {
 		-e "s/@@RDPWRAP_FILENAME@@/${RDPWRAP_FILENAME}/" \
 		-e "s/@@RDPWRAP_FOLDERNAME@@/${RDPWRAP_FOLDERNAME}/" \
 		-e "s/@@FULL_OR_DL_RDPWRAP@@/$(sed_escape ${DL_RDPWRAP})/" \
+		-e "s/@@VNC_AGENT_FILENAME@@/${VNC_AGENT_FILENAME}/" \
+		-e "s/@@FULL_OR_DL_VNC_AGENT@@/$(sed_escape ${DL_VNC_AGENT})/" \
 		-e "s/@@PULSE_AGENT_PLUGINS@@/${PULSE_AGENT_PLUGINS}/" \
 		-e "s/@@RSYNC_FILENAME@@/rsync.zip/" \
 		-e "s/@@GENERATED_SIZE@@/MINIMAL/" \

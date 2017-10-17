@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 DESTDIR = $(CURDIR)/debian/pulse-agent-installer
-VERSION_XMPP=1.8.3
+VERSION_XMPP=1.8.4
 VERSION_AGENT=1.2
 build:
 	mkdir -p $(DESTDIR)/tmp
@@ -11,16 +11,16 @@ build:
 	tar czvf pulse-xmpp-agent-${VERSION_XMPP}.tar.gz pulse-xmpp-agent-${VERSION_XMPP}
 	rm -fr pulse-xmpp-agent/
 	mkdir -p var/lib/pulse2/clients/win32
-	mv  $(CURDIR)/pulse-xmpp-agent-1.8.3.tar.gz var/lib/pulse2/clients/win32
+	mv  $(CURDIR)/pulse-xmpp-agent-1.8.4.tar.gz var/lib/pulse2/clients/win32
 	GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-agent-plugins.git
 	mv pulse-agent-plugins pulse-agent-plugins-${VERSION_AGENT}
 	tar czvf pulse-agent-plugins-${VERSION_AGENT}.tar.gz pulse-agent-plugins-${VERSION_AGENT}
 	mv pulse-agent-plugins-${VERSION_AGENT}.tar.gz var/lib/pulse2/clients/win32
-	tar xzvf var/lib/pulse2/clients/win32/pulse-xmpp-agent-1.8.3.tar.gz -C $(DESTDIR)/tmp
+	tar xzvf var/lib/pulse2/clients/win32/pulse-xmpp-agent-1.8.4.tar.gz -C $(DESTDIR)/tmp
 	mkdir -p etc/mmc/plugins/
 	mkdir -p var/lib/pulse2/clients/config/
-	cp $(DESTDIR)/tmp/pulse-xmpp-agent-1.8.3/pulse_xmpp_agent/config/agentconf.ini.in var/lib/pulse2/clients/config/
-	cp $(DESTDIR)/tmp/pulse-xmpp-agent-1.8.3/pulse_xmpp_agent/config/relayconf.ini.in var/lib/pulse2/clients/config/
+	cp $(DESTDIR)/tmp/pulse-xmpp-agent-1.8.4/pulse_xmpp_agent/config/agentconf.ini.in var/lib/pulse2/clients/config/
+	cp $(DESTDIR)/tmp/pulse-xmpp-agent-1.8.4/pulse_xmpp_agent/config/relayconf.ini.in var/lib/pulse2/clients/config/
 	cp scripts_installer/generate-pulse-agent.sh var/lib/pulse2/clients
 	cp scripts_installer/generate-agent-package var/lib/pulse2/clients
 	cp scripts_installer/generate-pulse-agent-win.sh var/lib/pulse2/clients/win32
