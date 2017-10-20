@@ -104,16 +104,16 @@ check_arguments() {
         exit 0
     		;;
 		esac
-		if [[ ${MINIMAL} ]] && [[ ${TEST_URL} ]]; then
-			URL_REGEX='^https?://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
-			if [[ ${TEST_URL} =~ ${URL_REGEX} ]]; then
-				BASE_URL=${TEST_URL}
-			else
-				colored_echo red "The base-url parameter is not valid"
-				colored_echo red "We will use ${BASE_URL}"
-			fi
-		fi
 	done
+	if [[ ${MINIMAL} ]] && [[ ${TEST_URL} ]]; then
+		URL_REGEX='^https?://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
+		if [[ ${TEST_URL} =~ ${URL_REGEX} ]]; then
+			BASE_URL=${TEST_URL}
+		else
+			colored_echo red "The base-url parameter is not valid"
+			colored_echo red "We will use ${BASE_URL}"
+		fi
+	fi
 }
 
 colored_echo() {
@@ -203,14 +203,14 @@ check_previous_conf() {
 		display_usage
 		exit 0
 	fi
-	# Check if inventory tag and agent size are defined
+	# Check if inventory tag, agent size and base url are defined
 	if [ -z "${INVENTORY_TAG}" ]; then
 		colored_echo blue " - Inventory TAG: None"
 	else
 		colored_echo blue " - Inventory TAG: '${INVENTORY_TAG}'"
   fi
 	if [[ ${MINIMAL} -eq 1 ]]; then
-		GENERATED_SIZE="--minimal"
+		OPTIONS_MINIMAL="--minimal --base-url=${BASE_URL}"
     colored_echo blue " - Agent generated: minimal"
 	else
 		colored_echo blue " - Agent generated: full"
@@ -221,9 +221,9 @@ generate_agent_win() {
   # Generate Pulse Agent for Windows
   colored_echo blue "Generating Pulse Agent for Windows..."
 	if [ -n "${INVENTORY_TAG}" ]; then
-		COMMAND="./win32/generate-pulse-agent-win.sh --inventory-tag=${INVENTORY_TAG} ${GENERATED_SIZE}"
+		COMMAND="./win32/generate-pulse-agent-win.sh --inventory-tag=${INVENTORY_TAG} ${OPTIONS_MINIMAL}"
 	else
-		COMMAND="./win32/generate-pulse-agent-win.sh ${GENERATED_SIZE}"
+		COMMAND="./win32/generate-pulse-agent-win.sh ${OPTIONS_MINIMAL}"
 	fi
 	echo "Running "${COMMAND}
 	${COMMAND}
@@ -245,9 +245,9 @@ generate_agent_mac() {
   # Generate Pulse Agent for MacOS
   colored_echo blue "Generating Pulse Agent for MacOS..."
 	if [ -n "${INVENTORY_TAG}" ]; then
-		COMMAND="./mac/generate-pulse-agent-mac.sh --inventory-tag=${INVENTORY_TAG} ${GENERATED_SIZE}"
+		COMMAND="./mac/generate-pulse-agent-mac.sh --inventory-tag=${INVENTORY_TAG} ${OPTIONS_MINIMAL}"
 	else
-		COMMAND="./mac/generate-pulse-agent-mac.sh ${GENERATED_SIZE}"
+		COMMAND="./mac/generate-pulse-agent-mac.sh ${OPTIONS_MINIMAL}"
 	fi
 	echo "Running "${COMMAND}
 	${COMMAND}

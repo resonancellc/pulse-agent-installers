@@ -42,6 +42,9 @@
 # https://pypi.python.org/packages/c8/0a/b6723e1bc4c516cb687841499455a8505b44607ab535be01091c0f24f079/six-1.10.0-py2.py3-none-any.whl
 # https://pypi.python.org/packages/58/2a/17d003f2a9a0188cf9365d63b3351c6522b7d83996b70270c65c789e35b9/croniter-0.3.16.tar.gz
 
+# To be defined for minimal install
+BASE_URL="https://agents.siveo.net" # Overridden if --base-url is defined
+
 # Go to own folder
 cd "`dirname $0`"
 
@@ -97,7 +100,7 @@ check_arguments() {
         shift
         ;;
       --base-url*)
-        BASE_URL="${i#*=}"
+        TEST_URL="${i#*=}"
         shift
         ;;
 			*)
@@ -107,6 +110,15 @@ check_arguments() {
     		;;
 		esac
 	done
+	if [[ ${MINIMAL} ]] && [[ ${TEST_URL} ]]; then
+		URL_REGEX='^https?://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
+		if [[ ${TEST_URL} =~ ${URL_REGEX} ]]; then
+			BASE_URL=${TEST_URL}
+		else
+			colored_echo red "The base-url parameter is not valid"
+			colored_echo red "We will use ${BASE_URL}"
+		fi
+	fi
 	if [[ ! ${MINIMAL} ]]; then
 		exit 0 # Remove when we support full version as well
 	fi
@@ -239,11 +251,15 @@ generate_agent_pkg() {
 	colored_echo blue "### INFO Generating installer..."
 	# generate package
 	if [[ ${MINIMAL} -eq 1 ]]; then
-		rm Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg
+		if [ -f Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg ]; then
+			rm -f Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg
+		fi
 		mv ${PKG_FOLDER_TMP} Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg
 		tar czf Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg.tar.gz Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg
 	else
-		rm Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg
+		if [ -f Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg ]; then
+			rm -f Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg
+		fi
 		mv ${PKG_FOLDER_TMP} Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg
 		tar czf Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg.tar.gz Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg
 	fi

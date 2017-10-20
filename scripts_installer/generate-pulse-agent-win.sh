@@ -53,6 +53,9 @@
 # https://pypi.python.org/packages/c8/0a/b6723e1bc4c516cb687841499455a8505b44607ab535be01091c0f24f079/six-1.10.0-py2.py3-none-any.whl
 # https://pypi.python.org/packages/58/2a/17d003f2a9a0188cf9365d63b3351c6522b7d83996b70270c65c789e35b9/croniter-0.3.16.tar.gz
 
+# To be defined for minimal install
+BASE_URL="https://agents.siveo.net" # Overridden if --base-url is defined
+
 # Go to own folder
 cd "`dirname $0`"
 
@@ -109,7 +112,7 @@ PULSE_AGENT_PLUGINS_VERSION="1.2"
 # Display usage
 display_usage() {
 	echo -e "\nUsage:\n$0 [--inventory-tag=<Tag added to the inventory>]\n"
-	echo -e "\t [--minimal]\n"
+	echo -e "\t [--minimal [--base-url=<URL for downloading agent and dependencies from>]]\n"
 }
 
 check_arguments() {
@@ -123,6 +126,10 @@ check_arguments() {
         MINIMAL=1
         shift
         ;;
+      --base-url*)
+        TEST_URL="${i#*=}"
+        shift
+        ;;
 			*)
         # unknown option
         display_usage
@@ -130,6 +137,15 @@ check_arguments() {
     		;;
 		esac
 	done
+	if [[ ${MINIMAL} ]] && [[ ${TEST_URL} ]]; then
+		URL_REGEX='^https?://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
+		if [[ ${TEST_URL} =~ ${URL_REGEX} ]]; then
+			BASE_URL=${TEST_URL}
+		else
+			colored_echo red "The base-url parameter is not valid"
+			colored_echo red "We will use ${BASE_URL}"
+		fi
+	fi
 }
 
 compute_parameters() {
