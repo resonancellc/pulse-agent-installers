@@ -10,6 +10,8 @@ Group:		Development/Other
 Url:		http://www.siveo.net/
 BuildArch:	noarch
 
+BuildRequires:  git
+
 Requires:       pulse-xmpp-agent-deps 
 
 Requires:       dos2unix 
