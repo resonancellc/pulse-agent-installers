@@ -254,14 +254,16 @@ generate_agent_pkg() {
 		if [ -f Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg ]; then
 			rm -f Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg
 		fi
-		mv ${PKG_FOLDER_TMP} Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg
-		tar czf Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg.tar.gz Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg
+		pushd ${PKG_FOLDER_TMP}
+		xar cf ../Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg *
+		popd
 	else
 		if [ -f Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg ]; then
 			rm -f Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg
 		fi
-		mv ${PKG_FOLDER_TMP} Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg
-		tar czf Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg.tar.gz Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg
+		pushd ${PKG_FOLDER_TMP}
+		xar cf ../Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg *
+		popd
 	fi
 	if [ ! $? -eq 0 ]; then
 		colored_echo red "### ER... Generation of agent failed. Please restart"
