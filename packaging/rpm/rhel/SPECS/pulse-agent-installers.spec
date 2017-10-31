@@ -47,7 +47,7 @@ set consisting of upper and lower-case alphanumerics.
 
 GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-xmpp-agent.git
 cd pulse-xmpp-agent
-git checkout $branch
+git checkout %branch
 cd ..
 
 mv pulse-xmpp-agent pulse-xmpp-agent-%version
@@ -55,7 +55,7 @@ tar czvf pulse-xmpp-agent-%version.tar.gz pulse-xmpp-agent-%version
 
 GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-agent-plugins.git
 cd pulse-agent-plugins
-git checkout $branch
+git checkout %branch
 cd ..
 
 mv pulse-agent-plugins pulse-agent-plugins-1.2
