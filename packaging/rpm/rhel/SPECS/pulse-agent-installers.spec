@@ -89,11 +89,6 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
         cp scripts_installer/pulse-agent-task.xml %{buildroot}/var/lib/pulse2/clients/win32
         mkdir -p %{buildroot}/var/lib/pulse2/clients/linux
         cp scripts_installer/*linux* %{buildroot}/var/lib/pulse2/clients/linux
-        mkdir -p %{buildroot}/var/lib/pulse2/clients/mac
-        cp scripts_installer/generate-pulse-agent-mac.sh %{buildroot}/var/lib/pulse2/clients/mac
-        cp scripts_installer/Info.plist.in %{buildroot}/var/lib/pulse2/clients/mac
-        cp scripts_installer/postflight.in %{buildroot}/var/lib/pulse2/clients/mac
-        cp scripts_installer/net.siveo.pulse_xmpp_agent.plist %{buildroot}/var/lib/pulse2/clients/mac
         mkdir -p %{buildroot}/var/lib/pulse2/clients/win32/libs
         cp -fr scripts_installer/nsis_libs/* %{buildroot}/var/lib/pulse2/clients/win32/libs
         chmod +x %{buildroot}/var/lib/pulse2/clients/*.sh
