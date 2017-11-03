@@ -60,7 +60,7 @@ BASE_URL="https://agents.siveo.net" # Overridden if --base-url is defined
 cd "`dirname $0`"
 
 # To be defined
-AGENT_VERSION="1.8.5"
+AGENT_VERSION="1.8.6"
 PYTHON_VERSION="2.7.9"
 PY_WIN32_VERSION="219"
 PY_NETIFACES_MODULE="netifaces"

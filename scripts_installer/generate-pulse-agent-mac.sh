@@ -49,7 +49,7 @@ BASE_URL="https://agents.siveo.net" # Overridden if --base-url is defined
 cd "`dirname $0`"
 
 # To be defined
-AGENT_VERSION="1.8.5"
+AGENT_VERSION="1.8.6"
 FUSION_INVENTORY_AGENT_NAME="FusionInventory-Agent"
 FUSION_INVENTORY_AGENT_VERSION="2.3.20-1"
 PY_NETIFACES_MODULE="netifaces"
@@ -255,14 +255,14 @@ generate_agent_pkg() {
 			rm -f Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg
 		fi
 		pushd ${PKG_FOLDER_TMP}
-		xar cf ../Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg *
+		xar -cf ../Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg *
 		popd
 	else
 		if [ -f Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg ]; then
 			rm -f Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg
 		fi
 		pushd ${PKG_FOLDER_TMP}
-		xar cf ../Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg *
+		xar -cf ../Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg *
 		popd
 	fi
 	if [ ! $? -eq 0 ]; then
