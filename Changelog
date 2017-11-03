@@ -1,3 +1,24 @@
+pulse-agent-installers 1.8.6
+============================
+
+ * pulse-xmpp-agent 1.8.6
+ * Setup VNC server to run on all interfaces
+ * Create bin folder on Windows machines
+ * Fix installer for macOS
+
+
+pulse-agent-installers 1.8.5
+============================
+
+ * pulse-xmpp-agent 1.8.5
+
+
+pulse-agent-installers 1.8.4
+============================
+
+ * pulse-xmpp-agent 1.8.4
+
+
 pulse-agent-installers 1.8.3
 ============================
 
