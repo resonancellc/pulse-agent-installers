@@ -224,6 +224,7 @@ update_postflight_script_mini() {
 		-e "s/@@PY_CRON_DEPS_2_FILENAME@@/${PY_CRON_DEPS_2_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_FILENAME@@/${PULSE_AGENT_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_PLUGINS_FILENAME@@/${PULSE_AGENT_PLUGINS_FILENAME}/" \
+		-e "s/@@PULSE_AGENT_CONFFILE_FILENAME@@/${PULSE_AGENT_CONFFILE_FILENAME}/" \
 		postflight.in \
 		> ${PKG_FOLDER_TMP}/Contents/Resources/postflight
 		chmod 0755 ${PKG_FOLDER_TMP}/Contents/Resources/postflight
@@ -252,18 +253,18 @@ generate_agent_pkg() {
 	# generate package
 	if [[ ${MINIMAL} -eq 1 ]]; then
 		if [ -f Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg ]; then
-			rm -f Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg
+			rm -rf Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg
 		fi
-		pushd ${PKG_FOLDER_TMP}
-		xar -cf ../Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg *
-		popd
+		mv ${PKG_FOLDER_TMP} Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg
+		tar -cf Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg.tar.gz Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg
+		rm -rf Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg
 	else
 		if [ -f Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg ]; then
-			rm -f Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg
+			rm -rf Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg
 		fi
-		pushd ${PKG_FOLDER_TMP}
-		xar -cf ../Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg *
-		popd
+		mv ${PKG_FOLDER_TMP} Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg
+		tar -cf Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg.tar.gz Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg
+		rm -rf Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg
 	fi
 	if [ ! $? -eq 0 ]; then
 		colored_echo red "### ER... Generation of agent failed. Please restart"

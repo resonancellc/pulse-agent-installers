@@ -212,7 +212,7 @@ if [ ! -d "${INSTALL_PATH}/var/log/" ]; then
 fi
 # Create packages folder to hold packages to be deployed on client
 if [ ! -d "${INSTALL_PATH}/var/tmp/packages/" ]; then
-  sudo mkdir "${INSTALL_PATH}/var/tmp/packages"
+  sudo mkdir -p "${INSTALL_PATH}/var/tmp/packages"
 fi
 
 # Copy service descriptor
