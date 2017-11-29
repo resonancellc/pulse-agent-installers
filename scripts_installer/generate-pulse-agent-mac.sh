@@ -49,7 +49,7 @@ BASE_URL="https://agents.siveo.net" # Overridden if --base-url is defined
 cd "`dirname $0`"
 
 # To be defined
-AGENT_VERSION="1.8.6"
+AGENT_VERSION="1.8.7"
 FUSION_INVENTORY_AGENT_NAME="FusionInventory-Agent"
 FUSION_INVENTORY_AGENT_VERSION="2.3.20-1"
 PY_NETIFACES_MODULE="netifaces"
@@ -78,7 +78,7 @@ PULSE_AGENT_NAME="pulse-xmpp-agent"
 PULSE_AGENT_MODULE="pulse_xmpp_agent"
 SSH_PUB_KEY="/root/.ssh/id_rsa.pub"
 PULSE_AGENT_PLUGINS_NAME="pulse-agent-plugins"
-PULSE_AGENT_PLUGINS_VERSION="1.2"
+PULSE_AGENT_PLUGINS_VERSION="1.3"
 PKG_FOLDER_TMP="mac_package_tmp"
 
 
