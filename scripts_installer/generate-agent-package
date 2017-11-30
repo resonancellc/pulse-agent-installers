@@ -64,14 +64,12 @@ cat <<EOF > xmppdeploy.json
                 "step": 0
             },
             {
-                "success": 3,
-                "codereturn": "",
+                "typescript": "Batch",
+                "script": "pip install --upgrade --no-index --find-links=\".\" ${PULSE_AGENT_FILENAME}",
                 "step": 1,
-                "command": "xmppdeploywin.bat",
-                "timeout": 900,
-                "error": 4,
-                "action": "actionprocessscript",
-                "@resultcommand": ""
+                "codereturn": "",
+                "action": "actionprocessscriptfile",
+                "@resultcommand": "@resultcommand"
             },
             {
                 "action": "actionrestartbot",
@@ -94,18 +92,16 @@ cat <<EOF > xmppdeploy.json
                 "step": 0
             },
             {
-                "success": 3,
-                "codereturn": "",
+                "typescript": "Batch",
+                "script": "pip install --upgrade --no-index --find-links=\".\" ${PULSE_AGENT_FILENAME}",
                 "step": 1,
-                "command": "/bin/bash ./xmppdeploylinux",
-                "timeout": 900,
-                "error": 4,
-                "action": "actionprocessscript",
-                "@resultcommand": ""
+                "codereturn": "",
+                "action": "actionprocessscriptfile",
+                "@resultcommand": "@resultcommand"
             },
             {
-                "step" : 2,
-                "action": "actionrestartbot"
+                "action": "actionrestartbot",
+                "step": 2
             },
             {
                 "action": "actionsuccescompletedend",
@@ -124,14 +120,12 @@ cat <<EOF > xmppdeploy.json
                 "step": 0
             },
             {
-                "success": 3,
-                "codereturn": "",
+                "typescript": "Batch",
+                "script": "pip install --upgrade --no-index --find-links=\".\" ${PULSE_AGENT_FILENAME}",
                 "step": 1,
-                "command": "./xmppdeploydarwin",
-                "timeout": 900,
-                "error": 4,
-                "action": "actionprocessscript",
-                "@resultcommand": ""
+                "codereturn": "",
+                "action": "actionprocessscriptfile",
+                "@resultcommand": "@resultcommand"
             },
             {
                 "action": "actionrestartbot",
@@ -146,28 +140,28 @@ cat <<EOF > xmppdeploy.json
                 "step": 4
             }
         ]
+    },
+    "metaparameter": {
+        "win": {
+            "label": {
+            }
+        },
+        "linux": {
+            "label": {
+            }
+        },
+        "darwin": {
+            "label": {
+            }
+        },
+        "os": [
+            "win",
+            "linux",
+            "darwin"
+        ]
     }
 }
 EOF
-
-# Generate xmppdeploywin.bat
-cat <<EOF > xmppdeploywin.bat
-pip install --upgrade --no-index --find-links="." ${PULSE_AGENT_FILENAME}
-EOF
-
-# Generate xmppdeploylinux
-cat <<EOF > xmppdeploylinux
-#!/bin/bash
-pip install --upgrade --no-index --find-links="." ${PULSE_AGENT_FILENAME}
-EOF
-chmod +x xmppdeploylinux
-
-# Generate xmppdeploydarwin
-cat <<EOF > xmppdeploydarwin
-#!/bin/bash
-pip install --upgrade --no-index --find-links="." ${PULSE_AGENT_FILENAME}
-EOF
-chmod +x xmppdeploydarwin
 
 # Generate conf.json
 cat <<EOF > conf.json
