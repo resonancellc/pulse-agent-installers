@@ -73,7 +73,8 @@ cat <<EOF > xmppdeploy.json
                 "@resultcommand": "@resultcommand"
             },
             {
-                "action": "actionrestartbot",
+                "action": "actionrestart",
+                "targetrestart": "AM",
                 "step": 2
             },
             {
@@ -101,7 +102,8 @@ cat <<EOF > xmppdeploy.json
                 "@resultcommand": "@resultcommand"
             },
             {
-                "action": "actionrestartbot",
+                "action": "actionrestart",
+                "targetrestart": "AM",
                 "step": 2
             },
             {
@@ -129,7 +131,8 @@ cat <<EOF > xmppdeploy.json
                 "@resultcommand": "@resultcommand"
             },
             {
-                "action": "actionrestartbot",
+                "action": "actionrestart",
+                "targetrestart": "AM",
                 "step": 2
             },
             {
