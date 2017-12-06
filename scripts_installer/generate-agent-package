@@ -60,7 +60,9 @@ cat <<EOF > xmppdeploy.json
         "description": "${PACKAGE_DESC}",
         "name": "${PACKAGE_NAME} v${AGENT_VERSION}",
         "software": "agentxmpp",
-        "transferfile": "true",
+        "transferfile": True,
+        "methodetransfert": "pullcurl",
+        "Dependency": [],
         "version": "${AGENT_VERSION}",
         "metagenerator": "manual"
     },
