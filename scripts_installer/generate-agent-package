@@ -78,6 +78,8 @@ cat <<EOF > xmppdeploy.json
                 "step": 1,
                 "codereturn": "",
                 "action": "actionprocessscriptfile",
+                "success": 3,
+                "error": 4,
                 "@resultcommand": "@resultcommand"
             },
             {
@@ -107,6 +109,8 @@ cat <<EOF > xmppdeploy.json
                 "step": 1,
                 "codereturn": "",
                 "action": "actionprocessscriptfile",
+                "success": 3,
+                "error": 4,
                 "@resultcommand": "@resultcommand"
             },
             {
@@ -136,6 +140,8 @@ cat <<EOF > xmppdeploy.json
                 "step": 1,
                 "codereturn": "",
                 "action": "actionprocessscriptfile",
+                "success": 3,
+                "error": 4,
                 "@resultcommand": "@resultcommand"
             },
             {
