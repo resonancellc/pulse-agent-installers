@@ -1,17 +1,11 @@
 %define   rel   1
 
-%define branch                 BRANCH
-%define use_git                1
-%define git                    SHA
+%define branch  BRANCH
 
 Summary:	Files to create pulse windows installer
 Name:		pulse-agent-installers
-Version:	1.8.3
-%if ! %use_git
-Release:        1%{?dist}
-%else
-Release:        0.%git.1%{?dist}
-%endif
+Version:	1.8.7
+Release:	%{rel}%{?dist}
 Source0:        pulse-agent-installers-%version.tar.gz
 License:	MIT
 Group:		Development/Other
@@ -64,8 +58,8 @@ cd pulse-agent-plugins
 git checkout %branch
 cd ..
 
-mv pulse-agent-plugins pulse-agent-plugins-1.2
-tar czvf pulse-agent-plugins-1.2.tar.gz pulse-agent-plugins-1.2
+mv pulse-agent-plugins pulse-agent-plugins-1.3
+tar czvf pulse-agent-plugins-1.3.tar.gz pulse-agent-plugins-1.3
 
 
 %install
@@ -74,7 +68,7 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
 
 
 	# We create pulse-agent-plugins tarball
-        mv pulse-agent-plugins-1.2.tar.gz %{buildroot}/var/lib/pulse2/clients
+        mv pulse-agent-plugins-1.3.tar.gz %{buildroot}/var/lib/pulse2/clients
 
         mkdir -p %{buildroot}/etc/mmc/plugins/
         mkdir -p %{buildroot}/var/lib/pulse2/clients/config/
@@ -89,6 +83,11 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
         cp scripts_installer/pulse-agent-task.xml %{buildroot}/var/lib/pulse2/clients/win32
         mkdir -p %{buildroot}/var/lib/pulse2/clients/linux
         cp scripts_installer/*linux* %{buildroot}/var/lib/pulse2/clients/linux
+        mkdir -p %{buildroot}/var/lib/pulse2/clients/mac
+        cp scripts_installer/generate-pulse-agent-mac.sh %{buildroot}/var/lib/pulse2/clients/mac
+        cp scripts_installer/Info.plist.in %{buildroot}/var/lib/pulse2/clients/mac
+        cp scripts_installer/postflight.in %{buildroot}/var/lib/pulse2/clients/mac
+        cp scripts_installer/net.siveo.pulse_xmpp_agent.plist %{buildroot}/var/lib/pulse2/clients/mac
         mkdir -p %{buildroot}/var/lib/pulse2/clients/win32/libs
         cp -fr scripts_installer/nsis_libs/* %{buildroot}/var/lib/pulse2/clients/win32/libs
         chmod +x %{buildroot}/var/lib/pulse2/clients/*.sh

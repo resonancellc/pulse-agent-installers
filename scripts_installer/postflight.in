@@ -1,0 +1,237 @@
+#!/bin/bash
+PREFIX="$1/Contents/Resources"
+MACOS_VERSION=$(sw_vers |grep ProductVersion|awk '{print $2}')
+INSTALL_PATH="/Library/Application Support/Pulse"
+VNC_PASSWORD=$(uuidgen | sed 's/-//g')
+BASE_URL="@@BASE_URL@@"
+INVENTORY_TAG="@@INVENTORY_TAG@@"
+FUSION_INVENTORY_AGENT_PKG="@@FUSION_INVENTORY_AGENT_PKG@@"
+FUSION_INVENTORY_AGENT_ARCHIVE="@@FUSION_INVENTORY_AGENT_ARCHIVE@@"
+MODULES_LIST_FILENAMES="@@PY_NETIFACES_FILENAME@@
+                        @@PY_CONFIGPARSER_FILENAME@@
+                        @@PY_UTILS_FILENAME@@
+                        @@PY_SLEEKXMPP_FILENAME@@
+                        @@PY_ZIPFILE_FILENAME@@
+                        @@PY_CURL_FILENAME@@
+                        @@PY_LXML_FILENAME@@
+                        @@PY_CRYPTO_FILENAME@@
+                        @@PY_CRON_FILENAME@@
+                        @@PY_CRON_DEPS_1_FILENAME@@
+                        @@PY_CRON_DEPS_2_FILENAME@@"
+PULSE_AGENT_FILENAME="@@PULSE_AGENT_FILENAME@@"
+PULSE_AGENT_PLUGINS_FILENAME="@@PULSE_AGENT_PLUGINS_FILENAME@@"
+PULSE_AGENT_CONFFILE_FILENAME="@@PULSE_AGENT_CONFFILE_FILENAME@@"
+FUSION_CFG=/opt/fusioninventory-agent/agent.cfg
+SSH_PUB_KEY="${PREFIX}/id_rsa.pub"
+
+
+### Command Line tools
+
+echo
+echo "################################"
+echo "1. INSTALLING COMMAND LINE TOOLS"
+echo "################################"
+echo
+
+touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
+case ${MACOS_VERSION} in
+	"10.13*" )
+    softwareupdate -i "Command Line Tools (macOS High Sierra version 10.13) for Xcode-9.0"
+		;;
+  "10.12*" )
+    softwareupdate -i "Command Line Tools (macOS Sierra version 10.12) for Xcode-9.0"
+    ;;
+  "10.11*" )
+    softwareupdate -i "Command Line Tools (macOS El Capitan version 10.11) for Xcode-8.2"
+    ;;
+  "10.10*" )
+    softwareupdate -i "Command Line Tools (macOS Yosemite version 10.10) for Xcode-7.2"
+    ;;
+esac
+# Install pip
+easy_install pip
+
+
+### Root account
+
+echo
+echo "########################"
+echo "2. ENABLING ROOT ACCOUNT"
+echo "########################"
+echo
+
+# Try to find current root hash by querying some XML stuff
+curpasswd=`plutil -convert xml1 /private/var/db/dslocal/nodes/Default/users/root.plist -o - | xpath /plist/dict/array[preceding-sibling::*[1][.=\"passwd\"]]/string/text\(\) 2>/dev/null`
+
+# * = disabled, ******** = enabled
+if [ "${curpasswd}" = "*" ]; then
+  echo "INFO: Root account found (disabled)"
+  # Generating a strong password and change it
+  passwd=`openssl rand -base64 24`
+  # Use expect....
+  expect -c "
+    log_user 0
+    set timeout 1
+    spawn passwd root
+    sleep 1
+    expect \"Changing password for root.\$\"
+    expect \"New password: \$\"
+    send \"${passwd}\r\"
+    expect \"Retype new password: \$\"
+    send \"${passwd}\r\"
+    expect eof"
+  if [ ${?} -eq 0 ]; then
+    echo "INFO: A new secure password for root user has been set."
+  else
+    echo "ERROR: Something wrong happened while changing root password"
+  fi
+else
+  echo "WARN: Root account seems to be already enabled!"
+fi
+
+
+
+echo
+echo "###########################################"
+echo "3. ADDING SERVER SSH KEY TO AUTHORIZED KEYS"
+echo "###########################################"
+echo
+
+
+if [ -e ${SSH_PUB_KEY} ]; then
+  if [ ! -d /var/root/.ssh/ ]; then
+    sudo mkdir -p /var/root/.ssh/
+  fi
+  sudo tee -a /var/root/.ssh/authorized_keys < ${SSH_PUB_KEY}
+  sudo systemsetup -setremotelogin on
+fi
+
+
+### Fusion-Inventory agent
+
+echo
+echo "###################################"
+echo "4. INSTALLING FUSIONINVENTORY AGENT"
+echo "###################################"
+echo
+
+curl -O ${BASE_URL}/mac/downloads/${FUSION_INVENTORY_AGENT_ARCHIVE}
+if [ -f ${FUSION_INVENTORY_AGENT_ARCHIVE} ];then
+  tar xzf ${FUSION_INVENTORY_AGENT_ARCHIVE}
+else
+  echo "ERROR: downloaded package ${FUSION_INVENTORY_AGENT_ARCHIVE} not found"
+  exit 1
+fi
+
+if [ -d ${FUSION_INVENTORY_AGENT_PKG} ]; then
+  sudo installer -pkg "${FUSION_INVENTORY_AGENT_PKG}" -target /
+  echo "tag=${INVENTORY_TAG}" > ${FUSION_CFG}
+else
+  echo "ERROR: downloaded package ${FUSION_INVENTORY_AGENT_PKG} not found"
+  exit 1
+fi
+
+if [ -e ${FUSION_INVENTORY_AGENT_PKG} ];then
+  rm -rf ${FUSION_INVENTORY_AGENT_PKG}
+fi
+
+if [ -e ${FUSION_INVENTORY_AGENT_ARCHIVE} ];then
+  rm -rf ${FUSION_INVENTORY_AGENT_ARCHIVE}
+fi
+
+
+### Python modules needed by Pulse
+
+echo
+echo "############################"
+echo "5. INSTALLING PYTHON MODULES"
+echo "############################"
+echo
+
+# Download and install the python modules
+for MODULE_FILENAME in ${MODULES_LIST_FILENAMES}; do
+  curl -O ${BASE_URL}/mac/downloads/python_modules/${MODULE_FILENAME}
+  if [ -f ${MODULE_FILENAME} ]; then
+    sudo /usr/local/bin/pip install --upgrade --no-index --find-links="." ${MODULE_FILENAME}
+  else
+    echo "ERROR: downloaded package ${MODULE_FILENAME} not found"
+    exit 1
+  fi
+  if [ -e ${MODULE_FILENAME} ];then
+    rm -rf ${MODULE_FILENAME}
+  fi
+done
+
+
+### Pulse agent and plugins
+
+echo
+echo "#########################"
+echo "6. INSTALLING PULSE AGENT"
+echo "#########################"
+echo
+
+# Download and install agent
+curl -O ${BASE_URL}/${PULSE_AGENT_FILENAME}
+if [ -f ${PULSE_AGENT_FILENAME} ]; then
+  sudo /usr/local/bin/pip install --upgrade --no-index --find-links="." ${PULSE_AGENT_FILENAME}
+else
+  echo "ERROR: downloaded package ${PULSE_AGENT_FILENAME} not found"
+  exit 1
+fi
+if [ -e ${PULSE_AGENT_FILENAME} ];then
+  rm -rf ${PULSE_AGENT_FILENAME}
+fi
+
+# Download and install plugins
+curl -O ${BASE_URL}/${PULSE_AGENT_PLUGINS_FILENAME}
+if [ -f ${PULSE_AGENT_PLUGINS_FILENAME} ]; then
+  sudo /usr/local/bin/pip install --upgrade --no-index --find-links="." ${PULSE_AGENT_PLUGINS_FILENAME}
+else
+  echo "ERROR: downloaded package ${PULSE_AGENT_PLUGINS_FILENAME} not found"
+  exit 1
+fi
+if [ -e ${PULSE_AGENT_PLUGINS_FILENAME} ];then
+  rm -rf ${PULSE_AGENT_PLUGINS_FILENAME}
+fi
+
+# Create Pulse folder and base layout
+if [ ! -d "${INSTALL_PATH}/etc" ]; then
+  sudo mkdir -p "${INSTALL_PATH}/etc"
+fi
+if [ ! -d "${INSTALL_PATH}/var" ]; then
+  sudo mkdir -p "${INSTALL_PATH}/var"
+fi
+
+# Copy config file
+sudo cp "${PREFIX}/${PULSE_AGENT_CONFFILE_FILENAME}" "${INSTALL_PATH}/etc/"
+
+# Create log folder to hold agent logs
+if [ ! -d "${INSTALL_PATH}/var/log/" ]; then
+  sudo mkdir "${INSTALL_PATH}/var/log"
+fi
+# Create packages folder to hold packages to be deployed on client
+if [ ! -d "${INSTALL_PATH}/var/tmp/packages/" ]; then
+  sudo mkdir -p "${INSTALL_PATH}/var/tmp/packages"
+fi
+
+# Copy service descriptor
+sudo cp "${PREFIX}/net.siveo.pulse_xmpp_agent.plist" /Library/LaunchDaemons/
+sudo chown root:wheel /Library/LaunchDaemons/net.siveo.pulse_xmpp_agent.plist
+sudo chmod 644 /Library/LaunchDaemons/net.siveo.pulse_xmpp_agent.plist
+
+# Load the service
+echo 'Loading Pulse Agent Service'
+sudo launchctl load net.siveo.pulse_xmpp_agent.plist
+echo 'Starting Pulse Agent Service'
+sudo launchctl start net.siveo.pulse_xmpp_agent
+
+
+### Enable VNC server
+echo
+echo "####################"
+echo "7. Enable VNC server"
+echo "####################"
+echo
+
+sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -activate -configure -access -on -clientopts -setvnclegacy -vnclegacy yes -clientopts -setvncpw -vncpw ${VNC_PASSWORD} -restart -agent -privs -all

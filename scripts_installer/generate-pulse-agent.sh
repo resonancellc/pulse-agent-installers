@@ -26,6 +26,9 @@
 # runs makensis to generate the agent
 # """
 
+# To be defined for minimal install
+BASE_URL="https://agents.siveo.net" # Overridden if --base-url is defined
+
 # Go to own folder
 cd "$(dirname $0)"
 
@@ -41,7 +44,7 @@ display_usage() {
   echo -e "\t [--xmpp-mucpasswd=<XMPP server MUC password>] \n"
 	echo -e "\t [--chat-domain=<XMPP domain>] \n"
   echo -e "\t [--inventory-tag=<Tag added to the inventory>] \n"
-  echo -e "\t [--minimal] \n"
+  echo -e "\t [--minimal [--base-url=<URL for downloading agent and dependencies from>]] \n"
 }
 
 check_arguments() {
@@ -91,6 +94,10 @@ check_arguments() {
         MINIMAL=1
         shift
         ;;
+      --base-url*)
+        TEST_URL="${i#*=}"
+        shift
+        ;;
 			*)
         # unknown option
         display_usage
@@ -98,6 +105,15 @@ check_arguments() {
     		;;
 		esac
 	done
+	if [[ ${MINIMAL} ]] && [[ ${TEST_URL} ]]; then
+		URL_REGEX='^https?://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
+		if [[ ${TEST_URL} =~ ${URL_REGEX} ]]; then
+			BASE_URL=${TEST_URL}
+		else
+			colored_echo red "The base-url parameter is not valid"
+			colored_echo red "We will use ${BASE_URL}"
+		fi
+	fi
 }
 
 colored_echo() {
@@ -159,6 +175,8 @@ compute_settings() {
 	else
 		colored_echo blue " - Agent generated: full"
   fi
+
+	colored_echo blue " - Base URL: '${BASE_URL}'"
 }
 
 update_config_file() {
@@ -185,14 +203,14 @@ check_previous_conf() {
 		display_usage
 		exit 0
 	fi
-	# Check if inventory tag and agent size are defined
+	# Check if inventory tag, agent size and base url are defined
 	if [ -z "${INVENTORY_TAG}" ]; then
 		colored_echo blue " - Inventory TAG: None"
 	else
 		colored_echo blue " - Inventory TAG: '${INVENTORY_TAG}'"
   fi
 	if [[ ${MINIMAL} -eq 1 ]]; then
-		GENERATED_SIZE="--minimal"
+		OPTIONS_MINIMAL="--minimal --base-url=${BASE_URL}"
     colored_echo blue " - Agent generated: minimal"
 	else
 		colored_echo blue " - Agent generated: full"
@@ -203,9 +221,9 @@ generate_agent_win() {
   # Generate Pulse Agent for Windows
   colored_echo blue "Generating Pulse Agent for Windows..."
 	if [ -n "${INVENTORY_TAG}" ]; then
-		COMMAND="./win32/generate-pulse-agent-win.sh --inventory-tag=${INVENTORY_TAG} ${GENERATED_SIZE}"
+		COMMAND="./win32/generate-pulse-agent-win.sh --inventory-tag=${INVENTORY_TAG} ${OPTIONS_MINIMAL}"
 	else
-		COMMAND="./win32/generate-pulse-agent-win.sh ${GENERATED_SIZE}"
+		COMMAND="./win32/generate-pulse-agent-win.sh ${OPTIONS_MINIMAL}"
 	fi
 	echo "Running "${COMMAND}
 	${COMMAND}
@@ -223,6 +241,18 @@ generate_agent_lin() {
 	${COMMAND}
 }
 
+generate_agent_mac() {
+  # Generate Pulse Agent for MacOS
+  colored_echo blue "Generating Pulse Agent for MacOS..."
+	if [ -n "${INVENTORY_TAG}" ]; then
+		COMMAND="./mac/generate-pulse-agent-mac.sh --inventory-tag=${INVENTORY_TAG} ${OPTIONS_MINIMAL}"
+	else
+		COMMAND="./mac/generate-pulse-agent-mac.sh ${OPTIONS_MINIMAL}"
+	fi
+	echo "Running "${COMMAND}
+	${COMMAND}
+}
+
 # And finally we run the functions
 
 check_arguments "$@"
@@ -234,3 +264,4 @@ else
 fi
 generate_agent_win
 generate_agent_lin
+generate_agent_mac
