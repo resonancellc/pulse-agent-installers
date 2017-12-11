@@ -139,6 +139,7 @@ compute_parameters() {
 	PY_CRON_DEPS_2_FILENAME="${PY_CRON_DEPS_2_MODULE}-${PY_CRON_DEPS_2_VERSION}-py2.py3-none-any.whl"
 	PULSE_AGENT_FILENAME="${PULSE_AGENT_NAME}-${AGENT_VERSION}.tar.gz"
 	PULSE_AGENT_CONFFILE_FILENAME="agentconf.ini"
+	PULSE_SCHEDULER_CONFFILE_FILENAME="manage_scheduler.ini"
 	PULSE_AGENT_PLUGINS_FILENAME="${PULSE_AGENT_PLUGINS_NAME}-${PULSE_AGENT_PLUGINS_VERSION}.tar.gz"
 	FUSION_INVENTORY_AGENT_PKG="${FUSION_INVENTORY_AGENT_NAME}-${FUSION_INVENTORY_AGENT_VERSION}.pkg"
 	FUSION_INVENTORY_AGENT_ARCHIVE="${FUSION_INVENTORY_AGENT_PKG}.tar.gz"
@@ -167,8 +168,9 @@ create_folder_structure() {
 		colored_echo red "Please make sure there is a valid key at ${SSH_PUB_KEY}."
 		exit 0
 	fi
-	# Copy config file
+	# Copy config files
 	cp ../config/${PULSE_AGENT_CONFFILE_FILENAME} ${PKG_FOLDER_TMP}/Contents/Resources/
+	cp ../config/${PULSE_SCHEDULER_CONFFILE_FILENAME} ${PKG_FOLDER_TMP}/Contents/Resources/
 	# Create package_version
 	echo "Major: ${V_MAJOR}" > ${PKG_FOLDER_TMP}/Contents/package_version
 	echo "Minor: ${V_MINOR}" >> ${PKG_FOLDER_TMP}/Contents/package_version
@@ -225,6 +227,7 @@ update_postflight_script_mini() {
 		-e "s/@@PULSE_AGENT_FILENAME@@/${PULSE_AGENT_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_PLUGINS_FILENAME@@/${PULSE_AGENT_PLUGINS_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_CONFFILE_FILENAME@@/${PULSE_AGENT_CONFFILE_FILENAME}/" \
+		-e "s/@@PULSE_SCHEDULER_CONFFILE_FILENAME@@/${PULSE_SCHEDULER_CONFFILE_FILENAME}/" \
 		postflight.in \
 		> ${PKG_FOLDER_TMP}/Contents/Resources/postflight
 		chmod 0755 ${PKG_FOLDER_TMP}/Contents/Resources/postflight
