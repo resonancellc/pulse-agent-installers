@@ -1,0 +1,14 @@
+#!/bin/sh
+# postinst script for #PACKAGE#
+#
+# see: dh_installdeb(1)
+
+set -e
+
+# We try to generate the new windows agent
+cd /var/lib/pulse2/clients
+./generate-pulse-agent.sh
+
+#DEBHELPER#
+
+exit 0
