@@ -17,7 +17,9 @@ MODULES_LIST_FILENAMES="@@PY_NETIFACES_FILENAME@@
                         @@PY_CRYPTO_FILENAME@@
                         @@PY_CRON_FILENAME@@
                         @@PY_CRON_DEPS_1_FILENAME@@
-                        @@PY_CRON_DEPS_2_FILENAME@@"
+                        @@PY_CRON_DEPS_2_FILENAME@@
+                        @@PY_PSUTIL_FILENAME@@"
+PY3_MODULES_LIST_FILENAMES="@@PY3_QT5_FILENAME@@"
 PULSE_AGENT_FILENAME="@@PULSE_AGENT_FILENAME@@"
 PULSE_AGENT_PLUGINS_FILENAME="@@PULSE_AGENT_PLUGINS_FILENAME@@"
 PULSE_AGENT_CONFFILE_FILENAME="@@PULSE_AGENT_CONFFILE_FILENAME@@"
@@ -29,9 +31,9 @@ SSH_PUB_KEY="${PREFIX}/id_rsa.pub"
 ### Command Line tools
 
 echo
-echo "################################"
-echo "1. INSTALLING COMMAND LINE TOOLS"
-echo "################################"
+echo "###########################################"
+echo "1. INSTALLING COMMAND LINE TOOLS AND PYTHON"
+echo "###########################################"
 echo
 
 touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
@@ -49,48 +51,56 @@ case ${MACOS_VERSION} in
     softwareupdate -i "Command Line Tools (macOS Yosemite version 10.10) for Xcode-7.2"
     ;;
 esac
+
+# Homebrew
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" </dev/null
+
+# Reinstall python
+brew reinstall python
+# Install python 3
+brew install python3
+
 # Install pip
 easy_install pip
 
 
-### Root account
+### Pulse account
 
 echo
-echo "########################"
-echo "2. ENABLING ROOT ACCOUNT"
-echo "########################"
+echo "#########################"
+echo "2. CREATING PULSE ACCOUNT"
+echo "#########################"
 echo
 
-# Try to find current root hash by querying some XML stuff
-curpasswd=`plutil -convert xml1 /private/var/db/dslocal/nodes/Default/users/root.plist -o - | xpath /plist/dict/array[preceding-sibling::*[1][.=\"passwd\"]]/string/text\(\) 2>/dev/null`
-
-# * = disabled, ******** = enabled
-if [ "${curpasswd}" = "*" ]; then
-  echo "INFO: Root account found (disabled)"
-  # Generating a strong password and change it
-  passwd=`openssl rand -base64 24`
-  # Use expect....
-  expect -c "
-    log_user 0
-    set timeout 1
-    spawn passwd root
-    sleep 1
-    expect \"Changing password for root.\$\"
-    expect \"New password: \$\"
-    send \"${passwd}\r\"
-    expect \"Retype new password: \$\"
-    send \"${passwd}\r\"
-    expect eof"
-  if [ ${?} -eq 0 ]; then
-    echo "INFO: A new secure password for root user has been set."
-  else
-    echo "ERROR: Something wrong happened while changing root password"
-  fi
+# Create pulse user account
+if id pulse 2>/dev/null; then
+  echo "WARN: pulse user already exists on the system"
 else
-  echo "WARN: Root account seems to be already enabled!"
+  USER_PASSWORD=$(openssl rand -base64 24)
+  sudo sysadminctl -addUser pulse -shell /usr/local/bin/rbash -password ${USER_PASSWORD} -home /var/lib/pulse2 2>/dev/null
+  if [ ${?} -eq 0 ]; then
+    echo "INFO: pulse user account created"
+  else
+    echo "ERROR: Something went wrong while creating pulse user account"
+  fi
+  sudo createhomedir -c -u pulse 2>&1
 fi
 
+# Create restricted shell
+if [[ ! -f /bin/rbash ]]; then
+  sudo cp "${PREFIX}/rbash" /usr/local/bin/
+  sudo chmod +x /bin/rbash
+fi
 
+# Hide the account
+sudo dscl . create /Users/pulse IsHidden 1
+sudo dscl . -delete "/SharePoints/Pulse's Public Folder"
+
+# Allow remote login
+sudo systemsetup -setremotelogin on
+
+
+### SSH Key
 
 echo
 echo "###########################################"
@@ -98,13 +108,15 @@ echo "3. ADDING SERVER SSH KEY TO AUTHORIZED KEYS"
 echo "###########################################"
 echo
 
-
+# Add server's public key
 if [ -e ${SSH_PUB_KEY} ]; then
-  if [ ! -d /var/root/.ssh/ ]; then
-    sudo mkdir -p /var/root/.ssh/
+  if [ ! -d /var/lib/pulse2/.ssh/ ]; then
+    sudo mkdir -p /var/lib/pulse2/.ssh/
   fi
-  sudo tee -a /var/root/.ssh/authorized_keys < ${SSH_PUB_KEY}
-  sudo systemsetup -setremotelogin on
+  sudo tee -a /var/lib/pulse2/.ssh/authorized_keys < ${SSH_PUB_KEY}
+  sudo chown -R pulse: /var/lib/pulse2
+  sudo chmod -R 700 /var/lib/pulse2
+  sudo chmod 600 /var/lib/pulse2/.ssh/authorized_keys
 fi
 
 
@@ -153,7 +165,19 @@ echo
 for MODULE_FILENAME in ${MODULES_LIST_FILENAMES}; do
   curl -O ${BASE_URL}/mac/downloads/python_modules/${MODULE_FILENAME}
   if [ -f ${MODULE_FILENAME} ]; then
-    sudo /usr/local/bin/pip install --upgrade --no-index --find-links="." ${MODULE_FILENAME}
+    sudo pip2 install --upgrade --no-index --find-links="." ${MODULE_FILENAME}
+  else
+    echo "ERROR: downloaded package ${MODULE_FILENAME} not found"
+    exit 1
+  fi
+  if [ -e ${MODULE_FILENAME} ];then
+    rm -rf ${MODULE_FILENAME}
+  fi
+done
+for MODULE_FILENAME in ${PY3_MODULES_LIST_FILENAMES}; do
+  curl -O ${BASE_URL}/mac/downloads/python_modules/${MODULE_FILENAME}
+  if [ -f ${MODULE_FILENAME} ]; then
+    sudo pip3 install --upgrade --no-index --find-links="." ${MODULE_FILENAME}
   else
     echo "ERROR: downloaded package ${MODULE_FILENAME} not found"
     exit 1
