@@ -89,7 +89,7 @@ fi
 # Create restricted shell
 if [[ ! -f /bin/rbash ]]; then
   cp "${PREFIX}/rbash" /usr/local/bin/
-  chmod +x /bin/rbash
+  chmod +x /usr/local/bin/rbash
 fi
 
 # Hide the account
@@ -113,7 +113,7 @@ if [[ -e ${SSH_PUB_KEY} ]]; then
   if [[ ! -d /var/lib/pulse2/.ssh/ ]]; then
     mkdir -p /var/lib/pulse2/.ssh/
   fi
-  cp ${SSH_PUB_KEY} /var/lib/pulse2/.ssh/authorized_keys
+  cat ${SSH_PUB_KEY} > /var/lib/pulse2/.ssh/authorized_keys
   chown -R pulse: /var/lib/pulse2
   chmod -R 700 /var/lib/pulse2
   chmod 600 /var/lib/pulse2/.ssh/authorized_keys
