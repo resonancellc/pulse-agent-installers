@@ -98,9 +98,9 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
 %post
 if [ $1 == 2 ]; then
 	if [ -f %_var/lib/pulse2/clients/config/agentconf.ini ]; then
-		%_var/lib/pulse2/clients/generate-pulse-agent.sh;
-		%_var/lib/pulse2/clients/generate-pulse-agent.sh --minimal;
-		%_var/lib/pulse2/clients/generate-agent-package;
+		%_var/lib/pulse2/clients/generate-pulse-agent.sh
+		%_var/lib/pulse2/clients/generate-pulse-agent.sh --minimal
+		%_var/lib/pulse2/clients/generate-agent-package
 	fi
 fi
 
