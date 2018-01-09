@@ -5,9 +5,11 @@
 
 set -e
 
-# We try to generate the new windows agent
+# We try to generate the full and minimal agents
 cd /var/lib/pulse2/clients
 ./generate-pulse-agent.sh
+./generate-pulse-agent.sh --minimal
+./generate-agent-package
 
 #DEBHELPER#
 

@@ -27,7 +27,14 @@
 # """
 
 # To be defined for minimal install
-BASE_URL="https://agents.siveo.net" # Overridden if --base-url is defined
+# If server in not accessibe, BASE_URL="https://agents.siveo.net" can be used
+# Find out the FQDN of the server - Overridden if --base-url is defined
+dig `hostname -f` +nosearch +short | tail -n1 | grep -q -E '([0-9]{1,3}\.){3}[0-9]{1,3}'
+if [ $? -eq 0 ]; then
+	BASE_URL=http://`hostname -f`/downloads
+else
+	BASE_URL=http://`hostname`/downloads
+fi
 
 # Go to own folder
 cd "$(dirname $0)"
