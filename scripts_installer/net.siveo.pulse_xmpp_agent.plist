@@ -6,7 +6,7 @@
 	<string>net.siveo.pulse_xmpp_agent</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>python /Library/Python/2.7/site-packages/pulse_xmpp_agent/launcher.py -t machine</string>
+		<string>/usr/local/bin/python2 /usr/local/lib/python2.7/site-packages/pulse_xmpp_agent/launcher.py -t machine</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
