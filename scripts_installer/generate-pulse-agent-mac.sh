@@ -43,6 +43,7 @@
 # https://pypi.python.org/packages/58/2a/17d003f2a9a0188cf9365d63b3351c6522b7d83996b70270c65c789e35b9/croniter-0.3.16.tar.gz
 # https://pypi.python.org/packages/5e/41/93bf8f289b476bc5d8cece7948a166cbcea761f5b1262e5fdd7076a5e02a/PyQt5-5.9.2-5.9.3-cp35.cp36.cp37-abi3-macosx_10_6_intel.whl
 # https://pypi.python.org/packages/e2/e1/600326635f97fee89bf8426fef14c5c29f4849c79f68fd79f433d8c1bd96/psutil-5.4.3.tar.gz
+# https://pypi.python.org/packages/28/df/755dab9f83c37031aea1cd9915673b5633665c575d649e812657df95b944/plyvel-1.0.1.tar.gz
 
 # To be defined for minimal install
 BASE_URL="https://agents.siveo.net" # Overridden if --base-url is defined
@@ -80,6 +81,8 @@ PY3_QT5_MODULE="PyQt5"
 PY3_QT5_VERSION="5.9.2-5.9.3"
 PY_PSUTIL_MODULE="psutil"
 PY_PSUTIL_VERSION="5.4.3"
+PY_PLYVEL_MODULE="plyvel"
+PY_PLYVEL_VERSION="1.0.1"
 PULSE_AGENT_NAME="pulse-xmpp-agent"
 PULSE_AGENT_MODULE="pulse_xmpp_agent"
 SSH_PUB_KEY="/root/.ssh/id_rsa.pub"
@@ -145,6 +148,7 @@ compute_parameters() {
 	PY_CRON_DEPS_2_FILENAME="${PY_CRON_DEPS_2_MODULE}-${PY_CRON_DEPS_2_VERSION}-py2.py3-none-any.whl"
 	PY3_QT5_FILENAME="${PY3_QT5_MODULE}-${PY3_QT5_VERSION}-cp35.cp36.cp37-abi3-macosx_10_6_intel.whl"
 	PY_PSUTIL_FILENAME="${PY_PSUTIL_MODULE}-${PY_PSUTIL_VERSION}.tar.gz"
+	PY_PLYVEL_FILENAME="${PY_PLYVEL_MODULE}-${PY_PLYVEL_VERSION}.tar.gz"
 	PULSE_AGENT_FILENAME="${PULSE_AGENT_NAME}-${AGENT_VERSION}.tar.gz"
 	PULSE_AGENT_CONFFILE_FILENAME="agentconf.ini"
 	PULSE_SCHEDULER_CONFFILE_FILENAME="manage_scheduler.ini"
@@ -237,6 +241,7 @@ update_postflight_script_mini() {
 		-e "s/@@PY_CRON_DEPS_2_FILENAME@@/${PY_CRON_DEPS_2_FILENAME}/" \
 		-e "s/@@PY3_QT5_FILENAME@@/${PY3_QT5_FILENAME}/" \
 		-e "s/@@PY_PSUTIL_FILENAME@@/${PY_PSUTIL_FILENAME}/" \
+		-e "s/@@PY_PLYVEL_FILENAME@@/${PY_PLYVEL_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_FILENAME@@/${PULSE_AGENT_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_PLUGINS_FILENAME@@/${PULSE_AGENT_PLUGINS_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_CONFFILE_FILENAME@@/${PULSE_AGENT_CONFFILE_FILENAME}/" \
