@@ -65,6 +65,9 @@ easy_install pip
 # Install leveldb
 su - $USER -c '/usr/local/bin/brew install leveldb'
 
+# Re-install curl
+su - $USER -c '/usr/local/bin/brew install --force curl --with-openssl'
+
 ### Pulse account
 
 echo
@@ -166,7 +169,12 @@ echo
 for MODULE_FILENAME in ${MODULES_LIST_FILENAMES}; do
   curl -O ${BASE_URL}/mac/downloads/python_modules/${MODULE_FILENAME}
   if [[ -f ${MODULE_FILENAME} ]]; then
-    python -m pip install --upgrade --no-index --find-links="." ${MODULE_FILENAME}
+    if [[ "${MODULE_FILENAME}" == "@@PY_CURL_FILENAME@@" ]]; then
+      export PYCURL_SSL_LIBRARY=openssl
+      python -m pip install --global-option=build_ext --global-option="-L/usr/local/opt/openssl/lib" --global-option="-I/usr/local/opt/openssl/include" --upgrade --user --no-index --find-links="." ${MODULE_FILENAME}
+    else
+      python -m pip install --upgrade --no-index --find-links="." ${MODULE_FILENAME}
+    fi
   else
     echo "ERROR: downloaded package ${MODULE_FILENAME} not found"
     exit 1
