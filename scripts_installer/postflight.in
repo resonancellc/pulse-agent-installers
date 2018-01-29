@@ -260,9 +260,7 @@ chmod 644 /Library/LaunchDaemons/net.siveo.pulse_xmpp_agent.plist
 
 # Load the service
 echo 'Loading Pulse Agent Service'
-launchctl load net.siveo.pulse_xmpp_agent.plist
-echo 'Starting Pulse Agent Service'
-launchctl start net.siveo.pulse_xmpp_agent
+launchctl load /Library/LaunchDaemons/net.siveo.pulse_xmpp_agent.plist
 
 
 ### Enable VNC server
