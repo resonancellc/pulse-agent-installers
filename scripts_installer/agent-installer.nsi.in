@@ -52,6 +52,7 @@ RequestExecutionLevel admin
 !define PY_CRON_DEPS_2 "@@PY_CRON_DEPS_2@@"
 !define PULSE_AGENT "@@PULSE_AGENT@@"
 !define PULSE_AGENT_CONFFILE "@@PULSE_AGENT_CONFFILE@@"
+!define PULSE_SCHEDULER_CONFFILE "@@PULSE_SCHEDULER_CONFFILE@@"
 !define PULSE_AGENT_NAME "@@PULSE_AGENT_NAME@@"
 !define PULSE_AGENT_MODULE "@@PULSE_AGENT_MODULE@@"
 !define PULSE_AGENT_TASK_XML "@@PULSE_AGENT_TASK_XML@@"
@@ -682,6 +683,12 @@ Section "!${PRODUCT_NAME}" sec_app
   SetOutPath "$INSTDIR\etc"
   File "../config/${PULSE_AGENT_CONFFILE}"
 
+  ; Copy of agent scheduler config file only if it does not already exist (using overwrite flag)
+  SetOutPath "$INSTDIR\etc"
+  SetOverwrite off
+  File "../config/${PULSE_SCHEDULER_CONFFILE}"
+  SetOverwrite on
+
   ; Creation of the task
   SetOutPath "$INSTDIR\tmp"
   File "${PULSE_AGENT_TASK_XML}"
@@ -800,6 +807,7 @@ Section "Uninstall"
   ${LogString} "Return code was: $1"
   RMDir /r "C:\Python27\Lib\site-packages\pulse_xmpp_agent\"
   Delete $INSTDIR\etc\${PULSE_AGENT_CONFFILE}
+  Delete $INSTDIR\etc\${PULSE_SCHEDULER_CONFFILE}
   RMDir /r $INSTDIR
   DeleteRegKey HKLM "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
