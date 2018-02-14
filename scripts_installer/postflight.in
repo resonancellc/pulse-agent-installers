@@ -17,7 +17,10 @@ MODULES_LIST_FILENAMES="@@PY_NETIFACES_FILENAME@@
                         @@PY_CRYPTO_FILENAME@@
                         @@PY_CRON_FILENAME@@
                         @@PY_CRON_DEPS_1_FILENAME@@
-                        @@PY_CRON_DEPS_2_FILENAME@@"
+                        @@PY_CRON_DEPS_2_FILENAME@@
+                        @@PY_PSUTIL_FILENAME@@
+                        @@PY_PLYVEL_FILENAME@@"
+PY3_MODULES_LIST_FILENAMES="@@PY3_QT5_FILENAME@@"
 PULSE_AGENT_FILENAME="@@PULSE_AGENT_FILENAME@@"
 PULSE_AGENT_PLUGINS_FILENAME="@@PULSE_AGENT_PLUGINS_FILENAME@@"
 PULSE_AGENT_CONFFILE_FILENAME="@@PULSE_AGENT_CONFFILE_FILENAME@@"
@@ -29,9 +32,9 @@ SSH_PUB_KEY="${PREFIX}/id_rsa.pub"
 ### Command Line tools
 
 echo
-echo "################################"
-echo "1. INSTALLING COMMAND LINE TOOLS"
-echo "################################"
+echo "###########################################"
+echo "1. INSTALLING COMMAND LINE TOOLS AND PYTHON"
+echo "###########################################"
 echo
 
 touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
@@ -49,48 +52,59 @@ case ${MACOS_VERSION} in
     softwareupdate -i "Command Line Tools (macOS Yosemite version 10.10) for Xcode-7.2"
     ;;
 esac
+
+# Homebrew
+su - $USER -c '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" </dev/null'
+
+# Install python 3
+su - $USER -c '/usr/local/bin/brew install python3'
+
 # Install pip
 easy_install pip
 
+# Install leveldb
+su - $USER -c '/usr/local/bin/brew install leveldb'
 
-### Root account
+# Re-install curl
+su - $USER -c '/usr/local/bin/brew install --force curl --with-openssl'
+
+### Pulse account
 
 echo
-echo "########################"
-echo "2. ENABLING ROOT ACCOUNT"
-echo "########################"
+echo "#########################"
+echo "2. CREATING PULSE ACCOUNT"
+echo "#########################"
 echo
 
-# Try to find current root hash by querying some XML stuff
-curpasswd=`plutil -convert xml1 /private/var/db/dslocal/nodes/Default/users/root.plist -o - | xpath /plist/dict/array[preceding-sibling::*[1][.=\"passwd\"]]/string/text\(\) 2>/dev/null`
-
-# * = disabled, ******** = enabled
-if [ "${curpasswd}" = "*" ]; then
-  echo "INFO: Root account found (disabled)"
-  # Generating a strong password and change it
-  passwd=`openssl rand -base64 24`
-  # Use expect....
-  expect -c "
-    log_user 0
-    set timeout 1
-    spawn passwd root
-    sleep 1
-    expect \"Changing password for root.\$\"
-    expect \"New password: \$\"
-    send \"${passwd}\r\"
-    expect \"Retype new password: \$\"
-    send \"${passwd}\r\"
-    expect eof"
-  if [ ${?} -eq 0 ]; then
-    echo "INFO: A new secure password for root user has been set."
-  else
-    echo "ERROR: Something wrong happened while changing root password"
-  fi
+# Create pulse user account
+if id pulse 2>/dev/null; then
+  echo "WARN: pulse user already exists on the system"
 else
-  echo "WARN: Root account seems to be already enabled!"
+  USER_PASSWORD=$(openssl rand -base64 24)
+  sysadminctl -addUser pulse -shell /usr/local/bin/rbash -password ${USER_PASSWORD} -home /var/lib/pulse2 2>/dev/null
+  if [[ ${?} -eq 0 ]]; then
+    echo "INFO: pulse user account created"
+  else
+    echo "ERROR: Something went wrong while creating pulse user account"
+  fi
+  createhomedir -c -u pulse 2>&1
 fi
 
+# Create restricted shell
+if [[ ! -f /bin/rbash ]]; then
+  cp "${PREFIX}/rbash" /usr/local/bin/
+  chmod +x /usr/local/bin/rbash
+fi
 
+# Hide the account
+dscl . create /Users/pulse IsHidden 1
+dscl . -delete "/SharePoints/Pulse's Public Folder"
+
+# Allow remote login
+systemsetup -setremotelogin on
+
+
+### SSH Key
 
 echo
 echo "###########################################"
@@ -98,13 +112,15 @@ echo "3. ADDING SERVER SSH KEY TO AUTHORIZED KEYS"
 echo "###########################################"
 echo
 
-
-if [ -e ${SSH_PUB_KEY} ]; then
-  if [ ! -d /var/root/.ssh/ ]; then
-    sudo mkdir -p /var/root/.ssh/
+# Add server's public key
+if [[ -e ${SSH_PUB_KEY} ]]; then
+  if [[ ! -d /var/lib/pulse2/.ssh/ ]]; then
+    mkdir -p /var/lib/pulse2/.ssh/
   fi
-  sudo tee -a /var/root/.ssh/authorized_keys < ${SSH_PUB_KEY}
-  sudo systemsetup -setremotelogin on
+  cat ${SSH_PUB_KEY} > /var/lib/pulse2/.ssh/authorized_keys
+  chown -R pulse: /var/lib/pulse2
+  chmod -R 700 /var/lib/pulse2
+  chmod 600 /var/lib/pulse2/.ssh/authorized_keys
 fi
 
 
@@ -117,15 +133,15 @@ echo "###################################"
 echo
 
 curl -O ${BASE_URL}/mac/downloads/${FUSION_INVENTORY_AGENT_ARCHIVE}
-if [ -f ${FUSION_INVENTORY_AGENT_ARCHIVE} ];then
+if [[ -f ${FUSION_INVENTORY_AGENT_ARCHIVE} ]];then
   tar xzf ${FUSION_INVENTORY_AGENT_ARCHIVE}
 else
   echo "ERROR: downloaded package ${FUSION_INVENTORY_AGENT_ARCHIVE} not found"
   exit 1
 fi
 
-if [ -d ${FUSION_INVENTORY_AGENT_PKG} ]; then
-  sudo installer -pkg "${FUSION_INVENTORY_AGENT_PKG}" -target /
+if [[ -d ${FUSION_INVENTORY_AGENT_PKG} ]]; then
+  installer -pkg "${FUSION_INVENTORY_AGENT_PKG}" -target /
   echo "tag=${INVENTORY_TAG}" > ${FUSION_CFG}
 else
   echo "ERROR: downloaded package ${FUSION_INVENTORY_AGENT_PKG} not found"
@@ -152,13 +168,30 @@ echo
 # Download and install the python modules
 for MODULE_FILENAME in ${MODULES_LIST_FILENAMES}; do
   curl -O ${BASE_URL}/mac/downloads/python_modules/${MODULE_FILENAME}
-  if [ -f ${MODULE_FILENAME} ]; then
-    sudo /usr/local/bin/pip install --upgrade --no-index --find-links="." ${MODULE_FILENAME}
+  if [[ -f ${MODULE_FILENAME} ]]; then
+    if [[ "${MODULE_FILENAME}" == "@@PY_CURL_FILENAME@@" ]]; then
+      export PYCURL_SSL_LIBRARY=openssl
+      python -m pip install --global-option=build_ext --global-option="-L/usr/local/opt/openssl/lib" --global-option="-I/usr/local/opt/openssl/include" --upgrade --user --no-index --find-links="." ${MODULE_FILENAME}
+    else
+      python -m pip install --upgrade --no-index --find-links="." ${MODULE_FILENAME}
+    fi
   else
     echo "ERROR: downloaded package ${MODULE_FILENAME} not found"
     exit 1
   fi
-  if [ -e ${MODULE_FILENAME} ];then
+  if [[ -e ${MODULE_FILENAME} ]];then
+    rm -rf ${MODULE_FILENAME}
+  fi
+done
+for MODULE_FILENAME in ${PY3_MODULES_LIST_FILENAMES}; do
+  curl -O ${BASE_URL}/mac/downloads/python_modules/${MODULE_FILENAME}
+  if [[ -f ${MODULE_FILENAME} ]]; then
+    /usr/local/bin/python3 -m pip install --upgrade --no-index --find-links="." ${MODULE_FILENAME}
+  else
+    echo "ERROR: downloaded package ${MODULE_FILENAME} not found"
+    exit 1
+  fi
+  if [[ -e ${MODULE_FILENAME} ]];then
     rm -rf ${MODULE_FILENAME}
   fi
 done
@@ -174,62 +207,60 @@ echo
 
 # Download and install agent
 curl -O ${BASE_URL}/${PULSE_AGENT_FILENAME}
-if [ -f ${PULSE_AGENT_FILENAME} ]; then
-  sudo /usr/local/bin/pip install --upgrade --no-index --find-links="." ${PULSE_AGENT_FILENAME}
+if [[ -f ${PULSE_AGENT_FILENAME} ]]; then
+  python -m pip install --upgrade --no-index --find-links="." ${PULSE_AGENT_FILENAME}
 else
   echo "ERROR: downloaded package ${PULSE_AGENT_FILENAME} not found"
   exit 1
 fi
-if [ -e ${PULSE_AGENT_FILENAME} ];then
+if [[ -e ${PULSE_AGENT_FILENAME} ]];then
   rm -rf ${PULSE_AGENT_FILENAME}
 fi
 
 # Download and install plugins
 curl -O ${BASE_URL}/${PULSE_AGENT_PLUGINS_FILENAME}
-if [ -f ${PULSE_AGENT_PLUGINS_FILENAME} ]; then
-  sudo /usr/local/bin/pip install --upgrade --no-index --find-links="." ${PULSE_AGENT_PLUGINS_FILENAME}
+if [[ -f ${PULSE_AGENT_PLUGINS_FILENAME} ]]; then
+  python -m pip install --upgrade --no-index --find-links="." ${PULSE_AGENT_PLUGINS_FILENAME}
 else
   echo "ERROR: downloaded package ${PULSE_AGENT_PLUGINS_FILENAME} not found"
   exit 1
 fi
-if [ -e ${PULSE_AGENT_PLUGINS_FILENAME} ];then
+if [[ -e ${PULSE_AGENT_PLUGINS_FILENAME} ]];then
   rm -rf ${PULSE_AGENT_PLUGINS_FILENAME}
 fi
 
 # Create Pulse folder and base layout
-if [ ! -d "${INSTALL_PATH}/etc" ]; then
-  sudo mkdir -p "${INSTALL_PATH}/etc"
+if [[ ! -d "${INSTALL_PATH}/etc" ]]; then
+  mkdir -p "${INSTALL_PATH}/etc"
 fi
-if [ ! -d "${INSTALL_PATH}/var" ]; then
-  sudo mkdir -p "${INSTALL_PATH}/var"
+if [[ ! -d "${INSTALL_PATH}/var" ]]; then
+  mkdir -p "${INSTALL_PATH}/var"
 fi
 
 # Copy config files
-sudo cp "${PREFIX}/${PULSE_AGENT_CONFFILE_FILENAME}" "${INSTALL_PATH}/etc/"
+cp "${PREFIX}/${PULSE_AGENT_CONFFILE_FILENAME}" "${INSTALL_PATH}/etc/"
 # Only copy scheduler config file if is does not already exist
-if ! [ -f ${INSTALL_PATH}/etc/${PULSE_SCHEDULER_CONFFILE_FILENAME} ]; then
-  sudo cp "${PREFIX}/${PULSE_SCHEDULER_CONFFILE_FILENAME}" "${INSTALL_PATH}/etc/"
+if [[ ! -f ${INSTALL_PATH}/etc/${PULSE_SCHEDULER_CONFFILE_FILENAME} ]]; then
+  cp "${PREFIX}/${PULSE_SCHEDULER_CONFFILE_FILENAME}" "${INSTALL_PATH}/etc/"
 fi
 
 # Create log folder to hold agent logs
-if [ ! -d "${INSTALL_PATH}/var/log/" ]; then
-  sudo mkdir "${INSTALL_PATH}/var/log"
+if [[ ! -d "${INSTALL_PATH}/var/log/" ]]; then
+  mkdir "${INSTALL_PATH}/var/log"
 fi
 # Create packages folder to hold packages to be deployed on client
-if [ ! -d "${INSTALL_PATH}/var/tmp/packages/" ]; then
-  sudo mkdir -p "${INSTALL_PATH}/var/tmp/packages"
+if [[ ! -d "${INSTALL_PATH}/var/tmp/packages/" ]]; then
+  mkdir -p "${INSTALL_PATH}/var/tmp/packages"
 fi
 
 # Copy service descriptor
-sudo cp "${PREFIX}/net.siveo.pulse_xmpp_agent.plist" /Library/LaunchDaemons/
-sudo chown root:wheel /Library/LaunchDaemons/net.siveo.pulse_xmpp_agent.plist
-sudo chmod 644 /Library/LaunchDaemons/net.siveo.pulse_xmpp_agent.plist
+cp "${PREFIX}/net.siveo.pulse_xmpp_agent.plist" /Library/LaunchDaemons/
+chown root:wheel /Library/LaunchDaemons/net.siveo.pulse_xmpp_agent.plist
+chmod 644 /Library/LaunchDaemons/net.siveo.pulse_xmpp_agent.plist
 
 # Load the service
 echo 'Loading Pulse Agent Service'
-sudo launchctl load net.siveo.pulse_xmpp_agent.plist
-echo 'Starting Pulse Agent Service'
-sudo launchctl start net.siveo.pulse_xmpp_agent
+launchctl load /Library/LaunchDaemons/net.siveo.pulse_xmpp_agent.plist
 
 
 ### Enable VNC server
@@ -239,4 +270,4 @@ echo "7. Enable VNC server"
 echo "####################"
 echo
 
-sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -activate -configure -access -on -clientopts -setvnclegacy -vnclegacy yes -clientopts -setvncpw -vncpw ${VNC_PASSWORD} -restart -agent -privs -all
+/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -activate -configure -access -on -clientopts -setvnclegacy -vnclegacy yes -clientopts -setvncpw -vncpw ${VNC_PASSWORD} -restart -agent -privs -all

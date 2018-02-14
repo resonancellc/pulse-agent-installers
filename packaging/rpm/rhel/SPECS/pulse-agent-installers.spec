@@ -89,6 +89,7 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
         cp scripts_installer/Info.plist.in %{buildroot}/var/lib/pulse2/clients/mac
         cp scripts_installer/postflight.in %{buildroot}/var/lib/pulse2/clients/mac
         cp scripts_installer/net.siveo.pulse_xmpp_agent.plist %{buildroot}/var/lib/pulse2/clients/mac
+        cp scripts_installer/rbash %{buildroot}/var/lib/pulse2/clients/mac
         mkdir -p %{buildroot}/var/lib/pulse2/clients/win32/libs
         cp -fr scripts_installer/nsis_libs/* %{buildroot}/var/lib/pulse2/clients/win32/libs
         chmod +x %{buildroot}/var/lib/pulse2/clients/*.sh
@@ -96,8 +97,10 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
 
 %post
 if [ $1 == 2 ]; then
-	if [ -f %_var/lib/pulse2/clients/config/agentconf.ini ]; then 
-		%_var/lib/pulse2/clients/generate-pulse-agent.sh; 
+	if [ -f %_var/lib/pulse2/clients/config/agentconf.ini ]; then
+		%_var/lib/pulse2/clients/generate-pulse-agent.sh
+		%_var/lib/pulse2/clients/generate-pulse-agent.sh --minimal
+		%_var/lib/pulse2/clients/generate-agent-package
 	fi
 fi
 
