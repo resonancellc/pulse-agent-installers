@@ -29,7 +29,6 @@
 #	Files needed for the full version of the installer:
 #	In /var/lib/pulse2/clients/win32/downloads/:
 #	https://www.python.org/ftp/python/2.7.9/python-2.7.9.msi
-# https://www.python.org/ftp/python/3.5.4/python-3.5.4.exe
 #	https://download.microsoft.com/download/7/9/6/796EF2E4-801B-4FC4-AB28-B59FBF6D907B/VCForPython27.msi
 #	http://mirrors.kernel.org/sources.redhat.com/cygwin/x86/release/curl/libcurl4/libcurl4-7.52.1-1.tar.xz
 #	https://www.itefix.net/dl/cwRsync_5.5.0_x86_Free.zip
@@ -40,7 +39,6 @@
 # https://www.tightvnc.com/download/2.8.8/tightvnc-2.8.8-gpl-setup-32bit.msi
 #	In /var/lib/pulse2/clients/win32/downloads/python_modules/:
 #	https://pypi.python.org/packages/cd/59/7cc2407b15bcd13d43933a5ae163de89b6f366dda8b2b7403453e61c3a05/pypiwin32-219-cp27-none-win32.whl
-# https://pypi.python.org/packages/5b/68/436ce631dc0584969d03186d095f4daf09b5c0193ebd66927524a33411c8/pypiwin32-219-cp35-none-win32.whl
 #	https://pypi.python.org/packages/a7/4c/8e0771a59fd6e55aac993a7cc1b6a0db993f299514c464ae6a1ecf83b31d/netifaces-0.10.5.tar.gz
 #	https://pypi.python.org/packages/85/11/722b9ce6725bf8160bd8aca68b1e61bd9db422ab12dae28daa7defab2cdc/comtypes-1.1.3-2.zip
 #	https://pypi.python.org/packages/7c/69/c2ce7e91c89dc073eb1aa74c0621c3eefbffe8216b3f9af9d3885265c01c/configparser-3.5.0.tar.gz
@@ -54,7 +52,6 @@
 # https://pypi.python.org/packages/40/8b/275015d7a9ec293cf1bbf55433258fbc9d0711890a7f6dc538bac7b86bce/python_dateutil-2.6.0-py2.py3-none-any.whl
 # https://pypi.python.org/packages/c8/0a/b6723e1bc4c516cb687841499455a8505b44607ab535be01091c0f24f079/six-1.10.0-py2.py3-none-any.whl
 # https://pypi.python.org/packages/58/2a/17d003f2a9a0188cf9365d63b3351c6522b7d83996b70270c65c789e35b9/croniter-0.3.16.tar.gz
-# https://pypi.python.org/packages/a0/b1/95c3b2cf3c0dc50315413857a1f67c4fd6e86c609c5f3e01a38b331a23eb/PyQt5-5.9.2-5.9.3-cp35.cp36.cp37-none-win32.whl
 # https://pypi.python.org/packages/e5/cc/6dd427e738a8db6d0b66525856da43d2ef12c4c19269863927f7cf0e2aaf/psutil-5.4.3-cp27-none-win32.whl
 
 # To be defined for minimal install
@@ -66,9 +63,7 @@ cd "`dirname $0`"
 # To be defined
 AGENT_VERSION="1.8.7"
 PYTHON_VERSION="2.7.9"
-PYTHON3_VERSION="3.5.4"
 PY_WIN32_VERSION="219"
-PY3_WIN32_VERSION="219"
 PY_NETIFACES_MODULE="netifaces"
 PY_NETIFACES_VERSION="0.10.5"
 PY_COMTYPES_MODULE="comtypes"
@@ -98,8 +93,6 @@ PY_CRON_DEPS_1_MODULE="python_dateutil"
 PY_CRON_DEPS_1_VERSION="2.6.0"
 PY_CRON_DEPS_2_MODULE="six"
 PY_CRON_DEPS_2_VERSION="1.10.0"
-PY3_QT5_MODULE="PyQt5"
-PY3_QT5_VERSION="5.9.2-5.9.3"
 PY_PSUTIL_MODULE="psutil"
 PY_PSUTIL_VERSION="5.4.3"
 PULSE_AGENT_NAME="pulse-xmpp-agent"
@@ -161,14 +154,10 @@ check_arguments() {
 compute_parameters() {
 	PYTHON_FILENAME="python-${PYTHON_VERSION}.msi"
 	PYTHON_URL="https://agents.siveo.net/win/${PYTHON_FILENAME}"
-	PYTHON3_FILENAME="python-${PYTHON3_VERSION}.exe"
-	PYTHON3_URL="https://agents.siveo.net/win/${PYTHON3_FILENAME}"
 	PY_VCPYTHON27_FILENAME="VCForPython27.msi"
 	PY_VCPYTHON27_URL="https://agents.siveo.net/win/${PY_VCPYTHON27_FILENAME}"
 	PY_WIN32_FILENAME="pypiwin32-${PY_WIN32_VERSION}-cp27-none-win32.whl"
 	PY_WIN32_URL="https://agents.siveo.net/win/${PY_WIN32_FILENAME}"
-	PY3_WIN32_FILENAME="pypiwin32-${PY3_WIN32_VERSION}-cp35-none-win32.whl"
-	PY3_WIN32_URL="https://agents.siveo.net/win/${PY3_WIN32_FILENAME}"
 	PY_NETIFACES_FILENAME="${PY_NETIFACES_MODULE}-${PY_NETIFACES_VERSION}.tar.gz"
 	PY_COMTYPES_FILENAME="${PY_COMTYPES_MODULE}-${PY_COMTYPES_VERSION}.zip"
 	PY_CONFIGPARSER_FILENAME="${PY_CONFIGPARSER_MODULE}-${PY_CONFIGPARSER_VERSION}.tar.gz"
@@ -190,8 +179,6 @@ compute_parameters() {
 	PY_CRON_DEPS_1_URL="https://agents.siveo.net/win/${PY_CRON_DEPS_1_FILENAME}"
 	PY_CRON_DEPS_2_FILENAME="${PY_CRON_DEPS_2_MODULE}-${PY_CRON_DEPS_2_VERSION}-py2.py3-none-any.whl"
 	PY_CRON_DEPS_2_URL="https://agents.siveo.net/win/${PY_CRON_DEPS_2_FILENAME}"
-	PY3_QT5_FILENAME="PyQt5-${PY3_QT5_VERSION}-cp35.cp36.cp37-none-win32.whl"
-	PY3_QT5_URL="https://agents.siveo.net/win/${PY3_QT5_FILENAME}"
 	PY_PSUTIL_FILENAME="${PY_PSUTIL_MODULE}-${PY_PSUTIL_VERSION}-cp27-none-win32.whl"
 	PY_PSUTIL_URL="https://agents.siveo.net/win/${PY_PSUTIL_FILENAME}"
 	PULSE_AGENT_FILENAME="${PULSE_AGENT_NAME}-${AGENT_VERSION}.tar.gz"
@@ -283,10 +270,8 @@ prepare_mandatory_includes() {
 update_nsi_script_full() {
 	colored_echo blue "### INFO Updating NSIS script..."
 	FULL_PYTHON_FILENAME='File "${DOWNLOADS_DIR}/${PYTHON_FILENAME}"'
-	FULL_PYTHON3_FILENAME='File "${DOWNLOADS_DIR}/${PYTHON3_FILENAME}"'
 	FULL_PY_VCPYTHON27='File "${DOWNLOADS_DIR}/${PY_VCPYTHON27}"'
 	FULL_PY_WIN32='File "${DOWNLOADS_DIR}/python_modules/${PY_WIN32}"'
-	FULL_PY3_WIN32='File "${DOWNLOADS_DIR}/python_modules/${PY3_WIN32}"'
 	FULL_PY_NETIFACES='File "${DOWNLOADS_DIR}/python_modules/${PY_NETIFACES}"'
 	FULL_PY_COMTYPES='File "${DOWNLOADS_DIR}/python_modules/${PY_COMTYPES}"'
 	FULL_PY_CONFIGPARSER='File "${DOWNLOADS_DIR}/python_modules/${PY_CONFIGPARSER}"'
@@ -300,7 +285,6 @@ update_nsi_script_full() {
 	FULL_PY_CRON='File "${DOWNLOADS_DIR}/python_modules/${PY_CRON}"'
 	FULL_PY_CRON_DEPS_1='File "${DOWNLOADS_DIR}/python_modules/${PY_CRON_DEPS_1}"'
 	FULL_PY_CRON_DEPS_2='File "${DOWNLOADS_DIR}/python_modules/${PY_CRON_DEPS_2}"'
-	FULL_PY3_QT5='File "${DOWNLOADS_DIR}/python_modules/${PY3_QT5}"'
 	FULL_PY_PSUTIL='File "${DOWNLOADS_DIR}/python_modules/${PY_PSUTIL}"'
 	FULL_OPENSSH32='File "${DOWNLOADS_DIR}/${OPENSSH32_FILENAME}"'
 	FULL_OPENSSH64='File "${DOWNLOADS_DIR}/${OPENSSH64_FILENAME}"'
@@ -308,7 +292,6 @@ update_nsi_script_full() {
 	FULL_RDPWRAP='File "${DOWNLOADS_DIR}/${RDPWRAP_FILENAME}"'
 	FULL_VNC_AGENT='File "${DOWNLOADS_DIR}/${VNC_AGENT_FILENAME}"'
 	INSTALL_FULL_PY_WIN32='StrCpy $0 `py -2 -m pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WIN32}`'
-	INSTALL_FULL_PY3_WIN32='StrCpy $0 `py -3 -m pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY3_WIN32}`'
 	INSTALL_FULL_PY_NETIFACES='StrCpy $0 `py -2 -m pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_NETIFACES}`'
 	INSTALL_FULL_PY_COMTYPES='StrCpy $0 `py -2 -m pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_COMTYPES}`'
 	INSTALL_FULL_PY_CONFIGPARSER='StrCpy $0 `py -2 -m pip install --upgrade --pre --no-index --find-links="$INSTDIR\tmp" ${PY_CONFIGPARSER}`'
@@ -320,7 +303,6 @@ update_nsi_script_full() {
 	INSTALL_FULL_PY_LXML='StrCpy $0 `py -2 -m pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_LXML}`'
 	INSTALL_FULL_PY_CRYPTO='StrCpy $0 `py -2 -m pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CRYPTO}`'
 	INSTALL_FULL_PY_CRON='StrCpy $0 `py -2 -m pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CRON}`'
-	INSTALL_FULL_PY3_QT5='StrCpy $0 `py -3 -m pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY3_QT5}`'
 	INSTALL_FULL_PY_PSUTIL='StrCpy $0 `py -2 -m pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_PSUTIL}`'
 
 	sed -e "s/@@PRODUCT_VERSION@@/${AGENT_VERSION}/" \
@@ -328,18 +310,12 @@ update_nsi_script_full() {
 		-e "s/@@PYTHON_FILENAME@@/${PYTHON_FILENAME}/" \
 		-e "s/@@PYTHON_URL@@/$(sed_escape ${PYTHON_URL})/" \
 		-e "s/@@FULL_OR_DL_PYTHON_FILENAME@@/$(sed_escape ${FULL_PYTHON_FILENAME})/" \
-		-e "s/@@PYTHON3_FILENAME@@/${PYTHON3_FILENAME}/" \
-		-e "s/@@PYTHON3_URL@@/$(sed_escape ${PYTHON3_URL})/" \
-		-e "s/@@FULL_OR_DL_PYTHON3_FILENAME@@/$(sed_escape ${FULL_PYTHON3_FILENAME})/" \
 		-e "s/@@PY_VCPYTHON27@@/${PY_VCPYTHON27_FILENAME}/" \
 		-e "s/@@PY_VCPYTHON27_URL@@/$(sed_escape ${PY_VCPYTHON27_URL})/" \
 		-e "s/@@FULL_OR_DL_PY_VCPYTHON27@@/$(sed_escape ${FULL_PY_VCPYTHON27})/" \
 		-e "s/@@PY_WIN32@@/${PY_WIN32_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_WIN32@@/$(sed_escape ${FULL_PY_WIN32})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_WIN32@@/$(sed_escape ${INSTALL_FULL_PY_WIN32})/" \
-		-e "s/@@PY3_WIN32@@/${PY3_WIN32_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY3_WIN32@@/$(sed_escape ${FULL_PY3_WIN32})/" \
-		-e "s/@@INSTALL_FULL_OR_DL_PY3_WIN32@@/$(sed_escape ${INSTALL_FULL_PY3_WIN32})/" \
 		-e "s/@@PY_NETIFACES@@/${PY_NETIFACES_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_NETIFACES@@/$(sed_escape ${FULL_PY_NETIFACES})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_NETIFACES@@/$(sed_escape ${INSTALL_FULL_PY_NETIFACES})/" \
@@ -378,9 +354,6 @@ update_nsi_script_full() {
 		-e "s/@@FULL_OR_DL_PY_CRON_DEPS_1@@/$(sed_escape ${FULL_PY_CRON_DEPS_1})/" \
 		-e "s/@@PY_CRON_DEPS_2@@/${PY_CRON_DEPS_2_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_CRON_DEPS_2@@/$(sed_escape ${FULL_PY_CRON_DEPS_2})/" \
-		-e "s/@@PY3_QT5@@/${PY3_QT5_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY3_QT5@@/$(sed_escape ${FULL_PY3_QT5})/" \
-		-e "s/@@INSTALL_FULL_OR_DL_PY3_QT5@@/$(sed_escape ${INSTALL_FULL_PY3_QT5})/" \
 		-e "s/@@PY_PSUTIL@@/${PY_PSUTIL_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_PSUTIL@@/$(sed_escape ${FULL_PY_PSUTIL})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_PSUTIL@@/$(sed_escape ${INSTALL_FULL_PY_PSUTIL})/" \
@@ -415,17 +388,14 @@ update_nsi_script_full() {
 update_nsi_script_dl() {
 	colored_echo blue "### INFO Updating NSIS script..."
 	DL_PYTHON_FILENAME='${DownloadFile} '"${PYTHON_URL}"' ${PYTHON_FILENAME}'
-	DL_PYTHON3_FILENAME='${DownloadFile} '"${PYTHON_URL}"' ${PYTHON3_FILENAME}'
 	DL_PY_VCPYTHON27='${DownloadFile} '"${PY_VCPYTHON27_URL}"' ${PY_VCPYTHON27}'
 	DL_PY_WIN32='${DownloadFile} '"${PY_WIN32_URL}"' ${PY_WIN32_FILENAME}'
-	DL_PY3_WIN32='${DownloadFile} '"${PY3_WIN32_URL}"' ${PY3_WIN32_FILENAME}'
 	DL_PY_CURL='${DownloadFile} '"${PY_CURL_URL}"' ${PY_CURL_FILENAME}'
 	DL_PY_LXML='${DownloadFile} '"${PY_LXML_URL}"' ${PY_LXML_FILENAME}'
 	DL_PY_CRYPTO='${DownloadFile} '"${PY_CRYPTO_URL}"' ${PY_CRYPTO_FILENAME}'
 	DL_PY_CRON='${DownloadFile} '"${PY_CRON_URL}"' ${PY_CRON_FILENAME}'
 	DL_PY_CRON_DEPS_1='${DownloadFile} '"${PY_CRON_DEPS_1_URL}"' ${PY_CRON_DEPS_1_FILENAME}'
 	DL_PY_CRON_DEPS_2='${DownloadFile} '"${PY_CRON_DEPS_2_URL}"' ${PY_CRON_DEPS_2_FILENAME}'
-	DL_PY3_QT5='${DownloadFile} '"${PY3_QT5_URL}"' ${PY3_QT5_FILENAME}'
 	DL_PY_PSUTIL='${DownloadFile} '"${PY_PSUTIL_URL}"' ${PY_PSUTIL_FILENAME}'
 	DL_OPENSSH32='${DownloadFile} '"${OPENSSH32_URL}"' ${OPENSSH32_FILENAME}'
 	DL_OPENSSH64='${DownloadFile} '"${OPENSSH64_URL}"' ${OPENSSH64_FILENAME}'
@@ -433,7 +403,6 @@ update_nsi_script_dl() {
 	DL_RDPWRAP='${DownloadFile} '"$RDPWRAP_URL"' ${RDPWRAP_FILENAME}'
 	DL_VNC_AGENT='${DownloadFile} '"$VNC_AGENT_URL"' ${VNC_AGENT_FILENAME}'
 	INSTALL_DL_PY_WIN32='StrCpy $0 `py -2 -m pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WIN32}`'
-	INSTALL_DL_PY3_WIN32='StrCpy $0 `py -2 -m pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY3_WIN32}`'
 	INSTALL_DL_PY_NETIFACES='StrCpy $0 `py -2 -m pip install --upgrade ${PY_NETIFACES}`'
 	INSTALL_DL_PY_COMTYPES='StrCpy $0 `py -2 -m pip install --upgrade ${PY_COMTYPES}`'
 	INSTALL_DL_PY_CONFIGPARSER='StrCpy $0 `py -2 -m pip install --upgrade --pre ${PY_CONFIGPARSER}`'
@@ -445,7 +414,6 @@ update_nsi_script_dl() {
 	INSTALL_DL_PY_LXML='StrCpy $0 `py -2 -m pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_LXML}`'
 	INSTALL_DL_PY_CRYPTO='StrCpy $0 `py -2 -m pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CRYPTO}`'
 	INSTALL_DL_PY_CRON='StrCpy $0 `py -2 -m pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CRON}`'
-	INSTALL_DL_PY3_QT5='StrCpy $0 `py -3 -m pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY3_QT5}`'
 	INSTALL_DL_PY_PSUTIL='StrCpy $0 `py -2 -m pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_PSUTIL}`'
 
 	sed -e "s/@@PRODUCT_VERSION@@/${AGENT_VERSION}/" \
@@ -453,18 +421,12 @@ update_nsi_script_dl() {
 		-e "s/@@PYTHON_FILENAME@@/${PYTHON_FILENAME}/" \
 		-e "s/@@PYTHON_URL@@/$(sed_escape ${PYTHON_URL})/" \
 		-e "s/@@FULL_OR_DL_PYTHON_FILENAME@@/$(sed_escape ${DL_PYTHON_FILENAME})/" \
-		-e "s/@@PYTHON3_FILENAME@@/${PYTHON3_FILENAME}/" \
-		-e "s/@@PYTHON3_URL@@/$(sed_escape ${PYTHON3_URL})/" \
-		-e "s/@@FULL_OR_DL_PYTHON3_FILENAME@@/$(sed_escape ${DL_PYTHON3_FILENAME})/" \
 		-e "s/@@PY_VCPYTHON27@@/${PY_VCPYTHON27_FILENAME}/" \
 		-e "s/@@PY_VCPYTHON27_URL@@/$(sed_escape ${PY_VCPYTHON27_URL})/" \
 		-e "s/@@FULL_OR_DL_PY_VCPYTHON27@@/$(sed_escape ${DL_PY_VCPYTHON27})/" \
 		-e "s/@@PY_WIN32@@/${PY_WIN32_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_WIN32@@//" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_WIN32@@/$(sed_escape ${INSTALL_DL_PY_WIN32})/" \
-		-e "s/@@PY3_WIN32@@/${PY3_WIN32_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY3_WIN32@@//" \
-		-e "s/@@INSTALL_FULL_OR_DL_PY3_WIN32@@/$(sed_escape ${INSTALL_DL_PY_WIN32})/" \
 		-e "s/@@PY_NETIFACES@@/${PY_NETIFACES_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_NETIFACES@@//" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_NETIFACES@@/$(sed_escape ${INSTALL_DL_PY_NETIFACES})/" \
@@ -503,9 +465,6 @@ update_nsi_script_dl() {
 		-e "s/@@FULL_OR_DL_PY_CRON_DEPS_1@@//" \
 		-e "s/@@PY_CRON_DEPS_2@@/${PY_CRON_DEPS_2_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_CRON_DEPS_2@@//" \
-		-e "s/@@PY3_QT5@@/${PY3_QT5_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY3_QT5@@//" \
-		-e "s/@@INSTALL_FULL_OR_DL_PY3_QT5@@/$(sed_escape ${INSTALL_DL_PY3_QT5})/" \
 		-e "s/@@PY_PSUTIL@@/${PY_PSUTIL_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_PSUTIL@@//" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_PSUTIL@@/$(sed_escape ${INSTALL_DL_PY_PSUTIL})/" \

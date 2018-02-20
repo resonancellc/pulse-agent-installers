@@ -20,7 +20,6 @@ MODULES_LIST_FILENAMES="@@PY_NETIFACES_FILENAME@@
                         @@PY_CRON_DEPS_2_FILENAME@@
                         @@PY_PSUTIL_FILENAME@@
                         @@PY_PLYVEL_FILENAME@@"
-PY3_MODULES_LIST_FILENAMES="@@PY3_QT5_FILENAME@@"
 PULSE_AGENT_FILENAME="@@PULSE_AGENT_FILENAME@@"
 PULSE_AGENT_PLUGINS_FILENAME="@@PULSE_AGENT_PLUGINS_FILENAME@@"
 PULSE_AGENT_CONFFILE_FILENAME="@@PULSE_AGENT_CONFFILE_FILENAME@@"
@@ -32,9 +31,9 @@ SSH_PUB_KEY="${PREFIX}/id_rsa.pub"
 ### Command Line tools
 
 echo
-echo "###########################################"
-echo "1. INSTALLING COMMAND LINE TOOLS AND PYTHON"
-echo "###########################################"
+echo "################################"
+echo "1. INSTALLING COMMAND LINE TOOLS"
+echo "################################"
 echo
 
 touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
@@ -55,9 +54,6 @@ esac
 
 # Homebrew
 su - $USER -c '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" </dev/null'
-
-# Install python 3
-su - $USER -c '/usr/local/bin/brew install python3'
 
 # Install pip
 easy_install pip
@@ -175,18 +171,6 @@ for MODULE_FILENAME in ${MODULES_LIST_FILENAMES}; do
     else
       python -m pip install --upgrade --no-index --find-links="." ${MODULE_FILENAME}
     fi
-  else
-    echo "ERROR: downloaded package ${MODULE_FILENAME} not found"
-    exit 1
-  fi
-  if [[ -e ${MODULE_FILENAME} ]];then
-    rm -rf ${MODULE_FILENAME}
-  fi
-done
-for MODULE_FILENAME in ${PY3_MODULES_LIST_FILENAMES}; do
-  curl -O ${BASE_URL}/mac/downloads/python_modules/${MODULE_FILENAME}
-  if [[ -f ${MODULE_FILENAME} ]]; then
-    /usr/local/bin/python3 -m pip install --upgrade --no-index --find-links="." ${MODULE_FILENAME}
   else
     echo "ERROR: downloaded package ${MODULE_FILENAME} not found"
     exit 1
