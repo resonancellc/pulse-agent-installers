@@ -464,7 +464,7 @@ update_nsi_script_dl() {
 		-e "s/@@INSTALL_FULL_OR_DL_PY_WIN32@@/$(sed_escape ${INSTALL_DL_PY_WIN32})/" \
 		-e "s/@@PY3_WIN32@@/${PY3_WIN32_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY3_WIN32@@//" \
-		-e "s/@@INSTALL_FULL_OR_DL_PY3_WIN32@@/$(sed_escape ${INSTALL_DL_PY_WIN32})/" \
+		-e "s/@@INSTALL_FULL_OR_DL_PY3_WIN32@@/$(sed_escape ${INSTALL_DL_PY3_WIN32})/" \
 		-e "s/@@PY_NETIFACES@@/${PY_NETIFACES_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_NETIFACES@@//" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_NETIFACES@@/$(sed_escape ${INSTALL_DL_PY_NETIFACES})/" \
