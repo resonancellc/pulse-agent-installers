@@ -8,7 +8,6 @@
 		<array>
 			<string>python</string>
 			<string>/Library/Python/2.7/site-packages/pulse_xmpp_agent/launcher.py</string>
-			<string>-c</string>
 			<string>-t</string>
 			<string>machine</string>
 		</array>
