@@ -128,7 +128,7 @@ cat <<EOF > xmppdeploy.json
             }
         ]
     },
-    "darwin": {
+    "mac": {
         "sequence": [
             {
                 "action": "action_pwd_package",
@@ -168,14 +168,14 @@ cat <<EOF > xmppdeploy.json
             "label": {
             }
         },
-        "darwin": {
+        "mac": {
             "label": {
             }
         },
         "os": [
             "win",
             "linux",
-            "darwin"
+            "mac"
         ]
     }
 }
