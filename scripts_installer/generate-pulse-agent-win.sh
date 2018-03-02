@@ -34,7 +34,7 @@
 #	https://www.itefix.net/dl/cwRsync_5.5.0_x86_Free.zip
 # https://github.com/PowerShell/Win32-OpenSSH/releases/download/v0.0.21.0/OpenSSH-Win32.zip
 # https://github.com/PowerShell/Win32-OpenSSH/releases/download/v0.0.21.0/OpenSSH-Win64.zip
-#	https://github.com/fusioninventory/fusioninventory-agent/releases/download/2.3.20/fusioninventory-agent_windows-x86_2.3.20.exe
+#	https://github.com/fusioninventory/fusioninventory-agent/releases/download/2.4/fusioninventory-agent_windows-x86_2.4.exe
 # https://github.com/stascorp/rdpwrap/releases/download/v1.6.1/RDPWrap-v1.6.1.zip
 # https://www.tightvnc.com/download/2.8.8/tightvnc-2.8.8-gpl-setup-32bit.msi
 #	In /var/lib/pulse2/clients/win32/downloads/python_modules/:
@@ -102,7 +102,7 @@ RSYNC_VERSION="5.5.0"
 OPENSSH_NAME="OpenSSH"
 LAUNCHER_SSH_KEY="\/root\/\.ssh\/id_rsa.pub"
 FUSION_INVENTORY_AGENT_NAME="fusioninventory-agent"
-FUSION_INVENTORY_AGENT_VERSION="2.3.20"
+FUSION_INVENTORY_AGENT_VERSION="2.4"
 VNC_AGENT_NAME="tightvnc"
 VNC_AGENT_VERSION="2.8.8"
 RDPWRAP_NAME="RDPWrap"

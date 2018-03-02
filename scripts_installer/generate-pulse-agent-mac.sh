@@ -28,7 +28,7 @@
 
 #	Files needed for the full version of the installer:
 #	In /var/lib/pulse2/clients/mac/downloads/:
-# https://github.com/fusioninventory/fusioninventory-agent/releases/download/2.3.20/FusionInventory-Agent-2.3.20-1.pkg.tar.gz
+# https://github.com/fusioninventory/fusioninventory-agent/releases/download/2.4/FusionInventory-Agent-2.4-1.pkg.tar.gz
 #	In /var/lib/pulse2/clients/mac/downloads/python_modules/:
 #	https://pypi.python.org/packages/a7/4c/8e0771a59fd6e55aac993a7cc1b6a0db993f299514c464ae6a1ecf83b31d/netifaces-0.10.5.tar.gz
 #	https://pypi.python.org/packages/7c/69/c2ce7e91c89dc073eb1aa74c0621c3eefbffe8216b3f9af9d3885265c01c/configparser-3.5.0.tar.gz
@@ -53,7 +53,7 @@ cd "`dirname $0`"
 # To be defined
 AGENT_VERSION="1.8.7"
 FUSION_INVENTORY_AGENT_NAME="FusionInventory-Agent"
-FUSION_INVENTORY_AGENT_VERSION="2.3.20-1"
+FUSION_INVENTORY_AGENT_VERSION="2.4-1"
 PY_NETIFACES_MODULE="netifaces"
 PY_NETIFACES_VERSION="0.10.5"
 PY_CONFIGPARSER_MODULE="configparser"
