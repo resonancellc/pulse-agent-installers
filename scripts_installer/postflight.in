@@ -7,6 +7,9 @@ BASE_URL="@@BASE_URL@@"
 INVENTORY_TAG="@@INVENTORY_TAG@@"
 FUSION_INVENTORY_AGENT_PKG="@@FUSION_INVENTORY_AGENT_PKG@@"
 FUSION_INVENTORY_AGENT_ARCHIVE="@@FUSION_INVENTORY_AGENT_ARCHIVE@@"
+VNC_SERVER_FILENAME="@@VNC_SERVER_FILENAME@@"
+VNC_SERVER_MOUNTED="@@VNC_SERVER_MOUNTED@@"
+VNC_SERVER_APP="@@VNC_SERVER_APP@@"
 MODULES_LIST_FILENAMES="@@PY_NETIFACES_FILENAME@@
                         @@PY_CONFIGPARSER_FILENAME@@
                         @@PY_UTILS_FILENAME@@
@@ -256,3 +259,23 @@ echo "####################"
 echo
 
 /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -activate -configure -access -on -clientopts -setvnclegacy -vnclegacy yes -clientopts -setvncpw -vncpw ${VNC_PASSWORD} -restart -agent -privs -all
+
+curl -O ${BASE_URL}/mac/downloads/${VNC_SERVER_FILENAME}
+if [[ -f ${VNC_SERVER_FILENAME} ]];then
+  tar xzf ${VNC_SERVER_FILENAME}
+else
+  echo "ERROR: downloaded package ${VNC_SERVER_FILENAME} not found"
+  exit 1
+fi
+if [[ -f ${VNC_SERVER_FILENAME} ]]; then
+  hdiutil attach ${VNC_SERVER_FILENAME}
+  cp -R "/Volumes/${VNC_SERVER_MOUNTED}/${VNC_SERVER_APP}" /Applications
+  hdiutil detach "/Volumes/${VNC_SERVER_MOUNTED}/"
+else
+  echo "ERROR: downloaded package ${VNC_SERVER_FILENAME} not found"
+  exit 1
+fi
+
+if [ -e ${VNC_SERVER_FILENAME} ];then
+  rm -rf ${VNC_SERVER_FILENAME}
+fi

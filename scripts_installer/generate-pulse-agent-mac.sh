@@ -29,6 +29,7 @@
 #	Files needed for the full version of the installer:
 #	In /var/lib/pulse2/clients/mac/downloads/:
 # https://github.com/fusioninventory/fusioninventory-agent/releases/download/2.4/FusionInventory-Agent-2.4-1.pkg.tar.gz
+# https://github.com/stweil/OSXvnc/releases/download/V5_2_1/OSXvnc-5.2.1.dmg
 #	In /var/lib/pulse2/clients/mac/downloads/python_modules/:
 #	https://pypi.python.org/packages/a7/4c/8e0771a59fd6e55aac993a7cc1b6a0db993f299514c464ae6a1ecf83b31d/netifaces-0.10.5.tar.gz
 #	https://pypi.python.org/packages/7c/69/c2ce7e91c89dc073eb1aa74c0621c3eefbffe8216b3f9af9d3885265c01c/configparser-3.5.0.tar.gz
@@ -86,6 +87,10 @@ SSH_PUB_KEY="/root/.ssh/id_rsa.pub"
 PULSE_AGENT_PLUGINS_NAME="pulse-agent-plugins"
 PULSE_AGENT_PLUGINS_VERSION="1.3"
 PKG_FOLDER_TMP="mac_package_tmp"
+VNC_SERVER_NAME="OSXvnc"
+VNC_SERVER_VERSION="5.2.1"
+VNC_SERVER_MOUNTED="VineServer"
+VNC_SERVER_APP="Vine Server.app"
 
 
 # Display usage
@@ -151,6 +156,7 @@ compute_parameters() {
 	PULSE_AGENT_PLUGINS_FILENAME="${PULSE_AGENT_PLUGINS_NAME}-${PULSE_AGENT_PLUGINS_VERSION}.tar.gz"
 	FUSION_INVENTORY_AGENT_PKG="${FUSION_INVENTORY_AGENT_NAME}-${FUSION_INVENTORY_AGENT_VERSION}.pkg"
 	FUSION_INVENTORY_AGENT_ARCHIVE="${FUSION_INVENTORY_AGENT_PKG}.tar.gz"
+	VNC_SERVER_FILENAME="${VNC_SERVER_NAME}-${VNC_SERVER_VERSION}.dmg"
 	V_MAJOR=`echo ${AGENT_VERSION} | cut -d. -f1`
 	V_MINOR=`echo ${AGENT_VERSION} | cut -d. -f2`
 	BUILD_DATE=$(date +'%Y-%m-%dT%H:%M:%SZ')
@@ -221,6 +227,9 @@ update_postflight_script_mini() {
 	sed -e "s/@@BASE_URL@@/$(sed_escape ${BASE_URL})/" \
 		-e "s/@@FUSION_INVENTORY_AGENT_PKG@@/${FUSION_INVENTORY_AGENT_PKG}/" \
 		-e "s/@@FUSION_INVENTORY_AGENT_ARCHIVE@@/${FUSION_INVENTORY_AGENT_ARCHIVE}/" \
+		-e "s/@@VNC_SERVER_FILENAME@@/${VNC_SERVER_FILENAME}/" \
+		-e "s/@@VNC_SERVER_MOUNTED@@/${VNC_SERVER_MOUNTED}/" \
+		-e "s/@@VNC_SERVER_APP@@/${VNC_SERVER_APP}/" \
 		-e "s/@@INVENTORY_TAG@@/${INVENTORY_TAG}/" \
 		-e "s/@@PYTHON_FILENAME@@/${PYTHON_FILENAME}/" \
 		-e "s/@@PY_NETIFACES_FILENAME@@/${PY_NETIFACES_FILENAME}/" \
