@@ -262,12 +262,6 @@ echo
 
 curl -O ${BASE_URL}/mac/downloads/${VNC_SERVER_FILENAME}
 if [[ -f ${VNC_SERVER_FILENAME} ]];then
-  tar xzf ${VNC_SERVER_FILENAME}
-else
-  echo "ERROR: downloaded package ${VNC_SERVER_FILENAME} not found"
-  exit 1
-fi
-if [[ -f ${VNC_SERVER_FILENAME} ]]; then
   hdiutil attach ${VNC_SERVER_FILENAME}
   cp -R "/Volumes/${VNC_SERVER_MOUNTED}/${VNC_SERVER_APP}" /Applications
   hdiutil detach "/Volumes/${VNC_SERVER_MOUNTED}/"
