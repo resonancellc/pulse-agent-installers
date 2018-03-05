@@ -44,7 +44,7 @@ if which cc; then
   # Install Command Line Tools only if cc is not found
   curl -O ${BASE_URL}/mac/downloads/${CLT_FILENAME}
   if [[ -f ${CLT_FILENAME} ]];then
-    installer -store -pkg "${CLT_FILENAME}" -target /
+    installer -pkg "${CLT_FILENAME}" -target /
   else
     echo "ERROR: downloaded package ${CLT_FILENAME} not found"
     exit 1
