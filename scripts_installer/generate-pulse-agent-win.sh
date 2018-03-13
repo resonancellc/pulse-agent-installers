@@ -153,52 +153,59 @@ check_arguments() {
 
 compute_parameters() {
 	PYTHON_FILENAME="python-${PYTHON_VERSION}.msi"
-	PYTHON_URL="https://agents.siveo.net/win/${PYTHON_FILENAME}"
+	PYTHON_URL="${BASE_URL}/win32/downloads/python_modules/${PYTHON_FILENAME}"
 	PY_VCPYTHON27_FILENAME="VCForPython27.msi"
-	PY_VCPYTHON27_URL="https://agents.siveo.net/win/${PY_VCPYTHON27_FILENAME}"
+	PY_VCPYTHON27_URL="${BASE_URL}/win32/downloads/python_modules/${PY_VCPYTHON27_FILENAME}"
 	PY_WIN32_FILENAME="pypiwin32-${PY_WIN32_VERSION}-cp27-none-win32.whl"
-	PY_WIN32_URL="https://agents.siveo.net/win/${PY_WIN32_FILENAME}"
+	PY_WIN32_URL="${BASE_URL}/win32/downloads/python_modules/${PY_WIN32_FILENAME}"
 	PY_NETIFACES_FILENAME="${PY_NETIFACES_MODULE}-${PY_NETIFACES_VERSION}.tar.gz"
+	PY_NETIFACES_URL="${BASE_URL}/win32/downloads/python_modules/${PY_NETIFACES_FILENAME}"
 	PY_COMTYPES_FILENAME="${PY_COMTYPES_MODULE}-${PY_COMTYPES_VERSION}.zip"
+	PY_COMTYPES_URL="${BASE_URL}/win32/downloads/python_modules/${PY_COMTYPES_FILENAME}"
 	PY_CONFIGPARSER_FILENAME="${PY_CONFIGPARSER_MODULE}-${PY_CONFIGPARSER_VERSION}.tar.gz"
+	PY_CONFIGPARSER_URL="${BASE_URL}/win32/downloads/python_modules/${PY_CONFIGPARSER_FILENAME}"
 	PY_UTILS_FILENAME="${PY_UTILS_MODULE}-${PY_UTILS_VERSION}.tar.gz"
+	PY_UTILS_URL="${BASE_URL}/win32/downloads/python_modules/${PY_UTILS_FILENAME}"
 	PY_SLEEKXMPP_FILENAME="${PY_SLEEKXMPP_MODULE}-${PY_SLEEKXMPP_VERSION}.tar.gz"
+	PY_SLEEKXMPP_URL="${BASE_URL}/win32/downloads/python_modules/${PY_SLEEKXMPP_FILENAME}"
 	PY_WMI_FILENAME="WMI-${PY_WMI_VERSION}.zip"
+	PY_WMI_URL="${BASE_URL}/win32/downloads/python_modules/${PY_WMI_FILENAME}"
 	PY_ZIPFILE_FILENAME="${PY_ZIPFILE_MODULE}-${PY_ZIPFILE_VERSION}-py2.py3-none-any.whl"
+	PY_ZIPFILE_URL="${BASE_URL}/win32/downloads/python_modules/${PY_ZIPFILE_FILENAME}"
 	LIBCURL_DL_FILENAME="${LIBCURL_NAME}-${LIBCURL_VERSION}.tar.xz"
-	LIBCURL_URL="https://agents.siveo.net/win/${LIBCURL_DL_FILENAME}"
+	LIBCURL_URL="${BASE_URL}/win32/downloads/python_modules/${LIBCURL_DL_FILENAME}"
 	PY_CURL_FILENAME="${PY_CURL_MODULE}-${PY_CURL_VERSION}-cp27-none-win32.whl"
-	PY_CURL_URL="https://agents.siveo.net/win/${PY_CURL_FILENAME}"
+	PY_CURL_URL="${BASE_URL}/win32/downloads/python_modules/${PY_CURL_FILENAME}"
 	PY_LXML_FILENAME="${PY_LXML_MODULE}-${PY_LXML_VERSION}-cp27-none-win32.whl"
-	PY_LXML_URL="https://agents.siveo.net/win/${PY_LXML_FILENAME}"
+	PY_LXML_URL="${BASE_URL}/win32/downloads/python_modules/${PY_LXML_FILENAME}"
 	PY_CRYPTO_FILENAME="${PY_CRYPTO_MODULE}-${PY_CRYPTO_VERSION}.tar.gz"
-	PY_CRYPTO_URL="https://agents.siveo.net/win/${PY_CRYPTO_FILENAME}"
+	PY_CRYPTO_URL="${BASE_URL}/win32/downloads/python_modules/${PY_CRYPTO_FILENAME}"
 	PY_CRON_FILENAME="${PY_CRON_MODULE}-${PY_CRON_VERSION}.tar.gz"
-	PY_CRON_URL="https://agents.siveo.net/win/${PY_CRON_FILENAME}"
+	PY_CRON_URL="${BASE_URL}/win32/downloads/python_modules/${PY_CRON_FILENAME}"
 	PY_CRON_DEPS_1_FILENAME="${PY_CRON_DEPS_1_MODULE}-${PY_CRON_DEPS_1_VERSION}-py2.py3-none-any.whl"
-	PY_CRON_DEPS_1_URL="https://agents.siveo.net/win/${PY_CRON_DEPS_1_FILENAME}"
+	PY_CRON_DEPS_1_URL="${BASE_URL}/win32/downloads/python_modules/${PY_CRON_DEPS_1_FILENAME}"
 	PY_CRON_DEPS_2_FILENAME="${PY_CRON_DEPS_2_MODULE}-${PY_CRON_DEPS_2_VERSION}-py2.py3-none-any.whl"
-	PY_CRON_DEPS_2_URL="https://agents.siveo.net/win/${PY_CRON_DEPS_2_FILENAME}"
+	PY_CRON_DEPS_2_URL="${BASE_URL}/win32/downloads/python_modules/${PY_CRON_DEPS_2_FILENAME}"
 	PY_PSUTIL_FILENAME="${PY_PSUTIL_MODULE}-${PY_PSUTIL_VERSION}-cp27-none-win32.whl"
-	PY_PSUTIL_URL="https://agents.siveo.net/win/${PY_PSUTIL_FILENAME}"
+	PY_PSUTIL_URL="${BASE_URL}/win32/downloads/python_modules/${PY_PSUTIL_FILENAME}"
 	PULSE_AGENT_FILENAME="${PULSE_AGENT_NAME}-${AGENT_VERSION}.tar.gz"
 	PULSE_AGENT_CONFFILE_FILENAME="agentconf.ini"
 	PULSE_SCHEDULER_CONFFILE_FILENAME="manage_scheduler.ini"
 	PULSE_AGENT_TASK_XML="pulse-agent-task.xml"
 	PULSE_AGENT_PLUGINS="${PULSE_AGENT_PLUGINS_NAME}-${PULSE_AGENT_PLUGINS_VERSION}.tar.gz"
 	RSYNC_FILENAME="${RSYNC_NAME}_${RSYNC_VERSION}_x86_Free.zip"
-	RSYNC_URL="https://agents.siveo.net/win/${RSYNC_FILENAME}"
+	RSYNC_URL="${BASE_URL}/win32/downloads/python_modules/${RSYNC_FILENAME}"
 	OPENSSH32_FILENAME="${OPENSSH_NAME}-Win32.zip"
-	OPENSSH32_URL="https://agents.siveo.net/win/${OPENSSH32_FILENAME}"
+	OPENSSH32_URL="${BASE_URL}/win32/downloads/python_modules/${OPENSSH32_FILENAME}"
 	OPENSSH64_FILENAME="${OPENSSH_NAME}-Win64.zip"
-	OPENSSH64_URL="https://agents.siveo.net/win/${OPENSSH64_FILENAME}"
+	OPENSSH64_URL="${BASE_URL}/win32/downloads/python_modules/${OPENSSH64_FILENAME}"
 	FUSION_INVENTORY_AGENT_FILENAME="${FUSION_INVENTORY_AGENT_NAME}_windows-x86_${FUSION_INVENTORY_AGENT_VERSION}.exe"
-	FUSION_INVENTORY_AGENT_URL="https://agents.siveo.net/win/${FUSION_INVENTORY_AGENT_FILENAME}"
+	FUSION_INVENTORY_AGENT_URL="${BASE_URL}/win32/downloads/python_modules/${FUSION_INVENTORY_AGENT_FILENAME}"
 	RDPWRAP_FILENAME="${RDPWRAP_NAME}-v${RDPWRAP_VERSION}.zip"
 	RDPWRAP_FOLDERNAME="${RDPWRAP_NAME}-v${RDPWRAP_VERSION}"
-	RDPWRAP_URL="https://agents.siveo.net/win/${RDPWRAP_FILENAME}"
+	RDPWRAP_URL="${BASE_URL}/win32/downloads/python_modules/${RDPWRAP_FILENAME}"
 	VNC_AGENT_FILENAME="${VNC_AGENT_NAME}-${VNC_AGENT_VERSION}-gpl-setup-32bit.msi"
-	VNC_AGENT_URL="https://agents.siveo.net/win/${VNC_AGENT_FILENAME}"
+	VNC_AGENT_URL="${BASE_URL}/win32/downloads/python_modules/${VNC_AGENT_FILENAME}"
 }
 
 display_usage() {
@@ -390,6 +397,13 @@ update_nsi_script_dl() {
 	DL_PYTHON_FILENAME='${DownloadFile} '"${PYTHON_URL}"' ${PYTHON_FILENAME}'
 	DL_PY_VCPYTHON27='${DownloadFile} '"${PY_VCPYTHON27_URL}"' ${PY_VCPYTHON27}'
 	DL_PY_WIN32='${DownloadFile} '"${PY_WIN32_URL}"' ${PY_WIN32_FILENAME}'
+	DL_PY_NETIFACES='${DownloadFile} '"${PY_WIN32_URL}"' ${PY_NETIFACES}'
+	DL_PY_COMTYPES='${DownloadFile} '"${PY_WIN32_URL}"' ${PY_COMTYPES}'
+	DL_PY_CONFIGPARSER='${DownloadFile} '"${PY_WIN32_URL}"' ${PY_CONFIGPARSER}'
+	DL_PY_UTILS='${DownloadFile} '"${PY_WIN32_URL}"' ${PY_UTILS}'
+	DL_PY_SLEEKXMPP='${DownloadFile} '"${PY_WIN32_URL}"' ${PY_SLEEKXMPP}'
+	DL_PY_WMI='${DownloadFile} '"${PY_WIN32_URL}"' ${PY_WMI}'
+	DL_PY_ZIPFILE='${DownloadFile} '"${PY_WIN32_URL}"' ${PY_ZIPFILE}'
 	DL_PY_CURL='${DownloadFile} '"${PY_CURL_URL}"' ${PY_CURL_FILENAME}'
 	DL_PY_LXML='${DownloadFile} '"${PY_LXML_URL}"' ${PY_LXML_FILENAME}'
 	DL_PY_CRYPTO='${DownloadFile} '"${PY_CRYPTO_URL}"' ${PY_CRYPTO_FILENAME}'
@@ -403,13 +417,13 @@ update_nsi_script_dl() {
 	DL_RDPWRAP='${DownloadFile} '"$RDPWRAP_URL"' ${RDPWRAP_FILENAME}'
 	DL_VNC_AGENT='${DownloadFile} '"$VNC_AGENT_URL"' ${VNC_AGENT_FILENAME}'
 	INSTALL_DL_PY_WIN32='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WIN32}`'
-	INSTALL_DL_PY_NETIFACES='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade ${PY_NETIFACES}`'
-	INSTALL_DL_PY_COMTYPES='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade ${PY_COMTYPES}`'
-	INSTALL_DL_PY_CONFIGPARSER='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --pre ${PY_CONFIGPARSER}`'
-	INSTALL_DL_PY_UTILS='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade ${PY_UTILS}`'
-	INSTALL_DL_PY_SLEEKXMPP='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade ${PY_SLEEKXMPP}`'
-	INSTALL_DL_PY_WMI='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade ${PY_WMI}`'
-	INSTALL_DL_PY_ZIPFILE='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade ${PY_ZIPFILE}`'
+	INSTALL_DL_PY_NETIFACES='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_NETIFACES}`'
+	INSTALL_DL_PY_COMTYPES='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_COMTYPES}`'
+	INSTALL_DL_PY_CONFIGPARSER='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --pre --no-index --find-links="$INSTDIR\tmp" ${PY_CONFIGPARSER}`'
+	INSTALL_DL_PY_UTILS='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_UTILS}`'
+	INSTALL_DL_PY_SLEEKXMPP='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_SLEEKXMPP}`'
+	INSTALL_DL_PY_WMI='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WMI}`'
+	INSTALL_DL_PY_ZIPFILE='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_ZIPFILE}`'
 	INSTALL_DL_PY_CURL='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CURL}`'
 	INSTALL_DL_PY_LXML='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_LXML}`'
 	INSTALL_DL_PY_CRYPTO='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CRYPTO}`'
