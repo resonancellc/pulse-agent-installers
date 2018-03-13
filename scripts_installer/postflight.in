@@ -19,9 +19,9 @@ MODULES_LIST_FILENAMES="@@PY_NETIFACES_FILENAME@@
                         @@PY_CURL_FILENAME@@
                         @@PY_LXML_FILENAME@@
                         @@PY_CRYPTO_FILENAME@@
-                        @@PY_CRON_FILENAME@@
-                        @@PY_CRON_DEPS_1_FILENAME@@
                         @@PY_CRON_DEPS_2_FILENAME@@
+                        @@PY_CRON_DEPS_1_FILENAME@@
+                        @@PY_CRON_FILENAME@@
                         @@PY_PSUTIL_FILENAME@@
                         @@PY_PLYVEL_FILENAME@@"
 PULSE_AGENT_FILENAME="@@PULSE_AGENT_FILENAME@@"
@@ -75,6 +75,12 @@ echo "2. CREATING PULSE ACCOUNT"
 echo "#########################"
 echo
 
+# Create restricted shell
+if [[ ! -f /bin/rbash ]]; then
+  cp "${PREFIX}/rbash" /usr/local/bin/
+  chmod +x /usr/local/bin/rbash
+fi
+
 # Create pulse user account
 if id pulse 2>/dev/null; then
   echo "WARN: pulse user already exists on the system"
@@ -87,12 +93,6 @@ else
     echo "ERROR: Something went wrong while creating pulse user account"
   fi
   createhomedir -c -u pulse 2>&1
-fi
-
-# Create restricted shell
-if [[ ! -f /bin/rbash ]]; then
-  cp "${PREFIX}/rbash" /usr/local/bin/
-  chmod +x /usr/local/bin/rbash
 fi
 
 # Hide the account
