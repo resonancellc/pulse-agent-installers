@@ -68,17 +68,21 @@ if id pulse 2>/dev/null; then
   echo "WARN: pulse user already exists on the system"
 else
   USER_PASSWORD=$(openssl rand -base64 24)
-  sysadminctl -addUser pulse -shell /usr/local/bin/rbash -password ${USER_PASSWORD} -home /var/lib/pulse2 2>/dev/null
+  dscl . -create /Users/pulse UserShell /usr/local/bin/rbash
+  dscl . -passwd /Users/pulse ${USER_PASSWORD}
   if [[ ${?} -eq 0 ]]; then
     echo "INFO: pulse user account created"
   else
     echo "ERROR: Something went wrong while creating pulse user account"
   fi
-  createhomedir -c -u pulse 2>&1
 fi
 
+# Create pulse homedir
+dscl . -create /Users/pulse NFSHomeDirectory /var/lib/pulse2
+createhomedir -c -u pulse 2>&1
+
 # Hide the account
-dscl . create /Users/pulse IsHidden 1
+dscl . -create /Users/pulse IsHidden 1
 dscl . -delete "/SharePoints/Pulse's Public Folder"
 
 # Allow remote login
