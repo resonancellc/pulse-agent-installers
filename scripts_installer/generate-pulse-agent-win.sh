@@ -439,48 +439,48 @@ update_nsi_script_dl() {
 		-e "s/@@PY_VCPYTHON27_URL@@/$(sed_escape ${PY_VCPYTHON27_URL})/" \
 		-e "s/@@FULL_OR_DL_PY_VCPYTHON27@@/$(sed_escape ${DL_PY_VCPYTHON27})/" \
 		-e "s/@@PY_WIN32@@/${PY_WIN32_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_WIN32@@//" \
+		-e "s/@@FULL_OR_DL_PY_WIN32@@/$(sed_escape ${DL_PY_WIN32})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_WIN32@@/$(sed_escape ${INSTALL_DL_PY_WIN32})/" \
 		-e "s/@@PY_NETIFACES@@/${PY_NETIFACES_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_NETIFACES@@//" \
+		-e "s/@@FULL_OR_DL_PY_NETIFACES@@/$(sed_escape ${DL_PY_NETIFACES})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_NETIFACES@@/$(sed_escape ${INSTALL_DL_PY_NETIFACES})/" \
 		-e "s/@@PY_COMTYPES@@/${PY_COMTYPES_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_COMTYPES@@//" \
+		-e "s/@@FULL_OR_DL_PY_COMTYPES@@/$(sed_escape ${DL_PY_COMTYPES})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_COMTYPES@@/$(sed_escape ${INSTALL_DL_PY_COMTYPES})/" \
 		-e "s/@@PY_CONFIGPARSER@@/${PY_CONFIGPARSER_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_CONFIGPARSER@@//" \
+		-e "s/@@FULL_OR_DL_PY_CONFIGPARSER@@/$(sed_escape ${DL_PY_CONFIGPARSER})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_CONFIGPARSER@@/$(sed_escape ${INSTALL_DL_PY_CONFIGPARSER})/" \
 		-e "s/@@PY_UTILS@@/${PY_UTILS_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_UTILS@@//" \
+		-e "s/@@FULL_OR_DL_PY_UTILS@@/$(sed_escape ${DL_PY_UTILS})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_UTILS@@/$(sed_escape ${INSTALL_DL_PY_UTILS})/" \
 		-e "s/@@PY_SLEEKXMPP@@/${PY_SLEEKXMPP_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_SLEEKXMPP@@//" \
+		-e "s/@@FULL_OR_DL_PY_SLEEKXMPP@@/$(sed_escape ${DL_PY_SLEEKXMPP})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_SLEEKXMPP@@/$(sed_escape ${INSTALL_DL_PY_SLEEKXMPP})/" \
 		-e "s/@@PY_WMI@@/${PY_WMI_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_WMI@@//" \
+		-e "s/@@FULL_OR_DL_PY_WMI@@/$(sed_escape ${DL_PY_WMI})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_WMI@@/$(sed_escape ${INSTALL_DL_PY_WMI})/" \
 		-e "s/@@PY_ZIPFILE@@/${PY_ZIPFILE_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_ZIPFILE@@//" \
+		-e "s/@@FULL_OR_DL_PY_ZIPFILE@@/$(sed_escape ${DL_PY_ZIPFILE})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_ZIPFILE@@/$(sed_escape ${INSTALL_DL_PY_ZIPFILE})/" \
 		-e "s/@@LIBCURL_FILENAME@@/${LIBCURL_FILENAME}/" \
 		-e "s/@@PY_CURL@@/${PY_CURL_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_CURL@@//" \
+		-e "s/@@FULL_OR_DL_PY_CURL@@/$(sed_escape ${DL_PY_CURL})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_CURL@@/$(sed_escape ${INSTALL_DL_PY_CURL})/" \
 		-e "s/@@PY_LXML@@/${PY_LXML_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_LXML@@//" \
+		-e "s/@@FULL_OR_DL_PY_LXML@@/$(sed_escape ${DL_PY_LXML})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_LXML@@/$(sed_escape ${INSTALL_DL_PY_LXML})/" \
 		-e "s/@@PY_CRYPTO@@/${PY_CRYPTO_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_CRYPTO@@//" \
+		-e "s/@@FULL_OR_DL_PY_CRYPTO@@/$(sed_escape ${DL_PY_CRYPTO})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_CRYPTO@@/$(sed_escape ${INSTALL_DL_PY_CRYPTO})/" \
 		-e "s/@@PY_CRON@@/${PY_CRON_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_CRON@@//" \
+		-e "s/@@FULL_OR_DL_PY_CRON@@/$(sed_escape ${DL_PY_CRON})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_CRON@@/$(sed_escape ${INSTALL_DL_PY_CRON})/" \
 		-e "s/@@PY_CRON_DEPS_1@@/${PY_CRON_DEPS_1_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_CRON_DEPS_1@@//" \
+		-e "s/@@FULL_OR_DL_PY_CRON_DEPS_1@@/$(sed_escape ${DL_PY_CRON_DEPS_1})/" \
 		-e "s/@@PY_CRON_DEPS_2@@/${PY_CRON_DEPS_2_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_CRON_DEPS_2@@//" \
+		-e "s/@@FULL_OR_DL_PY_CRON_DEPS_2@@/$(sed_escape ${DL_PY_CRON_DEPS_2})/" \
 		-e "s/@@PY_PSUTIL@@/${PY_PSUTIL_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_PSUTIL@@//" \
+		-e "s/@@FULL_OR_DL_PY_PSUTIL@@/$(sed_escape ${DL_PY_PSUTIL})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_PSUTIL@@/$(sed_escape ${INSTALL_DL_PY_PSUTIL})/" \
 		-e "s/@@PULSE_AGENT@@/${PULSE_AGENT_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_CONFFILE@@/${PULSE_AGENT_CONFFILE_FILENAME}/" \
