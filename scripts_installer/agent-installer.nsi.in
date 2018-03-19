@@ -676,7 +676,7 @@ Section "!${PRODUCT_NAME}" sec_app
   ${LogString} "------------------------------------------------------"
 
   ; Remove Pulse folder if present
-  ReadRegStr $0 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TightVNC" "UninstallString"
+  ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString"
   ${IfNot} ${Errors}
     ; Remove pulse user
     StrCpy $0 `net user "pulse" /DELETE`
