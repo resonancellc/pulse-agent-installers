@@ -679,12 +679,6 @@ Section "!${PRODUCT_NAME}" sec_app
   ClearErrors
   ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString"
   ${IfNot} ${Errors}
-    ; Remove pulse user
-    StrCpy $0 `net user "pulse" /DELETE`
-    ${LogString} "Running $0"
-    nsExec::ExecToLog $0
-    Pop $1 # return value/error/timeout
-    ${LogString} "Return code was: $1"
     ; Remove pulse parameters Folder
     Delete "$INSTDIR\etc\*.*"
   ${EndIf}
