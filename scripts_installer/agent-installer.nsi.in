@@ -676,6 +676,7 @@ Section "!${PRODUCT_NAME}" sec_app
   ${LogString} "------------------------------------------------------"
 
   ; Remove Pulse folder if present
+  ClearErrors
   ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString"
   ${IfNot} ${Errors}
     ; Remove pulse user
