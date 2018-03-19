@@ -74,7 +74,7 @@ SetCompressor lzma
 ; Modern UI installer stuff
 !include "MUI2.nsh"
 !define MUI_ABORTWARNING
-!define MUI_ICON "artwork/install.ico"
+#!define MUI_ICON "artwork/install.ico"
 !define MUI_WELCOMEPAGE_TITLE_3LINES
 #!define MUI_HEADERIMAGE
 #!define MUI_HEADERIMAGE_RIGHT
