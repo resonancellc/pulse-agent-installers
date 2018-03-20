@@ -47,6 +47,7 @@ easy_install pip
 su - $USER -c '/usr/local/bin/brew install leveldb'
 
 # Re-install curl
+su - $USER -c '/usr/local/bin/brew install openssl'
 su - $USER -c '/usr/local/bin/brew install --force curl --with-openssl'
 
 ### Pulse account
