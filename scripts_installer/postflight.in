@@ -156,7 +156,9 @@ for MODULE_FILENAME in ${MODULES_LIST_FILENAMES}; do
   if [[ -f ${MODULE_FILENAME} ]]; then
     if [[ "${MODULE_FILENAME}" == "@@PY_CURL_FILENAME@@" ]]; then
       export PYCURL_SSL_LIBRARY=openssl
-      python -m pip install --global-option=build_ext --global-option="-L/usr/local/opt/openssl/lib" --global-option="-I/usr/local/opt/openssl/include" --upgrade --user --no-index --find-links="." ${MODULE_FILENAME}
+      python -m pip install --user --global-option=build_ext --global-option="-L/usr/local/opt/openssl/lib" --global-option="-I/usr/local/opt/openssl/include" --install-option="--with-openssl" --install-option="--openssl-dir=/usr/local/opt/openssl" --upgrade --no-index --find-links="." ${MODULE_FILENAME}
+    elif [[ "${MODULE_FILENAME}" == "@@PY_CRON_DEPS_2_FILENAME@@" || "${MODULE_FILENAME}" == "@@PY_CRON_DEPS_1_FILENAME@@" ]]; then
+      python -m pip install --upgrade --ignore-installed --no-index --find-links="." ${MODULE_FILENAME}
     else
       python -m pip install --upgrade --no-index --find-links="." ${MODULE_FILENAME}
     fi
