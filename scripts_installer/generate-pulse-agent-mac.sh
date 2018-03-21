@@ -192,6 +192,8 @@ create_folder_structure() {
 	echo "Minor: ${V_MINOR}" >> ${PKG_FOLDER_TMP}/Contents/package_version
 	# Copy service descriptor
 	cp net.siveo.pulse_xmpp_agent.plist ${PKG_FOLDER_TMP}/Contents/Resources/
+	# Copy launcher
+	cp runpulseagent ${PKG_FOLDER_TMP}/Contents/Resources/
 }
 
 colored_echo() {

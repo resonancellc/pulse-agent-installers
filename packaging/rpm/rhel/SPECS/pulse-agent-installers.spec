@@ -90,6 +90,7 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
         cp scripts_installer/postflight.in %{buildroot}/var/lib/pulse2/clients/mac
         cp scripts_installer/net.siveo.pulse_xmpp_agent.plist %{buildroot}/var/lib/pulse2/clients/mac
         cp scripts_installer/rbash %{buildroot}/var/lib/pulse2/clients/mac
+        cp scripts_installer/runpulseagent %{buildroot}/var/lib/pulse2/clients/mac
         mkdir -p %{buildroot}/var/lib/pulse2/clients/win32/libs
         cp -fr scripts_installer/nsis_libs/* %{buildroot}/var/lib/pulse2/clients/win32/libs
         chmod +x %{buildroot}/var/lib/pulse2/clients/*.sh

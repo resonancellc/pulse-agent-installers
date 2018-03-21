@@ -36,6 +36,7 @@ build:
 	cp scripts_installer/postflight.in var/lib/pulse2/clients/mac
 	cp scripts_installer/net.siveo.pulse_xmpp_agent.plist var/lib/pulse2/clients/mac
 	cp scripts_installer/rbash var/lib/pulse2/clients/mac
+	cp scripts_installer/runpulseagent var/lib/pulse2/clients/mac
 	mkdir -p var/lib/pulse2/clients/win32/libs
 	cp -fr scripts_installer/nsis_libs/* var/lib/pulse2/clients/win32/libs
 	chmod +x var/lib/pulse2/clients/*.sh
