@@ -43,7 +43,7 @@ echo
 
 
 # Homebrew
-which breww
+which brew
 if [[ ${?} -ne 0 ]]; then
   # Install Homebrew only if not found
   curl -O ${BASE_URL}/mac/downloads/${HOMEBREW_FILENAME}
@@ -51,13 +51,14 @@ if [[ ${?} -ne 0 ]]; then
     if [[ ! -d /usr/local/homebrew ]]; then
       mkdir -p /usr/local/homebrew
     fi
-    chown $USER:wheel /usr/local/homebrew
+    tar xvzf "${HOMEBREW_FILENAME}" --strip 1 -C /usr/local/homebrew
+    chown -R $USER:wheel /usr/local/homebrew
     if [[ ! -d /usr/local/bin ]]; then
       mkdir -p /usr/local/bin
     fi
     chown $USER:admin /usr/local/bin
-    su - $USER -c 'tar xzf "${HOMEBREW_FILENAME}" --strip 1 -C /usr/local/homebrew'
-    su - $USER -c 'ln -s /usr/local/homebrew/brew /usr/local/bin/brew'
+    ln -s /usr/local/homebrew/bin/brew /usr/local/bin/brew
+    chown $USER:admin /usr/local/bin/brew
   else
     echo "ERROR: downloaded package ${HOMEBREW_FILENAME} not found"
     exit 1
