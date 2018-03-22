@@ -63,7 +63,14 @@ if [[ ${?} -ne 0 ]]; then
   # Install Homebrew only if not found
   curl -O ${BASE_URL}/mac/downloads/${HOMEBREW_FILENAME}
   if [[ -f ${HOMEBREW_FILENAME} ]];then
-    su - $USER -c 'mkdir -p /usr/local/homebrew'
+    if [[ ! -d /usr/local/homebrew ]]; then
+      mkdir -p /usr/local/homebrew
+    fi
+    chown $USER:wheel /usr/local/homebrew
+    if [[ ! -d /usr/local/bin ]]; then
+      mkdir -p /usr/local/bin
+    fi
+    chown $USER:admin /usr/local/bin
     su - $USER -c 'tar xzf "${PREFIX}/${HOMEBREW_FILENAME}" --strip 1 -C /usr/local/homebrew'
     su - $USER -c 'ln -s /usr/local/homebrew/brew /usr/local/bin/brew'
   else
