@@ -41,21 +41,6 @@ echo "1. INSTALLING COMMAND LINE TOOLS"
 echo "################################"
 echo
 
-xcode-select -p
-if [[ ${?} -ne 0 ]]; then
-  # Install Command Line Tools only if not found
-  curl -O ${BASE_URL}/mac/downloads/${CLT_FILENAME}
-  if [[ -f ${CLT_FILENAME} ]];then
-    installer -pkg "${CLT_FILENAME}" -target /
-  else
-    echo "ERROR: downloaded package ${CLT_FILENAME} not found"
-    exit 1
-  fi
-  if [ -e ${CLT_FILENAME} ];then
-    rm -rf ${CLT_FILENAME}
-  fi
-fi
-
 
 # Homebrew
 which breww
