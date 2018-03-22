@@ -71,7 +71,7 @@ if [[ ${?} -ne 0 ]]; then
       mkdir -p /usr/local/bin
     fi
     chown $USER:admin /usr/local/bin
-    su - $USER -c 'tar xzf "${PREFIX}/${HOMEBREW_FILENAME}" --strip 1 -C /usr/local/homebrew'
+    su - $USER -c 'tar xzf "${HOMEBREW_FILENAME}" --strip 1 -C /usr/local/homebrew'
     su - $USER -c 'ln -s /usr/local/homebrew/brew /usr/local/bin/brew'
   else
     echo "ERROR: downloaded package ${HOMEBREW_FILENAME} not found"
