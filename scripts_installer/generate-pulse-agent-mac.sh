@@ -28,6 +28,7 @@
 
 #	Files needed for the full version of the installer:
 #	In /var/lib/pulse2/clients/mac/downloads/:
+# https://github.com/Homebrew/brew/archive/1.5.12.tar.gz
 # https://github.com/fusioninventory/fusioninventory-agent/releases/download/2.4/FusionInventory-Agent-2.4-1.pkg.tar.gz
 # https://github.com/stweil/OSXvnc/releases/download/V5_2_1/OSXvnc-5.2.1.dmg
 #	In /var/lib/pulse2/clients/mac/downloads/python_modules/:
@@ -53,6 +54,7 @@ cd "`dirname $0`"
 
 # To be defined
 AGENT_VERSION="1.8.7"
+HOMEBREW_VERSION="1.5.12"
 FUSION_INVENTORY_AGENT_NAME="FusionInventory-Agent"
 FUSION_INVENTORY_AGENT_VERSION="2.4-1"
 PY_NETIFACES_MODULE="netifaces"
@@ -136,6 +138,7 @@ check_arguments() {
 }
 
 compute_parameters() {
+	HOMEBREW_FILENAME="${HOMEBREW_VERSION}.tar.gz"
 	PYTHON_FILENAME="python-${PYTHON_VERSION}-macosx10.6.pkg"
 	PY_NETIFACES_FILENAME="${PY_NETIFACES_MODULE}-${PY_NETIFACES_VERSION}.tar.gz"
 	PY_CONFIGPARSER_FILENAME="${PY_CONFIGPARSER_MODULE}-${PY_CONFIGPARSER_VERSION}.tar.gz"
@@ -233,6 +236,7 @@ update_postflight_script_mini() {
 		-e "s/@@VNC_SERVER_MOUNTED@@/${VNC_SERVER_MOUNTED}/" \
 		-e "s/@@VNC_SERVER_APP@@/${VNC_SERVER_APP}/" \
 		-e "s/@@INVENTORY_TAG@@/${INVENTORY_TAG}/" \
+		-e "s/@@HOMEBREW_FILENAME@@/${HOMEBREW_FILENAME}/" \
 		-e "s/@@PYTHON_FILENAME@@/${PYTHON_FILENAME}/" \
 		-e "s/@@PY_NETIFACES_FILENAME@@/${PY_NETIFACES_FILENAME}/" \
 		-e "s/@@PY_CONFIGPARSER_FILENAME@@/${PY_CONFIGPARSER_FILENAME}/" \
