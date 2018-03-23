@@ -48,9 +48,28 @@ if [[ ${?} -ne 0 ]]; then
   # Install Homebrew only if not found
   curl -O ${BASE_URL}/mac/downloads/${HOMEBREW_FILENAME}
   if [[ -f ${HOMEBREW_FILENAME} ]];then
-    if [[ ! -d /usr/local/homebrew ]]; then
-      mkdir -p /usr/local/homebrew
+    # Create folders needed by Homebrew
+    for dir in Cellar homebrew Frameworks bin etc include lib opt sbin share share/zsh share/zsh/site-functions var; do
+      if [[ ! -d /usr/local/${dir} ]]; then
+        mkdir -p /usr/local/${dir}
+      fi
+    done
+    if [[ ! -d /Library/Caches/Homebrew ]]; then
+      mkdir -p /Library/Caches/Homebrew
     fi
+    # Update permissions
+    for dir in bin bin/brew etc Frameworks include lib sbin share var etc/bash_completion.d lib/pkgconfig var/log share/aclocal share/doc share/info share/locale share/man share/man/man1 share/man/man2 share/man/man3 share/man/man4 share/man/man5 share/man/man6 share/man/man7 share/man/man8; do
+      chmod ug+rwx /usr/local/${dir}
+      chown $USER /usr/local/${dir}
+      chgrp admin /usr/local/${dir}
+    done
+    for dir in share/zsh share/zsh/site-functions; do
+      chmod 755 /usr/local/${dir}
+    done
+    chmod g+rwx /Library/Caches/Homebrew
+    chown $USER /Library/Caches/Homebrew
+    chgrp admin /Library/Caches/Homebrew
+    # Extract Homebrew
     tar xvzf "${HOMEBREW_FILENAME}" --strip 1 -C /usr/local/homebrew
     chown -R $USER:wheel /usr/local/homebrew
     if [[ ! -d /usr/local/bin ]]; then
@@ -59,6 +78,8 @@ if [[ ${?} -ne 0 ]]; then
     chown $USER:admin /usr/local/bin
     ln -s /usr/local/homebrew/bin/brew /usr/local/bin/brew
     chown $USER:admin /usr/local/bin/brew
+    # Update Homebrew
+    su - $USER -c '/usr/local/bin/brew update --force'
   else
     echo "ERROR: downloaded package ${HOMEBREW_FILENAME} not found"
     exit 1
