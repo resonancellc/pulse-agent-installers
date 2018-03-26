@@ -49,7 +49,7 @@ if [[ ${?} -ne 0 ]]; then
   curl -O ${BASE_URL}/mac/downloads/${HOMEBREW_FILENAME}
   if [[ -f ${HOMEBREW_FILENAME} ]];then
     # Create folders needed by Homebrew
-    for dir in Cellar homebrew Frameworks bin etc include lib opt sbin share share/zsh share/zsh/site-functions var; do
+    for dir in Cellar homebrew Frameworks bin etc include lib opt sbin share share/zsh share/zsh/site-functions var etc/bash_completion.d lib/pkgconfig var/log share/aclocal share/doc share/info share/locale share/man share/man/man1 share/man/man2 share/man/man3 share/man/man4 share/man/man5 share/man/man6 share/man/man7 share/man/man8; do
       if [[ ! -d /usr/local/${dir} ]]; then
         mkdir -p /usr/local/${dir}
       fi
@@ -58,7 +58,7 @@ if [[ ${?} -ne 0 ]]; then
       mkdir -p /Library/Caches/Homebrew
     fi
     # Update permissions
-    for dir in Cellar bin bin/brew etc Frameworks include lib opt sbin share var etc/bash_completion.d lib/pkgconfig var/log share/aclocal share/doc share/info share/locale share/man share/man/man1 share/man/man2 share/man/man3 share/man/man4 share/man/man5 share/man/man6 share/man/man7 share/man/man8; do
+    for dir in Cellar homebrew Frameworks bin etc include lib opt sbin share share/zsh share/zsh/site-functions var etc/bash_completion.d lib/pkgconfig var/log share/aclocal share/doc share/info share/locale share/man share/man/man1 share/man/man2 share/man/man3 share/man/man4 share/man/man5 share/man/man6 share/man/man7 share/man/man8; do
       chmod ug+rwx /usr/local/${dir}
       chown $USER /usr/local/${dir}
       chgrp admin /usr/local/${dir}
