@@ -212,7 +212,7 @@ for MODULE_FILENAME in ${MODULES_LIST_FILENAMES}; do
       export PYCURL_SSL_LIBRARY=openssl
       export LDFLAGS=-L/usr/local/opt/openssl/lib
       export CPPFLAGS=-I/usr/local/opt/openssl/include
-      python -m pip install --user --install-option="--with-openssl" --install-option="--openssl-dir=/usr/local/opt/openssl" --no-cache-dir --compile --upgrade --no-index --find-links="." ${MODULE_FILENAME}
+      easy_install pycurl
     elif [[ "${MODULE_FILENAME}" == "@@PY_CRON_DEPS_2_FILENAME@@" || "${MODULE_FILENAME}" == "@@PY_CRON_DEPS_1_FILENAME@@" ]]; then
       python -m pip install --upgrade --ignore-installed --no-index --find-links="." ${MODULE_FILENAME}
     else
