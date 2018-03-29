@@ -142,6 +142,13 @@ createhomedir -c -u pulse 2>&1
 # Allow remote login
 systemsetup -setremotelogin on
 
+# Add pulse user to list od users allowed to ssh
+dseditgroup com.apple.access_ssh
+if [[ ${?} -ne 0 ]]; then
+  dseditgroup -o create -q com.apple.access_ssh
+fi
+dseditgroup -o edit -a pulse -t user com.apple.access_ssh
+
 
 ### SSH Key
 
