@@ -5,4 +5,4 @@ sleep 60
 
 # Start the agent
 export PYCURL_SSL_LIBRARY=openssl
-python /Library/Python/2.7/site-packages/pulse_xmpp_agent/launcher.py -t machine
+python2 /Library/Python/2.7/site-packages/pulse_xmpp_agent/launcher.py -t machine

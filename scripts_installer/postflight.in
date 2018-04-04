@@ -89,8 +89,8 @@ if [[ ${?} -ne 0 ]]; then
   fi
 fi
 
-# Install pip
-easy_install pip
+# Reinstall python
+su - $USER -c '/usr/local/bin/brew reinstall python@2'
 
 # Install leveldb
 su - $USER -c '/usr/local/bin/brew install leveldb'
@@ -219,11 +219,11 @@ for MODULE_FILENAME in ${MODULES_LIST_FILENAMES}; do
       export PYCURL_SSL_LIBRARY=openssl
       export LDFLAGS=-L/usr/local/opt/openssl/lib
       export CPPFLAGS=-I/usr/local/opt/openssl/include
-      easy_install pycurl
+      python2 -m pip install --install-option="--with-openssl" --install-option="--openssl-dir=/usr/local/opt/openssl" @@PY_CURL_FILENAME@@
     elif [[ "${MODULE_FILENAME}" == "@@PY_CRON_DEPS_2_FILENAME@@" || "${MODULE_FILENAME}" == "@@PY_CRON_DEPS_1_FILENAME@@" ]]; then
-      python -m pip install --upgrade --ignore-installed --no-index --find-links="." ${MODULE_FILENAME}
+      python2 -m pip install --upgrade --ignore-installed --no-index --find-links="." ${MODULE_FILENAME}
     else
-      python -m pip install --upgrade --no-index --find-links="." ${MODULE_FILENAME}
+      python2 -m pip install --upgrade --no-index --find-links="." ${MODULE_FILENAME}
     fi
   else
     echo "ERROR: downloaded package ${MODULE_FILENAME} not found"
@@ -246,7 +246,7 @@ echo
 # Download and install agent
 curl -O ${BASE_URL}/${PULSE_AGENT_FILENAME}
 if [[ -f ${PULSE_AGENT_FILENAME} ]]; then
-  python -m pip install --upgrade --no-index --find-links="." ${PULSE_AGENT_FILENAME}
+  python2 -m pip install --upgrade --no-index --find-links="." ${PULSE_AGENT_FILENAME}
 else
   echo "ERROR: downloaded package ${PULSE_AGENT_FILENAME} not found"
   exit 1
@@ -258,7 +258,7 @@ fi
 # Download and install plugins
 curl -O ${BASE_URL}/${PULSE_AGENT_PLUGINS_FILENAME}
 if [[ -f ${PULSE_AGENT_PLUGINS_FILENAME} ]]; then
-  python -m pip install --upgrade --no-index --find-links="." ${PULSE_AGENT_PLUGINS_FILENAME}
+  python2 -m pip install --upgrade --no-index --find-links="." ${PULSE_AGENT_PLUGINS_FILENAME}
 else
   echo "ERROR: downloaded package ${PULSE_AGENT_PLUGINS_FILENAME} not found"
   exit 1
