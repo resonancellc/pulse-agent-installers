@@ -222,11 +222,11 @@ for MODULE_FILENAME in ${MODULES_LIST_FILENAMES}; do
       export PYCURL_SSL_LIBRARY=openssl
       export LDFLAGS=-L/usr/local/opt/openssl/lib
       export CPPFLAGS=-I/usr/local/opt/openssl/include
-      /usr/local/bin/pip2 install --upgrade --install-option="--with-openssl" --install-option="--openssl-dir=/usr/local/opt/openssl" @@PY_CURL_FILENAME@@
+      /usr/local/bin/pip2 install --upgrade --no-deps --install-option="--with-openssl" --install-option="--openssl-dir=/usr/local/opt/openssl" @@PY_CURL_FILENAME@@
     elif [[ "${MODULE_FILENAME}" == "@@PY_CRON_DEPS_2_FILENAME@@" || "${MODULE_FILENAME}" == "@@PY_CRON_DEPS_1_FILENAME@@" ]]; then
-      /usr/local/bin/pip2 install --upgrade --ignore-installed --no-index --find-links="." ${MODULE_FILENAME}
+      /usr/local/bin/pip2 install --upgrade --no-deps --ignore-installed --no-index --find-links="." ${MODULE_FILENAME}
     else
-      /usr/local/bin/pip2 install --upgrade --no-index --find-links="." ${MODULE_FILENAME}
+      /usr/local/bin/pip2 install --upgrade --no-deps --no-index --find-links="." ${MODULE_FILENAME}
     fi
   else
     echo "ERROR: downloaded package ${MODULE_FILENAME} not found"
