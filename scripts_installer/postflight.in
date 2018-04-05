@@ -131,6 +131,9 @@ else
   dscl . -create /Users/pulse PrimaryGroupID 20
 fi
 
+# Add pulse user to admin group for backuppc
+dseditgroup -o edit -a pulse -t user admin
+
 # Hide the account
 dscl . -create /Users/pulse IsHidden 1
 dscl . -delete "/SharePoints/Pulse's Public Folder"
