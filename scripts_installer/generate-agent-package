@@ -136,7 +136,7 @@ cat <<EOF > xmppdeploy.json
             },
             {
                 "typescript": "Batch",
-                "script": "pip install --upgrade --no-index --find-links=\".\" ${PULSE_AGENT_FILENAME}",
+                "script": "/usr/local/bin/pip2 install --upgrade --no-index --find-links=\".\" ${PULSE_AGENT_FILENAME}",
                 "step": 1,
                 "codereturn": "",
                 "action": "actionprocessscriptfile",
