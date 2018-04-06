@@ -74,7 +74,7 @@ SetCompressor lzma
 ; Modern UI installer stuff
 !include "MUI2.nsh"
 !define MUI_ABORTWARNING
-!define MUI_ICON "artwork/install.ico"
+#!define MUI_ICON "artwork/install.ico"
 !define MUI_WELCOMEPAGE_TITLE_3LINES
 #!define MUI_HEADERIMAGE
 #!define MUI_HEADERIMAGE_RIGHT
@@ -675,6 +675,14 @@ Section "!${PRODUCT_NAME}" sec_app
   ${LogString} "Pulse Agent Installation...."
   ${LogString} "------------------------------------------------------"
 
+  ; Remove Pulse folder if present
+  ClearErrors
+  ReadRegStr $0 ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString"
+  ${IfNot} ${Errors}
+    ; Remove pulse parameters Folder
+    Delete "$INSTDIR\etc\*.*"
+  ${EndIf}
+
   ; Install of Pulse agent
   StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PULSE_AGENT}`
   ${LogString} "Running $0"
@@ -755,8 +763,6 @@ SectionEnd
 
 ; What needs to be done for uninstalling
 Section "Uninstall"
-  Delete $INSTDIR\uninstall.exe
-
   ; Remove pulse user
   StrCpy $0 `net user "pulse" /DELETE`
   ${LogString} "Running $0"
@@ -785,11 +791,11 @@ Section "Uninstall"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
-  Delete $SYSDIR\ssh-lsa.dll
-  RMDir /r $PROGRAMFILES\${OPENSSH_NAME}
+  Delete "$SYSDIR\ssh-lsa.dll"
+  RMDir /r "$PROGRAMFILES\${OPENSSH_NAME}"
 
   ; Remove libcurl
-  Delete $SYSDIR\${LIBCURL_FILENAME}
+  Delete "$SYSDIR\${LIBCURL_FILENAME}"
 
   ; Uninstall agent
   StrCpy $0 `SCHTASKS /Delete /TN "Pulse Agent"`
@@ -807,20 +813,18 @@ Section "Uninstall"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
-  StrCpy $0 `C:\Python27\Scripts\pip uninstall ${PULSE_AGENT_PLUGINS} -y`
+  StrCpy $0 `C:\Python27\Scripts\pip uninstall "${PULSE_AGENT_PLUGINS}" -y`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
-  StrCpy $0 `C:\Python27\Scripts\pip uninstall ${PULSE_AGENT_MODULE} -y`
+  StrCpy $0 `C:\Python27\Scripts\pip uninstall "${PULSE_AGENT_MODULE}" -y`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
   RMDir /r "C:\Python27\Lib\site-packages\pulse_xmpp_agent\"
-  Delete $INSTDIR\etc\${PULSE_AGENT_CONFFILE}
-  Delete $INSTDIR\etc\${PULSE_SCHEDULER_CONFFILE}
-  RMDir /r $INSTDIR
+  RMDir /r "$INSTDIR"
   DeleteRegKey HKLM "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
 SectionEnd

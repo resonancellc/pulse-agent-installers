@@ -1,12 +1,17 @@
 #!/bin/bash
 PREFIX="$1/Contents/Resources"
-MACOS_VERSION=$(sw_vers |grep ProductVersion|awk '{print $2}')
+MACOS_VERSION=$(sw_vers |grep ProductVersion|awk '{print $2}'|awk -F "." '{print $1"."$2}')
 INSTALL_PATH="/Library/Application Support/Pulse"
 VNC_PASSWORD=$(uuidgen | sed 's/-//g')
 BASE_URL="@@BASE_URL@@"
 INVENTORY_TAG="@@INVENTORY_TAG@@"
+CLT_FILENAME="Command_Line_Tools_${MACOS_VERSION}.pkg"
+HOMEBREW_FILENAME="@@HOMEBREW_FILENAME@@"
 FUSION_INVENTORY_AGENT_PKG="@@FUSION_INVENTORY_AGENT_PKG@@"
 FUSION_INVENTORY_AGENT_ARCHIVE="@@FUSION_INVENTORY_AGENT_ARCHIVE@@"
+VNC_SERVER_FILENAME="@@VNC_SERVER_FILENAME@@"
+VNC_SERVER_MOUNTED="@@VNC_SERVER_MOUNTED@@"
+VNC_SERVER_APP="@@VNC_SERVER_APP@@"
 MODULES_LIST_FILENAMES="@@PY_NETIFACES_FILENAME@@
                         @@PY_CONFIGPARSER_FILENAME@@
                         @@PY_UTILS_FILENAME@@
@@ -15,9 +20,9 @@ MODULES_LIST_FILENAMES="@@PY_NETIFACES_FILENAME@@
                         @@PY_CURL_FILENAME@@
                         @@PY_LXML_FILENAME@@
                         @@PY_CRYPTO_FILENAME@@
-                        @@PY_CRON_FILENAME@@
-                        @@PY_CRON_DEPS_1_FILENAME@@
                         @@PY_CRON_DEPS_2_FILENAME@@
+                        @@PY_CRON_DEPS_1_FILENAME@@
+                        @@PY_CRON_FILENAME@@
                         @@PY_PSUTIL_FILENAME@@
                         @@PY_PLYVEL_FILENAME@@"
 PULSE_AGENT_FILENAME="@@PULSE_AGENT_FILENAME@@"
@@ -36,32 +41,62 @@ echo "1. INSTALLING COMMAND LINE TOOLS"
 echo "################################"
 echo
 
-touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress
-case ${MACOS_VERSION} in
-	"10.13*" )
-    softwareupdate -i "Command Line Tools (macOS High Sierra version 10.13) for Xcode-9.0"
-		;;
-  "10.12*" )
-    softwareupdate -i "Command Line Tools (macOS Sierra version 10.12) for Xcode-9.0"
-    ;;
-  "10.11*" )
-    softwareupdate -i "Command Line Tools (macOS El Capitan version 10.11) for Xcode-8.2"
-    ;;
-  "10.10*" )
-    softwareupdate -i "Command Line Tools (macOS Yosemite version 10.10) for Xcode-7.2"
-    ;;
-esac
 
 # Homebrew
-su - $USER -c '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" </dev/null'
+which brew
+if [[ ${?} -ne 0 ]]; then
+  # Install Homebrew only if not found
+  curl -O ${BASE_URL}/mac/downloads/${HOMEBREW_FILENAME}
+  if [[ -f ${HOMEBREW_FILENAME} ]];then
+    # Create folders needed by Homebrew
+    for dir in Cellar homebrew Frameworks bin etc include lib opt sbin share share/zsh share/zsh/site-functions var etc/bash_completion.d lib/pkgconfig var/log share/aclocal share/doc share/info share/locale share/man share/man/man1 share/man/man2 share/man/man3 share/man/man4 share/man/man5 share/man/man6 share/man/man7 share/man/man8; do
+      if [[ ! -d /usr/local/${dir} ]]; then
+        mkdir -p /usr/local/${dir}
+      fi
+    done
+    if [[ ! -d /Library/Caches/Homebrew ]]; then
+      mkdir -p /Library/Caches/Homebrew
+    fi
+    # Update permissions
+    for dir in Cellar homebrew Frameworks bin etc include lib opt sbin share share/zsh share/zsh/site-functions var etc/bash_completion.d lib/pkgconfig var/log share/aclocal share/doc share/info share/locale share/man share/man/man1 share/man/man2 share/man/man3 share/man/man4 share/man/man5 share/man/man6 share/man/man7 share/man/man8; do
+      chmod ug+rwx /usr/local/${dir}
+      chown $USER /usr/local/${dir}
+      chgrp admin /usr/local/${dir}
+    done
+    for dir in share/zsh share/zsh/site-functions; do
+      chmod 755 /usr/local/${dir}
+    done
+    chmod g+rwx /Library/Caches/Homebrew
+    chown $USER /Library/Caches/Homebrew
+    chgrp admin /Library/Caches/Homebrew
+    # Extract Homebrew
+    tar xvzf "${HOMEBREW_FILENAME}" --strip 1 -C /usr/local/homebrew
+    chown -R $USER:wheel /usr/local/homebrew
+    if [[ ! -d /usr/local/bin ]]; then
+      mkdir -p /usr/local/bin
+    fi
+    chown $USER:admin /usr/local/bin
+    ln -s /usr/local/homebrew/bin/brew /usr/local/bin/brew
+    chown $USER:admin /usr/local/bin/brew
+    # Update Homebrew
+    su - $USER -c '/usr/local/bin/brew update --force'
+  else
+    echo "ERROR: downloaded package ${HOMEBREW_FILENAME} not found"
+    exit 1
+  fi
+  if [ -e ${HOMEBREW_FILENAME} ];then
+    rm -rf ${HOMEBREW_FILENAME}
+  fi
+fi
 
-# Install pip
-easy_install pip
+# Reinstall python
+su - $USER -c '/usr/local/bin/brew reinstall python@2'
 
 # Install leveldb
 su - $USER -c '/usr/local/bin/brew install leveldb'
 
 # Re-install curl
+su - $USER -c '/usr/local/bin/brew install openssl'
 su - $USER -c '/usr/local/bin/brew install --force curl --with-openssl'
 
 ### Pulse account
@@ -72,33 +107,50 @@ echo "2. CREATING PULSE ACCOUNT"
 echo "#########################"
 echo
 
+# Create restricted shell
+if [[ ! -f /bin/rbash ]]; then
+  cp "${PREFIX}/rbash" /usr/local/bin/
+  chmod +x /usr/local/bin/rbash
+  xattr -d com.apple.quarantine /usr/local/bin/rbash
+fi
+
 # Create pulse user account
 if id pulse 2>/dev/null; then
   echo "WARN: pulse user already exists on the system"
 else
   USER_PASSWORD=$(openssl rand -base64 24)
-  sysadminctl -addUser pulse -shell /usr/local/bin/rbash -password ${USER_PASSWORD} -home /var/lib/pulse2 2>/dev/null
+  dscl . -create /Users/pulse UserShell /usr/local/bin/rbash
+  dscl . -passwd /Users/pulse ${USER_PASSWORD}
   if [[ ${?} -eq 0 ]]; then
     echo "INFO: pulse user account created"
   else
     echo "ERROR: Something went wrong while creating pulse user account"
   fi
-  createhomedir -c -u pulse 2>&1
-fi
-
-# Create restricted shell
-if [[ ! -f /bin/rbash ]]; then
-  cp "${PREFIX}/rbash" /usr/local/bin/
-  chmod +x /usr/local/bin/rbash
+  MAX_USERID=$(dscl . -list /Users UniqueID | sort -nr -k 2 | head -1 | awk '{print $2}')
+  dscl . -create /Users/pulse UniqueID $(expr ${MAX_USERID} + 1)
+  dscl . -create /Users/pulse PrimaryGroupID 20
 fi
 
 # Hide the account
-dscl . create /Users/pulse IsHidden 1
+dscl . -create /Users/pulse IsHidden 1
 dscl . -delete "/SharePoints/Pulse's Public Folder"
+
+# Create pulse homedir
+dscl . -create /Users/pulse NFSHomeDirectory /var/lib/pulse2
+createhomedir -c -u pulse 2>&1
 
 # Allow remote login
 systemsetup -setremotelogin on
 
+# Add pulse user to list of users allowed to ssh
+dseditgroup com.apple.access_ssh
+if [[ ${?} -ne 0 ]]; then
+  dseditgroup -o create -q com.apple.access_ssh
+fi
+dseditgroup -o edit -a pulse -t user com.apple.access_ssh
+
+# Allow pulse user to sudo rsync without password for backuppc
+echo "pulse ALL = NOPASSWD:/usr/bin/rsync" > /private/etc/sudoers.d/pulse
 
 ### SSH Key
 
@@ -167,9 +219,13 @@ for MODULE_FILENAME in ${MODULES_LIST_FILENAMES}; do
   if [[ -f ${MODULE_FILENAME} ]]; then
     if [[ "${MODULE_FILENAME}" == "@@PY_CURL_FILENAME@@" ]]; then
       export PYCURL_SSL_LIBRARY=openssl
-      python -m pip install --global-option=build_ext --global-option="-L/usr/local/opt/openssl/lib" --global-option="-I/usr/local/opt/openssl/include" --upgrade --user --no-index --find-links="." ${MODULE_FILENAME}
+      export LDFLAGS=-L/usr/local/opt/openssl/lib
+      export CPPFLAGS=-I/usr/local/opt/openssl/include
+      /usr/local/bin/pip2 install --upgrade --no-deps --install-option="--with-openssl" --install-option="--openssl-dir=/usr/local/opt/openssl" @@PY_CURL_FILENAME@@
+    elif [[ "${MODULE_FILENAME}" == "@@PY_CRON_DEPS_2_FILENAME@@" || "${MODULE_FILENAME}" == "@@PY_CRON_DEPS_1_FILENAME@@" ]]; then
+      /usr/local/bin/pip2 install --upgrade --no-deps --ignore-installed --no-index --find-links="." ${MODULE_FILENAME}
     else
-      python -m pip install --upgrade --no-index --find-links="." ${MODULE_FILENAME}
+      /usr/local/bin/pip2 install --upgrade --no-deps --no-index --find-links="." ${MODULE_FILENAME}
     fi
   else
     echo "ERROR: downloaded package ${MODULE_FILENAME} not found"
@@ -192,7 +248,7 @@ echo
 # Download and install agent
 curl -O ${BASE_URL}/${PULSE_AGENT_FILENAME}
 if [[ -f ${PULSE_AGENT_FILENAME} ]]; then
-  python -m pip install --upgrade --no-index --find-links="." ${PULSE_AGENT_FILENAME}
+  /usr/local/bin/pip2 install --upgrade --no-index --find-links="." ${PULSE_AGENT_FILENAME}
 else
   echo "ERROR: downloaded package ${PULSE_AGENT_FILENAME} not found"
   exit 1
@@ -204,7 +260,7 @@ fi
 # Download and install plugins
 curl -O ${BASE_URL}/${PULSE_AGENT_PLUGINS_FILENAME}
 if [[ -f ${PULSE_AGENT_PLUGINS_FILENAME} ]]; then
-  python -m pip install --upgrade --no-index --find-links="." ${PULSE_AGENT_PLUGINS_FILENAME}
+  /usr/local/bin/pip2 install --upgrade --no-index --find-links="." ${PULSE_AGENT_PLUGINS_FILENAME}
 else
   echo "ERROR: downloaded package ${PULSE_AGENT_PLUGINS_FILENAME} not found"
   exit 1
@@ -219,6 +275,9 @@ if [[ ! -d "${INSTALL_PATH}/etc" ]]; then
 fi
 if [[ ! -d "${INSTALL_PATH}/var" ]]; then
   mkdir -p "${INSTALL_PATH}/var"
+fi
+if [[ ! -d "${INSTALL_PATH}/bin" ]]; then
+  mkdir -p "${INSTALL_PATH}/bin"
 fi
 
 # Copy config files
@@ -237,8 +296,14 @@ if [[ ! -d "${INSTALL_PATH}/var/tmp/packages/" ]]; then
   mkdir -p "${INSTALL_PATH}/var/tmp/packages"
 fi
 
+# Copy launcher
+cp "${PREFIX}/runpulseagent" "${INSTALL_PATH}/bin"
+chmod +x "${INSTALL_PATH}/bin/runpulseagent"
+xattr -d com.apple.quarantine "${INSTALL_PATH}/bin/runpulseagent"
+
 # Copy service descriptor
 cp "${PREFIX}/net.siveo.pulse_xmpp_agent.plist" /Library/LaunchDaemons/
+xattr -d com.apple.quarantine /Library/LaunchDaemons/net.siveo.pulse_xmpp_agent.plist
 chown root:wheel /Library/LaunchDaemons/net.siveo.pulse_xmpp_agent.plist
 chmod 644 /Library/LaunchDaemons/net.siveo.pulse_xmpp_agent.plist
 
@@ -256,3 +321,17 @@ echo "####################"
 echo
 
 /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -activate -configure -access -on -clientopts -setvnclegacy -vnclegacy yes -clientopts -setvncpw -vncpw ${VNC_PASSWORD} -restart -agent -privs -all
+
+curl -O ${BASE_URL}/mac/downloads/${VNC_SERVER_FILENAME}
+if [[ -f ${VNC_SERVER_FILENAME} ]];then
+  hdiutil attach ${VNC_SERVER_FILENAME}
+  cp -R "/Volumes/${VNC_SERVER_MOUNTED}/${VNC_SERVER_APP}" /Applications
+  hdiutil detach "/Volumes/${VNC_SERVER_MOUNTED}/"
+else
+  echo "ERROR: downloaded package ${VNC_SERVER_FILENAME} not found"
+  exit 1
+fi
+
+if [ -e ${VNC_SERVER_FILENAME} ];then
+  rm -rf ${VNC_SERVER_FILENAME}
+fi

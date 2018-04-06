@@ -1,8 +1,8 @@
 #!/usr/bin/make -f
 
 DESTDIR = $(CURDIR)/debian/pulse-agent-installer
-VERSION_XMPP_AGENT=1.8.7
-VERSION_AGENT_PLUGINS=1.3
+VERSION_XMPP_AGENT=1.9.0
+VERSION_AGENT_PLUGINS=1.4
 build:
 	mkdir -p $(DESTDIR)/tmp
 
@@ -36,6 +36,7 @@ build:
 	cp scripts_installer/postflight.in var/lib/pulse2/clients/mac
 	cp scripts_installer/net.siveo.pulse_xmpp_agent.plist var/lib/pulse2/clients/mac
 	cp scripts_installer/rbash var/lib/pulse2/clients/mac
+	cp scripts_installer/runpulseagent var/lib/pulse2/clients/mac
 	mkdir -p var/lib/pulse2/clients/win32/libs
 	cp -fr scripts_installer/nsis_libs/* var/lib/pulse2/clients/win32/libs
 	chmod +x var/lib/pulse2/clients/*.sh
