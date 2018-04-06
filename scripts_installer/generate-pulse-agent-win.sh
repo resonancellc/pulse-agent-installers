@@ -61,7 +61,7 @@ BASE_URL="https://agents.siveo.net" # Overridden if --base-url is defined
 cd "`dirname $0`"
 
 # To be defined
-AGENT_VERSION="1.8.7"
+AGENT_VERSION="1.9.0"
 PYTHON_VERSION="2.7.9"
 PY_WIN32_VERSION="219"
 PY_NETIFACES_MODULE="netifaces"
@@ -109,7 +109,7 @@ RDPWRAP_NAME="RDPWrap"
 RDPWRAP_VERSION="1.6.1"
 DOWNLOAD_FOLDER="downloads"
 PULSE_AGENT_PLUGINS_NAME="pulse-agent-plugins"
-PULSE_AGENT_PLUGINS_VERSION="1.3"
+PULSE_AGENT_PLUGINS_VERSION="1.4"
 
 
 # Display usage
