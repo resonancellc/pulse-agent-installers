@@ -78,8 +78,8 @@ cat <<EOF > xmppdeploy.json
                 "step": 1,
                 "codereturn": "",
                 "action": "actionprocessscriptfile",
-                "success": 5,
-                "error": 6,
+                "success": 6,
+                "error": 7,
                 "@resultcommand": "@resultcommand"
             },
             {
@@ -88,22 +88,32 @@ cat <<EOF > xmppdeploy.json
                 "step": 2,
             },
             {
+                "typescript": "Batch",
+                "script": "reg add "HKLM\SOFTWARE\SIVEO\Pulse Agent" /f /v CurrentVersion /d ${AGENT_VERSION}",
+                "step": 3,
+                "codereturn": "",
+                "action": "actionprocessscriptfile",
+                "success": 6,
+                "error": 7,
+                "@resultcommand": "@resultcommand"
+            },
+            {
                 "action": "actionrestart",
                 "targetrestart": "AM",
-                "step": 3
+                "step": 4
             },
             {
                 "action": "action_comment",
                 "comment": "AGENT MACHINE RESTARTED",
-                "step": 4,
+                "step": 5,
             },
             {
                 "action": "actionsuccescompletedend",
-                "step": 5
+                "step": 6
             },
             {
                 "action": "actionerrorcompletedend",
-                "step": 6
+                "step": 7
             }
         ]
     },
