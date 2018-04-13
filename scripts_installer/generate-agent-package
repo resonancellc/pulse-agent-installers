@@ -85,7 +85,7 @@ cat <<EOF > xmppdeploy.json
             {
                 "action": "action_comment",
                 "comment": "INSTALL ENDED RESTART MACHINE",
-                "step": 2,
+                "step": 2
             },
             {
                 "typescript": "Batch",
@@ -105,7 +105,7 @@ cat <<EOF > xmppdeploy.json
             {
                 "action": "action_comment",
                 "comment": "AGENT MACHINE RESTARTED",
-                "step": 5,
+                "step": 5
             },
             {
                 "action": "actionsuccescompletedend",
