@@ -54,7 +54,7 @@ pushd /var/lib/pulse2/packages/${PACKAGE_UUID}
 cp ${PULSE_AGENT_PATH}/${PULSE_AGENT_FILENAME} .
 
 # Generate xmppdeploy.json
-cat <<EOF > xmppdeploy.json
+cat <<"EOF" > xmppdeploy.json
 {
     "info": {
         "description": "${PACKAGE_DESC}",
