@@ -100,12 +100,14 @@ cat <<EOF > xmppdeploy.json
             {
                 "action": "actionrestart",
                 "targetrestart": "AM",
-                "step": 4
+                "step": 4,
+                "error": 7
             },
             {
                 "action": "action_comment",
                 "comment": "AGENT MACHINE RESTARTED",
-                "step": 5
+                "step": 5,
+                "error": 7
             },
             {
                 "action": "actionsuccescompletedend",
