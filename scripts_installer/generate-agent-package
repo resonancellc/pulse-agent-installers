@@ -78,7 +78,7 @@ cat <<EOF > xmppdeploy.json
                 "step": 1,
                 "codereturn": "",
                 "action": "actionprocessscriptfile",
-                "success": 6,
+                "success": 2,
                 "error": 7,
                 "@resultcommand": "@resultcommand"
             },
@@ -88,15 +88,15 @@ cat <<EOF > xmppdeploy.json
                 "step": 2
             },
             {
-                "typescript": "Batch",
-                "script": "reg add "HKLM\SOFTWARE\SIVEO\Pulse Agent" /f /v CurrentVersion /d ${AGENT_VERSION}",
-                "step": 3,
+                "typescript": "python",
+                "script": "import _winreg\r\nkey = _winreg.OpenKey( _winreg.HKEY_LOCAL_MACHINE, 'SOFTWARE\\\\SIVEO\\\\Pulse Agent\\\\', 0 , _winreg.KEY_SET_VALUE | _winreg.KEY_WOW64_64KEY )\r\n_winreg.SetValueEx(key,  'CurrentVersion'  , 0, _winreg.REG_SZ, '${AGENT_VERSION}')\r\n_winreg.CloseKey(key)",
+                "actionlabel": "020e0912",
                 "codereturn": "",
-                "action": "actionprocessscriptfile",
-                "success": 6,
+                "step": 3,
+                "success": 4,
                 "error": 7,
-                "@resultcommand": "@resultcommand"
-            },
+                "action": "actionprocessscriptfile"
+            }
             {
                 "action": "actionrestart",
                 "targetrestart": "AM",
