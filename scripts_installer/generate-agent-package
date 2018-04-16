@@ -96,7 +96,7 @@ cat <<EOF > xmppdeploy.json
                 "success": 4,
                 "error": 7,
                 "action": "actionprocessscriptfile"
-            }
+            },
             {
                 "action": "actionrestart",
                 "targetrestart": "AM",
