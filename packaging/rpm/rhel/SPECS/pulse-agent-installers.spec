@@ -74,7 +74,6 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
         mkdir -p %{buildroot}/var/lib/pulse2/clients/config/
 
         cp pulse-xmpp-agent-%version/pulse_xmpp_agent/config/agentconf.ini.in %{buildroot}/var/lib/pulse2/clients/config/
-        cp pulse-xmpp-agent-%version/pulse_xmpp_agent/config/relayconf.ini.in %{buildroot}/var/lib/pulse2/clients/config/
         cp pulse-xmpp-agent-%version/pulse_xmpp_agent/config/manage_scheduler.ini %{buildroot}/var/lib/pulse2/clients/config/
         cp scripts_installer/generate-pulse-agent.sh %{buildroot}/var/lib/pulse2/clients
         cp scripts_installer/generate-agent-package %{buildroot}/var/lib/pulse2/clients
