@@ -1,3 +1,11 @@
+pulse-agent-installers 1.9.1
+============================
+
+ * pulse-xmpp-agent 1.9.1
+ * pulse-agent-plugins 1.5
+ * Move relayconf.ini.in to pulse-xmpp-agent package
+
+
 pulse-agent-installers 1.9.0
 ============================
 

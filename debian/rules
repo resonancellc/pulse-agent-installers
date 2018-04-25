@@ -1,8 +1,8 @@
 #!/usr/bin/make -f
 
 DESTDIR = $(CURDIR)/debian/pulse-agent-installer
-VERSION_XMPP_AGENT=1.9.0
-VERSION_AGENT_PLUGINS=1.4
+VERSION_XMPP_AGENT=1.9.1
+VERSION_AGENT_PLUGINS=1.5
 build:
 	mkdir -p $(DESTDIR)/tmp
 
