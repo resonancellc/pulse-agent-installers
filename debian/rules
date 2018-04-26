@@ -10,6 +10,7 @@ build:
 	mv pulse-xmpp-agent pulse-xmpp-agent-${VERSION_XMPP_AGENT}
 	cd pulse-xmpp-agent-${VERSION_XMPP_AGENT}
 	git checkout master
+	echo `pwd`
 	cd ..
 	tar czvf pulse-xmpp-agent-${VERSION_XMPP_AGENT}.tar.gz pulse-xmpp-agent-${VERSION_XMPP_AGENT}
 	rm -fr pulse-xmpp-agent/
