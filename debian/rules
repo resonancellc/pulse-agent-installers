@@ -9,9 +9,6 @@ build:
 	GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-xmpp-agent.git
 	mv pulse-xmpp-agent pulse-xmpp-agent-${VERSION_XMPP_AGENT}
 	cd pulse-xmpp-agent-${VERSION_XMPP_AGENT}
-	git reset --hard
-	git checkout master
-	cd ..
 	tar czvf pulse-xmpp-agent-${VERSION_XMPP_AGENT}.tar.gz pulse-xmpp-agent-${VERSION_XMPP_AGENT}
 	rm -fr pulse-xmpp-agent/
 	mkdir -p var/lib/pulse2/clients
@@ -19,9 +16,6 @@ build:
 	GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-agent-plugins.git
 	mv pulse-agent-plugins pulse-agent-plugins-${VERSION_AGENT_PLUGINS}
 	cd pulse-agent-plugins-${VERSION_AGENT_PLUGINS}
-	git reset --hard
-	git checkout master
-	cd ..
 	tar czvf pulse-agent-plugins-${VERSION_AGENT_PLUGINS}.tar.gz pulse-agent-plugins-${VERSION_AGENT_PLUGINS}
 	mv pulse-agent-plugins-${VERSION_AGENT_PLUGINS}.tar.gz var/lib/pulse2/clients
 	tar xzvf var/lib/pulse2/clients/pulse-xmpp-agent-${VERSION_XMPP_AGENT}.tar.gz -C $(DESTDIR)/tmp
