@@ -6,7 +6,9 @@ VERSION_AGENT_PLUGINS=1.5
 build:
 	mkdir -p $(DESTDIR)/tmp
 
+	echo `pwd`
 	GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-xmpp-agent.git
+	echo `pwd`
 	mv pulse-xmpp-agent pulse-xmpp-agent-${VERSION_XMPP_AGENT}
 	cd pulse-xmpp-agent-${VERSION_XMPP_AGENT}
 	git checkout master
