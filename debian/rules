@@ -9,7 +9,7 @@ build:
 	GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-xmpp-agent.git
 	mv pulse-xmpp-agent pulse-xmpp-agent-${VERSION_XMPP_AGENT}
 	cd pulse-xmpp-agent-${VERSION_XMPP_AGENT}
-	git checkout debian/changelog debian/files
+	git reset --hard
 	git checkout master
 	cd ..
 	tar czvf pulse-xmpp-agent-${VERSION_XMPP_AGENT}.tar.gz pulse-xmpp-agent-${VERSION_XMPP_AGENT}
@@ -19,7 +19,7 @@ build:
 	GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-agent-plugins.git
 	mv pulse-agent-plugins pulse-agent-plugins-${VERSION_AGENT_PLUGINS}
 	cd pulse-agent-plugins-${VERSION_AGENT_PLUGINS}
-	git checkout debian/changelog debian/files
+	git reset --hard
 	git checkout master
 	cd ..
 	tar czvf pulse-agent-plugins-${VERSION_AGENT_PLUGINS}.tar.gz pulse-agent-plugins-${VERSION_AGENT_PLUGINS}
