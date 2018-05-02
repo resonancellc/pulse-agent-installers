@@ -4,7 +4,7 @@
 
 Summary:	Files to create pulse windows installer
 Name:		pulse-agent-installers
-Version:	1.9.1
+Version:	1.9.2
 Release:	%{rel}%{?dist}
 Source0:        pulse-agent-installers-%version.tar.gz
 License:	MIT
