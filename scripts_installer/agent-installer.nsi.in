@@ -33,9 +33,11 @@ RequestExecutionLevel admin
 
 ; Variables replaced by the script calling the nsi
 !define DOWNLOADS_DIR "@@DOWNLOADS_DIR@@"
-!define PYTHON_FILENAME "@@PYTHON_FILENAME@@"
+!define PYTHON32_FILENAME "@@PYTHON32_FILENAME@@"
+!define PYTHON64_FILENAME "@@PYTHON64_FILENAME@@"
 !define PY_VCPYTHON27 "@@PY_VCPYTHON27@@"
-!define PY_WIN32 "@@PY_WIN32@@"
+!define PY_WIN3232 "@@PY_WIN3232@@"
+!define PY_WIN3264 "@@PY_WIN3264@@"
 !define PY_NETIFACES "@@PY_NETIFACES@@"
 !define PY_COMTYPES "@@PY_COMTYPES@@"
 !define PY_CONFIGPARSER "@@PY_CONFIGPARSER@@"
@@ -44,13 +46,16 @@ RequestExecutionLevel admin
 !define PY_WMI "@@PY_WMI@@"
 !define PY_ZIPFILE "@@PY_ZIPFILE@@"
 !define LIBCURL_FILENAME "@@LIBCURL_FILENAME@@"
-!define PY_CURL "@@PY_CURL@@"
-!define PY_LXML "@@PY_LXML@@"
+!define PY_CURL32 "@@PY_CURL32@@"
+!define PY_CURL64 "@@PY_CURL64@@"
+!define PY_LXML32 "@@PY_LXML32@@"
+!define PY_LXML64 "@@PY_LXML64@@"
 !define PY_CRYPTO "@@PY_CRYPTO@@"
 !define PY_CRON "@@PY_CRON@@"
 !define PY_CRON_DEPS_1 "@@PY_CRON_DEPS_1@@"
 !define PY_CRON_DEPS_2 "@@PY_CRON_DEPS_2@@"
-!define PY_PSUTIL "@@PY_PSUTIL@@"
+!define PY_PSUTIL32 "@@PY_PSUTIL32@@"
+!define PY_PSUTIL64 "@@PY_PSUTIL64@@"
 !define PULSE_AGENT "@@PULSE_AGENT@@"
 !define PULSE_AGENT_CONFFILE "@@PULSE_AGENT_CONFFILE@@"
 !define PULSE_SCHEDULER_CONFFILE "@@PULSE_SCHEDULER_CONFFILE@@"
@@ -61,14 +66,16 @@ RequestExecutionLevel admin
 !define OPENSSH32_FILENAME "@@OPENSSH32_FILENAME@@"
 !define OPENSSH64_FILENAME "@@OPENSSH64_FILENAME@@"
 !define LAUNCHER_SSH_KEY "@@LAUNCHER_SSH_KEY@@"
-!define FUSION_INVENTORY_AGENT_FILENAME "@@FUSION_INVENTORY_AGENT_FILENAME@@"
+!define FUSION_INVENTORY_AGENT32_FILENAME "@@FUSION_INVENTORY_AGENT32_FILENAME@@"
+!define FUSION_INVENTORY_AGENT64_FILENAME "@@FUSION_INVENTORY_AGENT64_FILENAME@@"
 !define INVENTORY_TAG "@@INVENTORY_TAG@@"
 !define PULSE_AGENT_PLUGINS "@@PULSE_AGENT_PLUGINS@@"
 !define RSYNC_FILENAME "@@RSYNC_FILENAME@@"
 !define GENERATED_SIZE "@@GENERATED_SIZE@@"
 !define RDPWRAP_FILENAME "@@RDPWRAP_FILENAME@@"
 !define RDPWRAP_FOLDERNAME "@@RDPWRAP_FOLDERNAME@@"
-!define VNC_AGENT_FILENAME "@@VNC_AGENT_FILENAME@@"
+!define VNC_AGENT32_FILENAME "@@VNC_AGENT32_FILENAME@@"
+!define VNC_AGENT64_FILENAME "@@VNC_AGENT64_FILENAME@@"
 SetCompressor lzma
 
 ; Modern UI installer stuff
@@ -109,7 +116,11 @@ Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
 !Else
   OutFile "Pulse-Agent-win32-${GENERATED_SIZE}-${PRODUCT_VERSION}-${INVENTORY_TAG}.exe"
 !EndIf
-InstallDir "$PROGRAMFILES\Pulse"
+!If "$PROGRAMFILES64" != ""
+  InstallDir "$PROGRAMFILES64\Pulse"
+!Else
+  InstallDir "$PROGRAMFILES\Pulse"
+!EndIf
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
 
@@ -131,13 +142,22 @@ SectionEnd
 ; Python installation
 Section "Python" sec_py
   SetOutPath "$INSTDIR\tmp"
-  @@FULL_OR_DL_PYTHON_FILENAME@@
+  @@FULL_OR_DL_PYTHON32_FILENAME@@
+  @@FULL_OR_DL_PYTHON64_FILENAME@@
   @@FULL_OR_DL_PY_VCPYTHON27@@
   ${LogString} "Python Installation...."
   ${LogString} "------------------------------------------------------"
 
   ; Install of Python
-  StrCpy $0 `msiexec /i "$INSTDIR\tmp\${PYTHON_FILENAME}" /quiet /norestart ALLUSERS=1 ADDLOCAL=ALL`
+  ; Get location
+  Var /GLOBAL PYTHON_FILENAME
+  ${If} ${RunningX64}
+    StrCpy $PYTHON_FILENAME "${PYTHON64_FILENAME}"
+  ${Else}
+    StrCpy $PYTHON_FILENAME "${PYTHON32_FILENAME}"
+  ${EndIf}
+  ; Install Python
+  StrCpy $0 `msiexec /i "$INSTDIR\tmp\$PYTHON_FILENAME" /quiet /norestart ALLUSERS=1 ADDLOCAL=ALL`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -152,14 +172,16 @@ Section "Python" sec_py
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
 
-  Delete $INSTDIR\tmp\${PYTHON_FILENAME}
+  Delete $INSTDIR\tmp\${PYTHON32_FILENAME}
+  Delete $INSTDIR\tmp\${PYTHON64_FILENAME}
   Delete $INSTDIR\tmp\${PY_VCPYTHON27}
 SectionEnd
 
 ; Installation of Python modules needed by Pulse Agent
 Section "Python Modules" sec_pymod
   SetOutPath "$INSTDIR\tmp"
-  @@FULL_OR_DL_PY_WIN32@@
+  @@FULL_OR_DL_PY_WIN3232@@
+  @@FULL_OR_DL_PY_WIN3264@@
   @@FULL_OR_DL_PY_NETIFACES@@
   @@FULL_OR_DL_PY_COMTYPES@@
   @@FULL_OR_DL_PY_CONFIGPARSER@@
@@ -167,19 +189,26 @@ Section "Python Modules" sec_pymod
   @@FULL_OR_DL_PY_SLEEKXMPP@@
   @@FULL_OR_DL_PY_WMI@@
   @@FULL_OR_DL_PY_ZIPFILE@@
-  @@FULL_OR_DL_PY_CURL@@
-  @@FULL_OR_DL_PY_LXML@@
+  @@FULL_OR_DL_PY_CURL32@@
+  @@FULL_OR_DL_PY_CURL64@@
+  @@FULL_OR_DL_PY_LXML32@@
+  @@FULL_OR_DL_PY_LXML64@@
   @@FULL_OR_DL_PY_CRYPTO@@
   @@FULL_OR_DL_PY_CRON@@
   @@FULL_OR_DL_PY_CRON_DEPS_1@@
   @@FULL_OR_DL_PY_CRON_DEPS_2@@
-  @@FULL_OR_DL_PY_PSUTIL@@
+  @@FULL_OR_DL_PY_PSUTIL32@@
+  @@FULL_OR_DL_PY_PSUTIL64@@
   File "${DOWNLOADS_DIR}/usr/bin/${LIBCURL_FILENAME}"
   ${LogString} "Python modules Installation...."
   ${LogString} "------------------------------------------------------"
 
   ; Install of Python module for Windows Extensions (pywin32)
-  @@INSTALL_FULL_OR_DL_PY_WIN32@@
+  ${If} ${RunningX64}
+    @@INSTALL_FULL_OR_DL_PY_WIN3264@@
+  ${Else}
+    @@INSTALL_FULL_OR_DL_PY_WIN3232@@
+  ${EndIf}
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -251,7 +280,11 @@ Section "Python Modules" sec_pymod
   SetRebootFlag true
 
   ; Install of Python curl module (pycurl)
-  @@INSTALL_FULL_OR_DL_PY_CURL@@
+  ${If} ${RunningX64}
+    @@INSTALL_FULL_OR_DL_PY_CURL64@@
+  ${Else}
+    @@INSTALL_FULL_OR_DL_PY_CURL32@@
+  ${EndIf}
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -259,7 +292,11 @@ Section "Python Modules" sec_pymod
   ${LogString} "-------------------"
 
   ; Install of Python lxml module
-  @@INSTALL_FULL_OR_DL_PY_LXML@@
+  ${If} ${RunningX64}
+    @@INSTALL_FULL_OR_DL_PY_LXML64@@
+  ${Else}
+    @@INSTALL_FULL_OR_DL_PY_LXML32@@
+  ${EndIf}
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -283,14 +320,19 @@ Section "Python Modules" sec_pymod
   ${LogString} "-------------------"
 
   ; Install of Python psutil module
-  @@INSTALL_FULL_OR_DL_PY_PSUTIL@@
+  ${If} ${RunningX64}
+    @@INSTALL_FULL_OR_DL_PY_PSUTIL64@@
+  ${Else}
+    @@INSTALL_FULL_OR_DL_PY_PSUTIL32@@
+  ${EndIf}
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
 
-  Delete $INSTDIR\tmp\${PY_WIN32}
+  Delete $INSTDIR\tmp\${PY_WIN3232}
+  Delete $INSTDIR\tmp\${PY_WIN3264}
   Delete $INSTDIR\tmp\${PY_NETIFACES}
   Delete $INSTDIR\tmp\${PY_COMTYPES}
   Delete $INSTDIR\tmp\${PY_CONFIGPARSER}
@@ -298,13 +340,16 @@ Section "Python Modules" sec_pymod
   Delete $INSTDIR\tmp\${PY_SLEEKXMPP}
   Delete $INSTDIR\tmp\${PY_WMI}
   Delete $INSTDIR\tmp\${PY_ZIPFILE}
-  Delete $INSTDIR\tmp\${PY_CURL}
-  Delete $INSTDIR\tmp\${PY_LXML}
+  Delete $INSTDIR\tmp\${PY_CURL32}
+  Delete $INSTDIR\tmp\${PY_CURL64}
+  Delete $INSTDIR\tmp\${PY_LXML32}
+  Delete $INSTDIR\tmp\${PY_LXML64}
   Delete $INSTDIR\tmp\${PY_CRYPTO}
   Delete $INSTDIR\tmp\${PY_CRON}
   Delete $INSTDIR\tmp\${PY_CRON_DEPS_1}
   Delete $INSTDIR\tmp\${PY_CRON_DEPS_2}
-  Delete $INSTDIR\tmp\${PY_PSUTIL}
+  Delete $INSTDIR\tmp\${PY_PSUTIL32}
+  Delete $INSTDIR\tmp\${PY_PSUTIL64}
   Delete $INSTDIR\tmp\${LIBCURL_FILENAME}
 SectionEnd
 
@@ -577,7 +622,8 @@ SectionEnd
 
 Section "VNC Setup" sec_vnc
   SetOutPath "$INSTDIR\tmp"
-  @@FULL_OR_DL_VNC_AGENT@@
+  @@FULL_OR_DL_VNC_AGENT32@@
+  @@FULL_OR_DL_VNC_AGENT64@@
   ${LogString} "VNC setup for remote control of machine via Pulse...."
   ${LogString} "------------------------------------------------------"
 
@@ -604,11 +650,19 @@ Section "VNC Setup" sec_vnc
     ${EndIf}
   ${EndIf}
 
+  ; Get location
+  Var /GLOBAL VNC_AGENT_FILENAME
+  ${If} ${RunningX64}
+    StrCpy $VNC_AGENT_FILENAME "${VNC_AGENT64_FILENAME}"
+  ${Else}
+    StrCpy $VNC_AGENT_FILENAME "${VNC_AGENT32_FILENAME}"
+  ${EndIf}
+  ; Install VNC
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ; Create installation command line                                                          ;
   ; http://www.tightvnc.com/doc/win/TightVNC_2.7_for_Windows_Installing_from_MSI_Packages.pdf ;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  StrCpy $0 `msiexec /i "$INSTDIR\tmp\${VNC_AGENT_FILENAME}" /quiet /norestart`
+  StrCpy $0 `msiexec /i "$INSTDIR\tmp\$VNC_AGENT_FILENAME" /quiet /norestart`
   StrCpy $0 `$0 ADDLOCAL=Server SERVER_REGISTER_AS_SERVICE=1 SERVER_ADD_FIREWALL_EXCEPTION=1 SERVER_ALLOW_SAS=1`
   ; Disable embedded Java WebSrv on port 5800
   StrCpy $0 `$0 SET_ACCEPTHTTPCONNECTIONS=1 VALUE_OF_ACCEPTHTTPCONNECTIONS=0`
@@ -642,21 +696,31 @@ Section "VNC Setup" sec_vnc
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
 
-  Delete $INSTDIR\tmp\${VNC_AGENT_FILENAME}
+  Delete $INSTDIR\tmp\${VNC_AGENT32_FILENAME}
+  Delete $INSTDIR\tmp\${VNC_AGENT64_FILENAME}
 SectionEnd
 
 ; Setup of Fusion Inventory agent
 Section "Fusion Inventory agent" sec_fusinv
   SetOutPath "$INSTDIR\tmp"
-  @@FULL_OR_DL_FUSION_INVENTORY_AGENT@@
+  @@FULL_OR_DL_FUSION_INVENTORY_AGENT32@@
+  @@FULL_OR_DL_FUSION_INVENTORY_AGENT64@@
   ${LogString} "Fusion Inventory agent setup...."
   ${LogString} "------------------------------------------------------"
 
   ; Install of Fusion Inventory agent
+  ; Get location
+  Var /GLOBAL FUSION_INVENTORY_AGENT_FILENAME
+  ${If} ${RunningX64}
+    StrCpy $FUSION_INVENTORY_AGENT_FILENAME "${FUSION_INVENTORY_AGENT64_FILENAME}"
+  ${Else}
+    StrCpy $FUSION_INVENTORY_AGENT_FILENAME "${FUSION_INVENTORY_AGENT32_FILENAME}"
+  ${EndIf}
+  ; Install Fusion Inventory agent
   !If "${INVENTORY_TAG}" == ''
-    StrCpy $0 `"$INSTDIR\tmp\${FUSION_INVENTORY_AGENT_FILENAME}" /S /acceptlicense /no-start-menu /execmode=Manual`
+    StrCpy $0 `"$INSTDIR\tmp\$FUSION_INVENTORY_AGENT_FILENAME" /S /acceptlicense /no-start-menu /execmode=Manual`
   !Else
-    StrCpy $0 `"$INSTDIR\tmp\${FUSION_INVENTORY_AGENT_FILENAME}" /S /acceptlicense /no-start-menu /execmode=Manual /tag="${INVENTORY_TAG}"`
+    StrCpy $0 `"$INSTDIR\tmp\$FUSION_INVENTORY_AGENT_FILENAME" /S /acceptlicense /no-start-menu /execmode=Manual /tag="${INVENTORY_TAG}"`
   !EndIf
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
@@ -664,7 +728,8 @@ Section "Fusion Inventory agent" sec_fusinv
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
 
-  Delete $INSTDIR\tmp\${FUSION_INVENTORY_AGENT_FILENAME}
+  Delete $INSTDIR\tmp\${FUSION_INVENTORY_AGENT32_FILENAME}
+  Delete $INSTDIR\tmp\${FUSION_INVENTORY_AGENT64_FILENAME}
 SectionEnd
 
 ; Installation of Pulse Agent
@@ -851,6 +916,11 @@ Function .onInit
   SetRegView 64
 
   ; Install log initialization
+  !If "$PROGRAMFILES64" != ""
+    StrCpy $INSTDIR "$PROGRAMFILES64\Pulse"
+  !Else
+    StrCpy $INSTDIR "$PROGRAMFILES\Pulse"
+  !EndIf
   CreateDirectory "$INSTDIR\tmp"
   ${LogInit} "$INSTDIR\tmp\install.log"
   ${LogString} "Starting install..."
