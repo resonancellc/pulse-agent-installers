@@ -70,6 +70,7 @@ cd "`dirname $0`"
 # To be defined
 AGENT_VERSION="1.9.2"
 PYTHON_VERSION="2.7.9"
+PY_WIN32_MODULE="pypiwin32"
 PY_WIN32_VERSION="219"
 PY_NETIFACES_MODULE="netifaces"
 PY_NETIFACES_VERSION="0.10.5"
@@ -165,8 +166,8 @@ compute_parameters() {
 	PYTHON64_URL="${BASE_URL}/win32/downloads/${PYTHON64_FILENAME}"
 	PY_VCPYTHON27_FILENAME="VCForPython27.msi"
 	PY_VCPYTHON27_URL="${BASE_URL}/win32/downloads/${PY_VCPYTHON27_FILENAME}"
-	PY_WIN3232_FILENAME="pypiwin32-${PY_WIN32_VERSION}-cp27-none-win32.whl"
-	PY_WIN3264_FILENAME="pypiwin32-${PY_WIN32_VERSION}-cp27-none-win_amd64.whl"
+	PY_WIN3232_FILENAME="${PY_WIN32_MODULE}-${PY_WIN32_VERSION}-cp27-none-win32.whl"
+	PY_WIN3264_FILENAME="${PY_WIN32_MODULE}-${PY_WIN32_VERSION}-cp27-none-win_amd64.whl"
 	PY_WIN3232_URL="${BASE_URL}/win32/downloads/python_modules/${PY_WIN3232_FILENAME}"
 	PY_WIN3264_URL="${BASE_URL}/win32/downloads/python_modules/${PY_WIN3264_FILENAME}"
 	PY_NETIFACES_FILENAME="${PY_NETIFACES_MODULE}-${PY_NETIFACES_VERSION}.tar.gz"
@@ -300,25 +301,25 @@ update_nsi_script_full() {
 	FULL_PYTHON32_FILENAME='File "${DOWNLOADS_DIR}/${PYTHON32_FILENAME}"'
 	FULL_PYTHON64_FILENAME='File "${DOWNLOADS_DIR}/${PYTHON64_FILENAME}"'
 	FULL_PY_VCPYTHON27='File "${DOWNLOADS_DIR}/${PY_VCPYTHON27}"'
-	FULL_PY_WIN3232='File "${DOWNLOADS_DIR}/python_modules/${PY_WIN3232}"'
-	FULL_PY_WIN3264='File "${DOWNLOADS_DIR}/python_modules/${PY_WIN3264}"'
-	FULL_PY_NETIFACES='File "${DOWNLOADS_DIR}/python_modules/${PY_NETIFACES}"'
-	FULL_PY_COMTYPES='File "${DOWNLOADS_DIR}/python_modules/${PY_COMTYPES}"'
-	FULL_PY_CONFIGPARSER='File "${DOWNLOADS_DIR}/python_modules/${PY_CONFIGPARSER}"'
-	FULL_PY_UTILS='File "${DOWNLOADS_DIR}/python_modules/${PY_UTILS}"'
-	FULL_PY_SLEEKXMPP='File "${DOWNLOADS_DIR}/python_modules/${PY_SLEEKXMPP}"'
-	FULL_PY_WMI='File "${DOWNLOADS_DIR}/python_modules/${PY_WMI}"'
-	FULL_PY_ZIPFILE='File "${DOWNLOADS_DIR}/python_modules/${PY_ZIPFILE}"'
-	FULL_PY_CURL32='File "${DOWNLOADS_DIR}/python_modules/${PY_CURL32}"'
-	FULL_PY_CURL64='File "${DOWNLOADS_DIR}/python_modules/${PY_CURL64}"'
-	FULL_PY_LXML32='File "${DOWNLOADS_DIR}/python_modules/${PY_LXML32}"'
-	FULL_PY_LXML64='File "${DOWNLOADS_DIR}/python_modules/${PY_LXML64}"'
-	FULL_PY_CRYPTO='File "${DOWNLOADS_DIR}/python_modules/${PY_CRYPTO}"'
-	FULL_PY_CRON='File "${DOWNLOADS_DIR}/python_modules/${PY_CRON}"'
-	FULL_PY_CRON_DEPS_1='File "${DOWNLOADS_DIR}/python_modules/${PY_CRON_DEPS_1}"'
-	FULL_PY_CRON_DEPS_2='File "${DOWNLOADS_DIR}/python_modules/${PY_CRON_DEPS_2}"'
-	FULL_PY_PSUTIL32='File "${DOWNLOADS_DIR}/python_modules/${PY_PSUTIL32}"'
-	FULL_PY_PSUTIL64='File "${DOWNLOADS_DIR}/python_modules/${PY_PSUTIL64}"'
+	FULL_PY_WIN3232='File "${DOWNLOADS_DIR}/python_modules/${PY_WIN3232_FILENAME}"'
+	FULL_PY_WIN3264='File "${DOWNLOADS_DIR}/python_modules/${PY_WIN3264_FILENAME}"'
+	FULL_PY_NETIFACES='File "${DOWNLOADS_DIR}/python_modules/${PY_NETIFACES_FILENAME}"'
+	FULL_PY_COMTYPES='File "${DOWNLOADS_DIR}/python_modules/${PY_COMTYPES_FILENAME}"'
+	FULL_PY_CONFIGPARSER='File "${DOWNLOADS_DIR}/python_modules/${PY_CONFIGPARSER_FILENAME}"'
+	FULL_PY_UTILS='File "${DOWNLOADS_DIR}/python_modules/${PY_UTILS_FILENAME}"'
+	FULL_PY_SLEEKXMPP='File "${DOWNLOADS_DIR}/python_modules/${PY_SLEEKXMPP_FILENAME}"'
+	FULL_PY_WMI='File "${DOWNLOADS_DIR}/python_modules/${PY_WMI_FILENAME}"'
+	FULL_PY_ZIPFILE='File "${DOWNLOADS_DIR}/python_modules/${PY_ZIPFILE_FILENAME}"'
+	FULL_PY_CURL32='File "${DOWNLOADS_DIR}/python_modules/${PY_CURL32_FILENAME}"'
+	FULL_PY_CURL64='File "${DOWNLOADS_DIR}/python_modules/${PY_CURL64_FILENAME}"'
+	FULL_PY_LXML32='File "${DOWNLOADS_DIR}/python_modules/${PY_LXML32_FILENAME}"'
+	FULL_PY_LXML64='File "${DOWNLOADS_DIR}/python_modules/${PY_LXML64_FILENAME}"'
+	FULL_PY_CRYPTO='File "${DOWNLOADS_DIR}/python_modules/${PY_CRYPTO_FILENAME}"'
+	FULL_PY_CRON='File "${DOWNLOADS_DIR}/python_modules/${PY_CRON_FILENAME}"'
+	FULL_PY_CRON_DEPS_1='File "${DOWNLOADS_DIR}/python_modules/${PY_CRON_DEPS_1_FILENAME}"'
+	FULL_PY_CRON_DEPS_2='File "${DOWNLOADS_DIR}/python_modules/${PY_CRON_DEPS_2_FILENAME}"'
+	FULL_PY_PSUTIL32='File "${DOWNLOADS_DIR}/python_modules/${PY_PSUTIL32_FILENAME}"'
+	FULL_PY_PSUTIL64='File "${DOWNLOADS_DIR}/python_modules/${PY_PSUTIL64_FILENAME}"'
 	FULL_OPENSSH32='File "${DOWNLOADS_DIR}/${OPENSSH32_FILENAME}"'
 	FULL_OPENSSH64='File "${DOWNLOADS_DIR}/${OPENSSH64_FILENAME}"'
 	FULL_FUSION_INVENTORY_AGENT32='File "${DOWNLOADS_DIR}/${FUSION_INVENTORY_AGENT32_FILENAME}"'
@@ -326,23 +327,23 @@ update_nsi_script_full() {
 	FULL_RDPWRAP='File "${DOWNLOADS_DIR}/${RDPWRAP_FILENAME}"'
 	FULL_VNC_AGENT32='File "${DOWNLOADS_DIR}/${VNC_AGENT32_FILENAME}"'
 	FULL_VNC_AGENT64='File "${DOWNLOADS_DIR}/${VNC_AGENT64_FILENAME}"'
-	INSTALL_FULL_PY_WIN3232='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WIN3232}`'
-	INSTALL_FULL_PY_WIN3264='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WIN3264}`'
-	INSTALL_FULL_PY_NETIFACES='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_NETIFACES}`'
-	INSTALL_FULL_PY_COMTYPES='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_COMTYPES}`'
-	INSTALL_FULL_PY_CONFIGPARSER='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --pre --no-index --find-links="$INSTDIR\tmp" ${PY_CONFIGPARSER}`'
-	INSTALL_FULL_PY_UTILS='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_UTILS}`'
-	INSTALL_FULL_PY_SLEEKXMPP='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_SLEEKXMPP}`'
-	INSTALL_FULL_PY_WMI='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WMI}`'
-	INSTALL_FULL_PY_ZIPFILE='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_ZIPFILE}`'
-	INSTALL_FULL_PY_CURL32='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CURL32}`'
-	INSTALL_FULL_PY_CURL64='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CURL64}`'
-	INSTALL_FULL_PY_LXML32='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_LXML32}`'
-	INSTALL_FULL_PY_LXML64='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_LXML64}`'
-	INSTALL_FULL_PY_CRYPTO='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CRYPTO}`'
-	INSTALL_FULL_PY_CRON='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CRON}`'
-	INSTALL_FULL_PY_PSUTIL32='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_PSUTIL32}`'
-	INSTALL_FULL_PY_PSUTIL64='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_PSUTIL64}`'
+	INSTALL_FULL_PY_WIN3232='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WIN3232_FILENAME}`'
+	INSTALL_FULL_PY_WIN3264='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WIN3264_FILENAME}`'
+	INSTALL_FULL_PY_NETIFACES='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_NETIFACES_FILENAME}`'
+	INSTALL_FULL_PY_COMTYPES='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_COMTYPES_FILENAME}`'
+	INSTALL_FULL_PY_CONFIGPARSER='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --pre --no-index --find-links="$INSTDIR\tmp" ${PY_CONFIGPARSER_FILENAME}`'
+	INSTALL_FULL_PY_UTILS='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_UTILS_FILENAME}`'
+	INSTALL_FULL_PY_SLEEKXMPP='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_SLEEKXMPP_FILENAME}`'
+	INSTALL_FULL_PY_WMI='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WMI_FILENAME}`'
+	INSTALL_FULL_PY_ZIPFILE='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_ZIPFILE_FILENAME}`'
+	INSTALL_FULL_PY_CURL32='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CURL32_FILENAME}`'
+	INSTALL_FULL_PY_CURL64='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CURL64_FILENAME}`'
+	INSTALL_FULL_PY_LXML32='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_LXML32_FILENAME}`'
+	INSTALL_FULL_PY_LXML64='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_LXML64_FILENAME}`'
+	INSTALL_FULL_PY_CRYPTO='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CRYPTO_FILENAME}`'
+	INSTALL_FULL_PY_CRON='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CRON_FILENAME}`'
+	INSTALL_FULL_PY_PSUTIL32='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_PSUTIL32_FILENAME}`'
+	INSTALL_FULL_PY_PSUTIL64='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_PSUTIL64_FILENAME}`'
 
 	sed -e "s/@@PRODUCT_VERSION@@/${AGENT_VERSION}/" \
 		-e "s/@@DOWNLOADS_DIR@@/${DOWNLOAD_FOLDER}/" \
@@ -355,60 +356,60 @@ update_nsi_script_full() {
 		-e "s/@@PY_VCPYTHON27@@/${PY_VCPYTHON27_FILENAME}/" \
 		-e "s/@@PY_VCPYTHON27_URL@@/$(sed_escape ${PY_VCPYTHON27_URL})/" \
 		-e "s/@@FULL_OR_DL_PY_VCPYTHON27@@/$(sed_escape ${FULL_PY_VCPYTHON27})/" \
-		-e "s/@@PY_WIN3232@@/${PY_WIN3232_FILENAME}/" \
+		-e "s/@@PY_WIN3232_FILENAME@@/${PY_WIN3232_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_WIN3232@@/$(sed_escape ${FULL_PY_WIN3232})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_WIN3232@@/$(sed_escape ${INSTALL_FULL_PY_WIN3232})/" \
-		-e "s/@@PY_WIN3264@@/${PY_WIN3264_FILENAME}/" \
+		-e "s/@@PY_WIN3264_FILENAME@@/${PY_WIN3264_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_WIN3264@@/$(sed_escape ${FULL_PY_WIN3264})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_WIN3264@@/$(sed_escape ${INSTALL_FULL_PY_WIN3264})/" \
-		-e "s/@@PY_NETIFACES@@/${PY_NETIFACES_FILENAME}/" \
+		-e "s/@@PY_NETIFACES_FILENAME@@/${PY_NETIFACES_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_NETIFACES@@/$(sed_escape ${FULL_PY_NETIFACES})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_NETIFACES@@/$(sed_escape ${INSTALL_FULL_PY_NETIFACES})/" \
-		-e "s/@@PY_COMTYPES@@/${PY_COMTYPES_FILENAME}/" \
+		-e "s/@@PY_COMTYPES_FILENAME@@/${PY_COMTYPES_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_COMTYPES@@/$(sed_escape ${FULL_PY_COMTYPES})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_COMTYPES@@/$(sed_escape ${INSTALL_FULL_PY_COMTYPES})/" \
-		-e "s/@@PY_CONFIGPARSER@@/${PY_CONFIGPARSER_FILENAME}/" \
+		-e "s/@@PY_CONFIGPARSER_FILENAME@@/${PY_CONFIGPARSER_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_CONFIGPARSER@@/$(sed_escape ${FULL_PY_CONFIGPARSER})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_CONFIGPARSER@@/$(sed_escape ${INSTALL_FULL_PY_CONFIGPARSER})/" \
-		-e "s/@@PY_UTILS@@/${PY_UTILS_FILENAME}/" \
+		-e "s/@@PY_UTILS_FILENAME@@/${PY_UTILS_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_UTILS@@/$(sed_escape ${FULL_PY_UTILS})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_UTILS@@/$(sed_escape ${INSTALL_FULL_PY_UTILS})/" \
-		-e "s/@@PY_SLEEKXMPP@@/${PY_SLEEKXMPP_FILENAME}/" \
+		-e "s/@@PY_SLEEKXMPP_FILENAME@@/${PY_SLEEKXMPP_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_SLEEKXMPP@@/$(sed_escape ${FULL_PY_SLEEKXMPP})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_SLEEKXMPP@@/$(sed_escape ${INSTALL_FULL_PY_SLEEKXMPP})/" \
-		-e "s/@@PY_WMI@@/${PY_WMI_FILENAME}/" \
+		-e "s/@@PY_WMI_FILENAME@@/${PY_WMI_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_WMI@@/$(sed_escape ${FULL_PY_WMI})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_WMI@@/$(sed_escape ${INSTALL_FULL_PY_WMI})/" \
-		-e "s/@@PY_ZIPFILE@@/${PY_ZIPFILE_FILENAME}/" \
+		-e "s/@@PY_ZIPFILE_FILENAME@@/${PY_ZIPFILE_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_ZIPFILE@@/$(sed_escape ${FULL_PY_ZIPFILE})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_ZIPFILE@@/$(sed_escape ${INSTALL_FULL_PY_ZIPFILE})/" \
 		-e "s/@@LIBCURL_FILENAME@@/${LIBCURL_FILENAME}/" \
-		-e "s/@@PY_CURL32@@/${PY_CURL32_FILENAME}/" \
+		-e "s/@@PY_CURL32_FILENAME@@/${PY_CURL32_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_CURL32@@/$(sed_escape ${FULL_PY_CURL32})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_CURL32@@/$(sed_escape ${INSTALL_FULL_PY_CURL32})/" \
-		-e "s/@@PY_CURL64@@/${PY_CURL64_FILENAME}/" \
+		-e "s/@@PY_CURL64_FILENAME@@/${PY_CURL64_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_CURL64@@/$(sed_escape ${FULL_PY_CURL64})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_CURL64@@/$(sed_escape ${INSTALL_FULL_PY_CURL64})/" \
-		-e "s/@@PY_LXML32@@/${PY_LXML32_FILENAME}/" \
+		-e "s/@@PY_LXML32_FILENAME@@/${PY_LXML32_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_LXML32@@/$(sed_escape ${FULL_PY_LXML32})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_LXML32@@/$(sed_escape ${INSTALL_FULL_PY_LXML32})/" \
-		-e "s/@@PY_LXML64@@/${PY_LXML64_FILENAME}/" \
+		-e "s/@@PY_LXML64_FILENAME@@/${PY_LXML64_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_LXML64@@/$(sed_escape ${FULL_PY_LXML64})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_LXML64@@/$(sed_escape ${INSTALL_FULL_PY_LXML64})/" \
-		-e "s/@@PY_CRYPTO@@/${PY_CRYPTO_FILENAME}/" \
+		-e "s/@@PY_CRYPTO_FILENAME@@/${PY_CRYPTO_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_CRYPTO@@/$(sed_escape ${FULL_PY_CRYPTO})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_CRYPTO@@/$(sed_escape ${INSTALL_FULL_PY_CRYPTO})/" \
-		-e "s/@@PY_CRON@@/${PY_CRON_FILENAME}/" \
+		-e "s/@@PY_CRON_FILENAME@@/${PY_CRON_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_CRON@@/$(sed_escape ${FULL_PY_CRON})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_CRON@@/$(sed_escape ${INSTALL_FULL_PY_CRON})/" \
-		-e "s/@@PY_CRON_DEPS_1@@/${PY_CRON_DEPS_1_FILENAME}/" \
+		-e "s/@@PY_CRON_DEPS_1_FILENAME@@/${PY_CRON_DEPS_1_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_CRON_DEPS_1@@/$(sed_escape ${FULL_PY_CRON_DEPS_1})/" \
-		-e "s/@@PY_CRON_DEPS_2@@/${PY_CRON_DEPS_2_FILENAME}/" \
+		-e "s/@@PY_CRON_DEPS_2_FILENAME@@/${PY_CRON_DEPS_2_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_CRON_DEPS_2@@/$(sed_escape ${FULL_PY_CRON_DEPS_2})/" \
-		-e "s/@@PY_PSUTIL32@@/${PY_PSUTIL32_FILENAME}/" \
+		-e "s/@@PY_PSUTIL32_FILENAME@@/${PY_PSUTIL32_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_PSUTIL32@@/$(sed_escape ${FULL_PY_PSUTIL32})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_PSUTIL32@@/$(sed_escape ${INSTALL_FULL_PY_PSUTIL32})/" \
-		-e "s/@@PY_PSUTIL64@@/${PY_PSUTIL64_FILENAME}/" \
+		-e "s/@@PY_PSUTIL64_FILENAME@@/${PY_PSUTIL64_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_PSUTIL64@@/$(sed_escape ${FULL_PY_PSUTIL64})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_PSUTIL64@@/$(sed_escape ${INSTALL_FULL_PY_PSUTIL64})/" \
 		-e "s/@@PULSE_AGENT@@/${PULSE_AGENT_FILENAME}/" \
@@ -448,25 +449,25 @@ update_nsi_script_dl() {
 	DL_PYTHON32_FILENAME='${DownloadFile} '"${PYTHON32_URL}"' ${PYTHON32_FILENAME}'
 	DL_PYTHON64_FILENAME='${DownloadFile} '"${PYTHON64_URL}"' ${PYTHON64_FILENAME}'
 	DL_PY_VCPYTHON27='${DownloadFile} '"${PY_VCPYTHON27_URL}"' ${PY_VCPYTHON27}'
-	DL_PY_WIN3232='${DownloadFile} '"${PY_WIN3232_URL}"' ${PY_WIN3232}'
-	DL_PY_WIN3264='${DownloadFile} '"${PY_WIN3264_URL}"' ${PY_WIN3264}'
-	DL_PY_NETIFACES='${DownloadFile} '"${PY_NETIFACES_URL}"' ${PY_NETIFACES}'
-	DL_PY_COMTYPES='${DownloadFile} '"${PY_COMTYPES_URL}"' ${PY_COMTYPES}'
-	DL_PY_CONFIGPARSER='${DownloadFile} '"${PY_CONFIGPARSER_URL}"' ${PY_CONFIGPARSER}'
-	DL_PY_UTILS='${DownloadFile} '"${PY_UTILS_URL}"' ${PY_UTILS}'
-	DL_PY_SLEEKXMPP='${DownloadFile} '"${PY_SLEEKXMPP_URL}"' ${PY_SLEEKXMPP}'
-	DL_PY_WMI='${DownloadFile} '"${PY_WMI_URL}"' ${PY_WMI}'
-	DL_PY_ZIPFILE='${DownloadFile} '"${PY_ZIPFILE_URL}"' ${PY_ZIPFILE}'
-	DL_PY_CURL32='${DownloadFile} '"${PY_CURL32_URL}"' ${PY_CURL32}'
-	DL_PY_CURL64='${DownloadFile} '"${PY_CURL64_URL}"' ${PY_CURL64}'
-	DL_PY_LXML32='${DownloadFile} '"${PY_LXML32_URL}"' ${PY_LXML32}'
-	DL_PY_LXML64='${DownloadFile} '"${PY_LXML64_URL}"' ${PY_LXML64}'
-	DL_PY_CRYPTO='${DownloadFile} '"${PY_CRYPTO_URL}"' ${PY_CRYPTO}'
-	DL_PY_CRON='${DownloadFile} '"${PY_CRON_URL}"' ${PY_CRON}'
-	DL_PY_CRON_DEPS_1='${DownloadFile} '"${PY_CRON_DEPS_1_URL}"' ${PY_CRON_DEPS_1}'
-	DL_PY_CRON_DEPS_2='${DownloadFile} '"${PY_CRON_DEPS_2_URL}"' ${PY_CRON_DEPS_2}'
-	DL_PY_PSUTIL32='${DownloadFile} '"${PY_PSUTIL32_URL}"' ${PY_PSUTIL32}'
-	DL_PY_PSUTIL64='${DownloadFile} '"${PY_PSUTIL64_URL}"' ${PY_PSUTIL64}'
+	DL_PY_WIN3232='${DownloadFile} '"${PY_WIN3232_URL}"' ${PY_WIN3232_FILENAME}'
+	DL_PY_WIN3264='${DownloadFile} '"${PY_WIN3264_URL}"' ${PY_WIN3264_FILENAME}'
+	DL_PY_NETIFACES='${DownloadFile} '"${PY_NETIFACES_URL}"' ${PY_NETIFACES_FILENAME}'
+	DL_PY_COMTYPES='${DownloadFile} '"${PY_COMTYPES_URL}"' ${PY_COMTYPES_FILENAME}'
+	DL_PY_CONFIGPARSER='${DownloadFile} '"${PY_CONFIGPARSER_URL}"' ${PY_CONFIGPARSER_FILENAME}'
+	DL_PY_UTILS='${DownloadFile} '"${PY_UTILS_URL}"' ${PY_UTILS_FILENAME}'
+	DL_PY_SLEEKXMPP='${DownloadFile} '"${PY_SLEEKXMPP_URL}"' ${PY_SLEEKXMPP_FILENAME}'
+	DL_PY_WMI='${DownloadFile} '"${PY_WMI_URL}"' ${PY_WMI_FILENAME}'
+	DL_PY_ZIPFILE='${DownloadFile} '"${PY_ZIPFILE_URL}"' ${PY_ZIPFILE_FILENAME}'
+	DL_PY_CURL32='${DownloadFile} '"${PY_CURL32_URL}"' ${PY_CURL32_FILENAME}'
+	DL_PY_CURL64='${DownloadFile} '"${PY_CURL64_URL}"' ${PY_CURL64_FILENAME}'
+	DL_PY_LXML32='${DownloadFile} '"${PY_LXML32_URL}"' ${PY_LXML32_FILENAME}'
+	DL_PY_LXML64='${DownloadFile} '"${PY_LXML64_URL}"' ${PY_LXML64_FILENAME}'
+	DL_PY_CRYPTO='${DownloadFile} '"${PY_CRYPTO_URL}"' ${PY_CRYPTO_FILENAME}'
+	DL_PY_CRON='${DownloadFile} '"${PY_CRON_URL}"' ${PY_CRON_FILENAME}'
+	DL_PY_CRON_DEPS_1='${DownloadFile} '"${PY_CRON_DEPS_1_URL}"' ${PY_CRON_DEPS_1_FILENAME}'
+	DL_PY_CRON_DEPS_2='${DownloadFile} '"${PY_CRON_DEPS_2_URL}"' ${PY_CRON_DEPS_2_FILENAME}'
+	DL_PY_PSUTIL32='${DownloadFile} '"${PY_PSUTIL32_URL}"' ${PY_PSUTIL32_FILENAME}'
+	DL_PY_PSUTIL64='${DownloadFile} '"${PY_PSUTIL64_URL}"' ${PY_PSUTIL64_FILENAME}'
 	DL_OPENSSH32='${DownloadFile} '"${OPENSSH32_URL}"' ${OPENSSH32_FILENAME}'
 	DL_OPENSSH64='${DownloadFile} '"${OPENSSH64_URL}"' ${OPENSSH64_FILENAME}'
 	DL_FUSION_INVENTORY_AGENT32='${DownloadFile} '"${FUSION_INVENTORY_AGENT32_URL}"' ${FUSION_INVENTORY_AGENT32_FILENAME}'
@@ -474,23 +475,23 @@ update_nsi_script_dl() {
 	DL_RDPWRAP='${DownloadFile} '"$RDPWRAP_URL"' ${RDPWRAP_FILENAME}'
 	DL_VNC_AGENT32='${DownloadFile} '"$VNC_AGENT32_URL"' ${VNC_AGENT32_FILENAME}'
 	DL_VNC_AGENT64='${DownloadFile} '"$VNC_AGENT64_URL"' ${VNC_AGENT64_FILENAME}'
-	INSTALL_DL_PY_WIN3232='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WIN3232}`'
-	INSTALL_DL_PY_WIN3264='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WIN3264}`'
-	INSTALL_DL_PY_NETIFACES='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_NETIFACES}`'
-	INSTALL_DL_PY_COMTYPES='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_COMTYPES}`'
-	INSTALL_DL_PY_CONFIGPARSER='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --pre --no-index --find-links="$INSTDIR\tmp" ${PY_CONFIGPARSER}`'
-	INSTALL_DL_PY_UTILS='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_UTILS}`'
-	INSTALL_DL_PY_SLEEKXMPP='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_SLEEKXMPP}`'
-	INSTALL_DL_PY_WMI='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WMI}`'
-	INSTALL_DL_PY_ZIPFILE='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_ZIPFILE}`'
-	INSTALL_DL_PY_CURL32='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CURL32}`'
-	INSTALL_DL_PY_CURL64='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CURL64}`'
-	INSTALL_DL_PY_LXML32='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_LXML32}`'
-	INSTALL_DL_PY_LXML64='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_LXML64}`'
-	INSTALL_DL_PY_CRYPTO='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CRYPTO}`'
-	INSTALL_DL_PY_CRON='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CRON}`'
-	INSTALL_DL_PY_PSUTIL32='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_PSUTIL32}`'
-	INSTALL_DL_PY_PSUTIL64='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_PSUTIL64}`'
+	INSTALL_DL_PY_WIN3232='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WIN3232_FILENAME}`'
+	INSTALL_DL_PY_WIN3264='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WIN3264_FILENAME}`'
+	INSTALL_DL_PY_NETIFACES='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_NETIFACES_FILENAME}`'
+	INSTALL_DL_PY_COMTYPES='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_COMTYPES_FILENAME}`'
+	INSTALL_DL_PY_CONFIGPARSER='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --pre --no-index --find-links="$INSTDIR\tmp" ${PY_CONFIGPARSER_FILENAME}`'
+	INSTALL_DL_PY_UTILS='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_UTILS_FILENAME}`'
+	INSTALL_DL_PY_SLEEKXMPP='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_SLEEKXMPP_FILENAME}`'
+	INSTALL_DL_PY_WMI='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WMI_FILENAME}`'
+	INSTALL_DL_PY_ZIPFILE='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_ZIPFILE_FILENAME}`'
+	INSTALL_DL_PY_CURL32='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CURL32_FILENAME}`'
+	INSTALL_DL_PY_CURL64='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CURL64_FILENAME}`'
+	INSTALL_DL_PY_LXML32='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_LXML32_FILENAME}`'
+	INSTALL_DL_PY_LXML64='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_LXML64_FILENAME}`'
+	INSTALL_DL_PY_CRYPTO='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CRYPTO_FILENAME}`'
+	INSTALL_DL_PY_CRON='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CRON_FILENAME}`'
+	INSTALL_DL_PY_PSUTIL32='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_PSUTIL32_FILENAME}`'
+	INSTALL_DL_PY_PSUTIL64='StrCpy $0 `C:\Python27\Scripts\pip install --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_PSUTIL64_FILENAME}`'
 
 	sed -e "s/@@PRODUCT_VERSION@@/${AGENT_VERSION}/" \
 		-e "s/@@DOWNLOADS_DIR@@/${DOWNLOAD_FOLDER}/" \
@@ -503,60 +504,60 @@ update_nsi_script_dl() {
 		-e "s/@@PY_VCPYTHON27@@/${PY_VCPYTHON27_FILENAME}/" \
 		-e "s/@@PY_VCPYTHON27_URL@@/$(sed_escape ${PY_VCPYTHON27_URL})/" \
 		-e "s/@@FULL_OR_DL_PY_VCPYTHON27@@/$(sed_escape ${DL_PY_VCPYTHON27})/" \
-		-e "s/@@PY_WIN3232@@/${PY_WIN3232_FILENAME}/" \
+		-e "s/@@PY_WIN3232_FILENAME@@/${PY_WIN3232_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_WIN3232@@/$(sed_escape ${DL_PY_WIN3232})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_WIN3232@@/$(sed_escape ${INSTALL_DL_PY_WIN3232})/" \
-		-e "s/@@PY_WIN3264@@/${PY_WIN3264_FILENAME}/" \
+		-e "s/@@PY_WIN3264_FILENAME@@/${PY_WIN3264_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_WIN3264@@/$(sed_escape ${DL_PY_WIN3264})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_WIN3264@@/$(sed_escape ${INSTALL_DL_PY_WIN3264})/" \
-		-e "s/@@PY_NETIFACES@@/${PY_NETIFACES_FILENAME}/" \
+		-e "s/@@PY_NETIFACES_FILENAME@@/${PY_NETIFACES_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_NETIFACES@@/$(sed_escape ${DL_PY_NETIFACES})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_NETIFACES@@/$(sed_escape ${INSTALL_DL_PY_NETIFACES})/" \
-		-e "s/@@PY_COMTYPES@@/${PY_COMTYPES_FILENAME}/" \
+		-e "s/@@PY_COMTYPES_FILENAME@@/${PY_COMTYPES_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_COMTYPES@@/$(sed_escape ${DL_PY_COMTYPES})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_COMTYPES@@/$(sed_escape ${INSTALL_DL_PY_COMTYPES})/" \
-		-e "s/@@PY_CONFIGPARSER@@/${PY_CONFIGPARSER_FILENAME}/" \
+		-e "s/@@PY_CONFIGPARSER_FILENAME@@/${PY_CONFIGPARSER_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_CONFIGPARSER@@/$(sed_escape ${DL_PY_CONFIGPARSER})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_CONFIGPARSER@@/$(sed_escape ${INSTALL_DL_PY_CONFIGPARSER})/" \
-		-e "s/@@PY_UTILS@@/${PY_UTILS_FILENAME}/" \
+		-e "s/@@PY_UTILS_FILENAME@@/${PY_UTILS_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_UTILS@@/$(sed_escape ${DL_PY_UTILS})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_UTILS@@/$(sed_escape ${INSTALL_DL_PY_UTILS})/" \
-		-e "s/@@PY_SLEEKXMPP@@/${PY_SLEEKXMPP_FILENAME}/" \
+		-e "s/@@PY_SLEEKXMPP_FILENAME@@/${PY_SLEEKXMPP_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_SLEEKXMPP@@/$(sed_escape ${DL_PY_SLEEKXMPP})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_SLEEKXMPP@@/$(sed_escape ${INSTALL_DL_PY_SLEEKXMPP})/" \
-		-e "s/@@PY_WMI@@/${PY_WMI_FILENAME}/" \
+		-e "s/@@PY_WMI_FILENAME@@/${PY_WMI_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_WMI@@/$(sed_escape ${DL_PY_WMI})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_WMI@@/$(sed_escape ${INSTALL_DL_PY_WMI})/" \
-		-e "s/@@PY_ZIPFILE@@/${PY_ZIPFILE_FILENAME}/" \
+		-e "s/@@PY_ZIPFILE_FILENAME@@/${PY_ZIPFILE_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_ZIPFILE@@/$(sed_escape ${DL_PY_ZIPFILE})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_ZIPFILE@@/$(sed_escape ${INSTALL_DL_PY_ZIPFILE})/" \
 		-e "s/@@LIBCURL_FILENAME@@/${LIBCURL_FILENAME}/" \
-		-e "s/@@PY_CURL32@@/${PY_CURL32_FILENAME}/" \
+		-e "s/@@PY_CURL32_FILENAME@@/${PY_CURL32_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_CURL32@@/$(sed_escape ${DL_PY_CURL32})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_CURL32@@/$(sed_escape ${INSTALL_DL_PY_CURL32})/" \
-		-e "s/@@PY_CURL64@@/${PY_CURL64_FILENAME}/" \
+		-e "s/@@PY_CURL64_FILENAME@@/${PY_CURL64_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_CURL64@@/$(sed_escape ${DL_PY_CURL64})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_CURL64@@/$(sed_escape ${INSTALL_DL_PY_CURL64})/" \
-		-e "s/@@PY_LXML32@@/${PY_LXML32_FILENAME}/" \
+		-e "s/@@PY_LXML32_FILENAME@@/${PY_LXML32_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_LXML32@@/$(sed_escape ${DL_PY_LXML32})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_LXML32@@/$(sed_escape ${INSTALL_DL_PY_LXML32})/" \
-		-e "s/@@PY_LXML64@@/${PY_LXML64_FILENAME}/" \
+		-e "s/@@PY_LXML64_FILENAME@@/${PY_LXML64_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_LXML64@@/$(sed_escape ${DL_PY_LXML64})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_LXML64@@/$(sed_escape ${INSTALL_DL_PY_LXML64})/" \
-		-e "s/@@PY_CRYPTO@@/${PY_CRYPTO_FILENAME}/" \
+		-e "s/@@PY_CRYPTO_FILENAME@@/${PY_CRYPTO_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_CRYPTO@@/$(sed_escape ${DL_PY_CRYPTO})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_CRYPTO@@/$(sed_escape ${INSTALL_DL_PY_CRYPTO})/" \
-		-e "s/@@PY_CRON@@/${PY_CRON_FILENAME}/" \
+		-e "s/@@PY_CRON_FILENAME@@/${PY_CRON_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_CRON@@/$(sed_escape ${DL_PY_CRON})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_CRON@@/$(sed_escape ${INSTALL_DL_PY_CRON})/" \
-		-e "s/@@PY_CRON_DEPS_1@@/${PY_CRON_DEPS_1_FILENAME}/" \
+		-e "s/@@PY_CRON_DEPS_1_FILENAME@@/${PY_CRON_DEPS_1_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_CRON_DEPS_1@@/$(sed_escape ${DL_PY_CRON_DEPS_1})/" \
-		-e "s/@@PY_CRON_DEPS_2@@/${PY_CRON_DEPS_2_FILENAME}/" \
+		-e "s/@@PY_CRON_DEPS_2_FILENAME@@/${PY_CRON_DEPS_2_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_CRON_DEPS_2@@/$(sed_escape ${DL_PY_CRON_DEPS_2})/" \
-		-e "s/@@PY_PSUTIL32@@/${PY_PSUTIL32_FILENAME}/" \
+		-e "s/@@PY_PSUTIL32_FILENAME@@/${PY_PSUTIL32_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_PSUTIL32@@/$(sed_escape ${DL_PY_PSUTIL32})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_PSUTIL32@@/$(sed_escape ${INSTALL_DL_PY_PSUTIL32})/" \
-		-e "s/@@PY_PSUTIL64@@/${PY_PSUTIL64_FILENAME}/" \
+		-e "s/@@PY_PSUTIL64_FILENAME@@/${PY_PSUTIL64_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_PSUTIL64@@/$(sed_escape ${DL_PY_PSUTIL64})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_PSUTIL64@@/$(sed_escape ${INSTALL_DL_PY_PSUTIL64})/" \
 		-e "s/@@PULSE_AGENT@@/${PULSE_AGENT_FILENAME}/" \

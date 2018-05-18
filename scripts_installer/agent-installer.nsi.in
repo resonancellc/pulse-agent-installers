@@ -36,26 +36,26 @@ RequestExecutionLevel admin
 !define PYTHON32_FILENAME "@@PYTHON32_FILENAME@@"
 !define PYTHON64_FILENAME "@@PYTHON64_FILENAME@@"
 !define PY_VCPYTHON27 "@@PY_VCPYTHON27@@"
-!define PY_WIN3232 "@@PY_WIN3232@@"
-!define PY_WIN3264 "@@PY_WIN3264@@"
-!define PY_NETIFACES "@@PY_NETIFACES@@"
-!define PY_COMTYPES "@@PY_COMTYPES@@"
-!define PY_CONFIGPARSER "@@PY_CONFIGPARSER@@"
-!define PY_UTILS "@@PY_UTILS@@"
-!define PY_SLEEKXMPP "@@PY_SLEEKXMPP@@"
-!define PY_WMI "@@PY_WMI@@"
-!define PY_ZIPFILE "@@PY_ZIPFILE@@"
 !define LIBCURL_FILENAME "@@LIBCURL_FILENAME@@"
-!define PY_CURL32 "@@PY_CURL32@@"
-!define PY_CURL64 "@@PY_CURL64@@"
-!define PY_LXML32 "@@PY_LXML32@@"
-!define PY_LXML64 "@@PY_LXML64@@"
-!define PY_CRYPTO "@@PY_CRYPTO@@"
-!define PY_CRON "@@PY_CRON@@"
-!define PY_CRON_DEPS_1 "@@PY_CRON_DEPS_1@@"
-!define PY_CRON_DEPS_2 "@@PY_CRON_DEPS_2@@"
-!define PY_PSUTIL32 "@@PY_PSUTIL32@@"
-!define PY_PSUTIL64 "@@PY_PSUTIL64@@"
+!define PY_WIN3232_FILENAME "@@PY_WIN3232_FILENAME@@"
+!define PY_WIN3264_FILENAME "@@PY_WIN3264_FILENAME@@"
+!define PY_NETIFACES_FILENAME "@@PY_NETIFACES_FILENAME@@"
+!define PY_COMTYPES_FILENAME "@@PY_COMTYPES_FILENAME@@"
+!define PY_CONFIGPARSER_FILENAME "@@PY_CONFIGPARSER_FILENAME@@"
+!define PY_UTILS_FILENAME "@@PY_UTILS_FILENAME@@"
+!define PY_SLEEKXMPP_FILENAME "@@PY_SLEEKXMPP_FILENAME@@"
+!define PY_WMI_FILENAME "@@PY_WMI_FILENAME@@"
+!define PY_ZIPFILE_FILENAME "@@PY_ZIPFILE_FILENAME@@"
+!define PY_CURL32_FILENAME "@@PY_CURL32_FILENAME@@"
+!define PY_CURL64_FILENAME "@@PY_CURL64_FILENAME@@"
+!define PY_LXML32_FILENAME "@@PY_LXML32_FILENAME@@"
+!define PY_LXML64_FILENAME "@@PY_LXML64_FILENAME@@"
+!define PY_CRYPTO_FILENAME "@@PY_CRYPTO_FILENAME@@"
+!define PY_CRON_FILENAME "@@PY_CRON_FILENAME@@"
+!define PY_CRON_DEPS_1_FILENAME "@@PY_CRON_DEPS_1_FILENAME@@"
+!define PY_CRON_DEPS_2_FILENAME "@@PY_CRON_DEPS_2_FILENAME@@"
+!define PY_PSUTIL32_FILENAME "@@PY_PSUTIL32_FILENAME@@"
+!define PY_PSUTIL64_FILENAME "@@PY_PSUTIL64_FILENAME@@"
 !define PULSE_AGENT "@@PULSE_AGENT@@"
 !define PULSE_AGENT_CONFFILE "@@PULSE_AGENT_CONFFILE@@"
 !define PULSE_SCHEDULER_CONFFILE "@@PULSE_SCHEDULER_CONFFILE@@"
@@ -147,6 +147,22 @@ Section "Python" sec_py
   @@FULL_OR_DL_PY_VCPYTHON27@@
   ${LogString} "Python Installation...."
   ${LogString} "------------------------------------------------------"
+
+  ; On win32 clean old python if installed
+  ${If} ${RunningX64}
+    ClearErrors
+    ExecWait '"python" -V'
+    ${IfNot} ${Errors}
+        ; Seems Python is installed. We'll try to uninstall the 32bit version
+        ${LogString} "Uninstalling 32bit python if found..."
+        StrCpy $0 `msiexec /x "$INSTDIR\tmp\${PYTHON32_FILENAME}" /qn REBOOT=R`
+        ${LogString} "Running $0"
+        nsExec::ExecToLog $0
+        Pop $1 # return value/error/timeout
+        ${LogString} "Return code was: $1"
+        ${LogString} ""
+    ${EndIf}
+  ${EndIf}
 
   ; Install of Python
   ; Get location
@@ -331,25 +347,25 @@ Section "Python Modules" sec_pymod
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
 
-  Delete $INSTDIR\tmp\${PY_WIN3232}
-  Delete $INSTDIR\tmp\${PY_WIN3264}
-  Delete $INSTDIR\tmp\${PY_NETIFACES}
-  Delete $INSTDIR\tmp\${PY_COMTYPES}
-  Delete $INSTDIR\tmp\${PY_CONFIGPARSER}
-  Delete $INSTDIR\tmp\${PY_UTILS}
-  Delete $INSTDIR\tmp\${PY_SLEEKXMPP}
-  Delete $INSTDIR\tmp\${PY_WMI}
-  Delete $INSTDIR\tmp\${PY_ZIPFILE}
-  Delete $INSTDIR\tmp\${PY_CURL32}
-  Delete $INSTDIR\tmp\${PY_CURL64}
-  Delete $INSTDIR\tmp\${PY_LXML32}
-  Delete $INSTDIR\tmp\${PY_LXML64}
-  Delete $INSTDIR\tmp\${PY_CRYPTO}
-  Delete $INSTDIR\tmp\${PY_CRON}
-  Delete $INSTDIR\tmp\${PY_CRON_DEPS_1}
-  Delete $INSTDIR\tmp\${PY_CRON_DEPS_2}
-  Delete $INSTDIR\tmp\${PY_PSUTIL32}
-  Delete $INSTDIR\tmp\${PY_PSUTIL64}
+  Delete $INSTDIR\tmp\${PY_WIN3232_FILENAME}
+  Delete $INSTDIR\tmp\${PY_WIN3264_FILENAME}
+  Delete $INSTDIR\tmp\${PY_NETIFACES_FILENAME}
+  Delete $INSTDIR\tmp\${PY_COMTYPES_FILENAME}
+  Delete $INSTDIR\tmp\${PY_CONFIGPARSER_FILENAME}
+  Delete $INSTDIR\tmp\${PY_UTILS_FILENAME}
+  Delete $INSTDIR\tmp\${PY_SLEEKXMPP_FILENAME}
+  Delete $INSTDIR\tmp\${PY_WMI_FILENAME}
+  Delete $INSTDIR\tmp\${PY_ZIPFILE_FILENAME}
+  Delete $INSTDIR\tmp\${PY_CURL32_FILENAME}
+  Delete $INSTDIR\tmp\${PY_CURL64_FILENAME}
+  Delete $INSTDIR\tmp\${PY_LXML32_FILENAME}
+  Delete $INSTDIR\tmp\${PY_LXML64_FILENAME}
+  Delete $INSTDIR\tmp\${PY_CRYPTO_FILENAME}
+  Delete $INSTDIR\tmp\${PY_CRON_FILENAME}
+  Delete $INSTDIR\tmp\${PY_CRON_DEPS_1_FILENAME}
+  Delete $INSTDIR\tmp\${PY_CRON_DEPS_2_FILENAME}
+  Delete $INSTDIR\tmp\${PY_PSUTIL32_FILENAME}
+  Delete $INSTDIR\tmp\${PY_PSUTIL64_FILENAME}
   Delete $INSTDIR\tmp\${LIBCURL_FILENAME}
 SectionEnd
 
@@ -525,7 +541,6 @@ Section "rsync" sec_rsync
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
 
-
   ; Start the service
   StrCpy $0 `sc start ssh-agent`
   ${LogString} "Running $0"
@@ -573,6 +588,7 @@ Section "rsync" sec_rsync
   Delete $INSTDIR\tmp\${OPENSSH64_FILENAME}
   Delete $INSTDIR\tmp\${RSYNC_FILENAME}
   RMDir /r $INSTDIR\tmp\rsync
+  RMDir /r "$INSTDIR\tmp\$OPENSSH_CONTENTS_FOLDER"
 SectionEnd
 
 ; Setup of RDP & Firewall
@@ -627,27 +643,16 @@ Section "VNC Setup" sec_vnc
   ${LogString} "VNC setup for remote control of machine via Pulse...."
   ${LogString} "------------------------------------------------------"
 
-  ; Clean old TightVNC if installed
-  ClearErrors
-  ReadRegStr $0 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TightVNC" "DisplayVersion"
-  ${IfNot} ${Errors}
-    ; Seems TightVNC is installed
-    ClearErrors
-    ${IfNot} ${Errors}
-      ReadRegStr $0 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TightVNC" "UninstallString"
-      ${LogString} "TightVNC seems to be installed. Uninstalling..."
-      ; Silent uninstall
-      StrCpy $0 `"$0" /S`
-      ${LogString} "Running $0"
-      nsExec::ExecToLog $0
-      Pop $1 # return value/error/timeout
-      ${LogString} "Return code was: $1"
-      ${LogString} ""
-    ${Else}
-      ${LogString} "Uh? Skipping TightVNC uninstallation."
-      ${LogString} "Got DisplayVersion from registry without UninstallString, that's weird."
-      ${LogString} ""
-    ${EndIf}
+  ; On win64 clean old 32bit TightVNC if installed
+  ${If} ${RunningX64}
+    IfFileExists $PROGRAMFILES\TightVNC\tvnserver.exe 0 +8
+    ${LogString} "TightVNC seems to be installed. Uninstalling..."
+    StrCpy $0 `msiexec /x "$INSTDIR\tmp\${VNC_AGENT32_FILENAME}" /qn REBOOT=R`
+    ${LogString} "Running $0"
+    nsExec::ExecToLog $0
+    Pop $1 # return value/error/timeout
+    ${LogString} "Return code was: $1"
+    ${LogString} ""
   ${EndIf}
 
   ; Get location
@@ -707,6 +712,21 @@ Section "Fusion Inventory agent" sec_fusinv
   @@FULL_OR_DL_FUSION_INVENTORY_AGENT64@@
   ${LogString} "Fusion Inventory agent setup...."
   ${LogString} "------------------------------------------------------"
+
+  ; Clean old Fusion Inventory agent if installed
+  ClearErrors
+  ReadRegStr $0 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\FusionInventory-Agent" "UninstallString"
+  ${IfNot} ${Errors}
+    ; Seems Fusion Inventory agent is installed
+    ${LogString} "Fusion Inventory agent seems to be installed. Uninstalling..."
+    ; Silent uninstall
+    StrCpy $0 `"$0" /S`
+    ${LogString} "Running $0"
+    nsExec::ExecToLog $0
+    Pop $1 # return value/error/timeout
+    ${LogString} "Return code was: $1"
+    ${LogString} ""
+  ${EndIf}
 
   ; Install of Fusion Inventory agent
   ; Get location
@@ -823,6 +843,10 @@ Section "!${PRODUCT_NAME}" sec_app
   Delete $INSTDIR\tmp\${PULSE_AGENT_TASK_XML}
   Delete $INSTDIR\tmp\${PULSE_AGENT_PLUGINS}
 
+  ${If} ${RunningX64}
+    RMDir /r "$PROGRAMFILES\Pulse"
+  ${EndIf}
+
   Sleep 20000
 SectionEnd
 
@@ -927,6 +951,21 @@ Function .onInit
   !insertmacro GetTime
   ${GetTime} "" "L" $0 $1 $2 $3 $4 $5 $6
   ${LogString} "Start time: $3 $0/$1/$2 at $4:$5:$6"
+
+  ; Stop the agent if it is already running and kill all python tasks
+  ${LogString} "Trying to stop agent if it is running"
+  StrCpy $0 `SCHTASKS /End /TN "${PRODUCT_NAME}"`
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
+  ${LogString} ""
+  StrCpy $0 `taskkill /F /IM python.exe /T`
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
+  ${LogString} ""
 FunctionEnd
 
 Function un.onInit
