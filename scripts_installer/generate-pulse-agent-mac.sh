@@ -87,7 +87,7 @@ PULSE_AGENT_NAME="pulse-xmpp-agent"
 PULSE_AGENT_MODULE="pulse_xmpp_agent"
 SSH_PUB_KEY="/root/.ssh/id_rsa.pub"
 PULSE_AGENT_PLUGINS_NAME="pulse-agent-plugins"
-PULSE_AGENT_PLUGINS_VERSION="1.6"
+PULSE_AGENT_PLUGINS_VERSION="1.5"
 PKG_FOLDER_TMP="mac_package_tmp"
 VNC_SERVER_NAME="OSXvnc"
 VNC_SERVER_VERSION="5.2.1"
@@ -156,7 +156,6 @@ compute_parameters() {
 	PULSE_AGENT_FILENAME="${PULSE_AGENT_NAME}-${AGENT_VERSION}.tar.gz"
 	PULSE_AGENT_CONFFILE_FILENAME="agentconf.ini"
 	PULSE_SCHEDULER_CONFFILE_FILENAME="manage_scheduler.ini"
-	PULSE_INVENTORY_CONFFILE_FILENAME="inventory.ini"
 	PULSE_AGENT_PLUGINS_FILENAME="${PULSE_AGENT_PLUGINS_NAME}-${PULSE_AGENT_PLUGINS_VERSION}.tar.gz"
 	FUSION_INVENTORY_AGENT_PKG="${FUSION_INVENTORY_AGENT_NAME}-${FUSION_INVENTORY_AGENT_VERSION}.pkg"
 	FUSION_INVENTORY_AGENT_ARCHIVE="${FUSION_INVENTORY_AGENT_PKG}.tar.gz"
@@ -191,7 +190,6 @@ create_folder_structure() {
 	# Copy config files
 	cp ../config/${PULSE_AGENT_CONFFILE_FILENAME} ${PKG_FOLDER_TMP}/Contents/Resources/
 	cp ../config/${PULSE_SCHEDULER_CONFFILE_FILENAME} ${PKG_FOLDER_TMP}/Contents/Resources/
-	cp ../config/${PULSE_INVENTORY_CONFFILE_FILENAME} ${PKG_FOLDER_TMP}/Contents/Resources/
 	# Create package_version
 	echo "Major: ${V_MAJOR}" > ${PKG_FOLDER_TMP}/Contents/package_version
 	echo "Minor: ${V_MINOR}" >> ${PKG_FOLDER_TMP}/Contents/package_version
@@ -257,7 +255,6 @@ update_postflight_script_mini() {
 		-e "s/@@PULSE_AGENT_PLUGINS_FILENAME@@/${PULSE_AGENT_PLUGINS_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_CONFFILE_FILENAME@@/${PULSE_AGENT_CONFFILE_FILENAME}/" \
 		-e "s/@@PULSE_SCHEDULER_CONFFILE_FILENAME@@/${PULSE_SCHEDULER_CONFFILE_FILENAME}/" \
-		-e "s/@@PULSE_INVENTORY_CONFFILE_FILENAME@@/${PULSE_INVENTORY_CONFFILE_FILENAME}/" \
 		postflight.in \
 		> ${PKG_FOLDER_TMP}/Contents/Resources/postflight
 		chmod 0755 ${PKG_FOLDER_TMP}/Contents/Resources/postflight
