@@ -59,6 +59,7 @@ RequestExecutionLevel admin
 !define PULSE_AGENT "@@PULSE_AGENT@@"
 !define PULSE_AGENT_CONFFILE "@@PULSE_AGENT_CONFFILE@@"
 !define PULSE_SCHEDULER_CONFFILE "@@PULSE_SCHEDULER_CONFFILE@@"
+!define PULSE_INVENTORY_CONFFILE "@@PULSE_INVENTORY_CONFFILE@@"
 !define PULSE_AGENT_NAME "@@PULSE_AGENT_NAME@@"
 !define PULSE_AGENT_MODULE "@@PULSE_AGENT_MODULE@@"
 !define PULSE_AGENT_TASK_XML "@@PULSE_AGENT_TASK_XML@@"
@@ -793,6 +794,10 @@ Section "!${PRODUCT_NAME}" sec_app
   SetOverwrite off
   File "../config/${PULSE_SCHEDULER_CONFFILE}"
   SetOverwrite on
+
+  ; Copy of inventory config file
+  SetOutPath "$INSTDIR\etc"
+  File "../config/${PULSE_INVENTORY_CONFFILE}"
 
   ; Creation of the task
   SetOutPath "$INSTDIR\tmp"
