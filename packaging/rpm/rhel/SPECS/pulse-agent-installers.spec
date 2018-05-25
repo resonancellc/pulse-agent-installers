@@ -58,8 +58,8 @@ cd pulse-agent-plugins
 git checkout %branch
 cd ..
 
-mv pulse-agent-plugins pulse-agent-plugins-1.5
-tar czvf pulse-agent-plugins-1.5.tar.gz pulse-agent-plugins-1.5
+mv pulse-agent-plugins pulse-agent-plugins-1.6
+tar czvf pulse-agent-plugins-1.6.tar.gz pulse-agent-plugins-1.6
 
 
 %install
@@ -68,7 +68,7 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
 
 
 	# We create pulse-agent-plugins tarball
-        mv pulse-agent-plugins-1.5.tar.gz %{buildroot}/var/lib/pulse2/clients
+        mv pulse-agent-plugins-1.6.tar.gz %{buildroot}/var/lib/pulse2/clients
 
         mkdir -p %{buildroot}/etc/mmc/plugins/
         mkdir -p %{buildroot}/var/lib/pulse2/clients/config/
