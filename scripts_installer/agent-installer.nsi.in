@@ -446,7 +446,7 @@ Section "rsync" sec_rsync
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
   SetOutPath "$INSTDIR\.ssh"
-  Rename id_rsa.pub authorized_keys
+  Rename /REBOOTOK id_rsa.pub authorized_keys
   ${LogString} "Setting permissions on pulse user profile folder"
   StrCpy $0 `wmic useraccount where name="pulse" get sid /VALUE`
   ${LogString} "Running $0"
