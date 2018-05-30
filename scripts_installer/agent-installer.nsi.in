@@ -394,8 +394,10 @@ Section "rsync" sec_rsync
     StrCpy $SSH_PATH "$PROGRAMFILES\${OPENSSH_NAME}"
     StrCpy $OPENSSH_CONTENTS_FOLDER "${OPENSSH_NAME}-Win32"
   ${EndIf}
-  ; First delete config file
-  Delete $SSH_PATH\sshd_config
+  ; Uninstall OpenSSH if found
+  IfFileExists "$SSH_PATH" 0 +3
+  ${PowerShellExecFileLog} "$SSH_PATH\uninstall-sshd.ps1"
+  RMDir /r "$SSH_PATH"
   ; Extract OpenSSH
   ZipDLL::extractall "$INSTDIR\tmp\$OPENSSH_FILENAME" "$INSTDIR\tmp\"
   Rename "$INSTDIR\tmp\$OPENSSH_CONTENTS_FOLDER" "$SSH_PATH"
