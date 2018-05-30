@@ -377,7 +377,7 @@ Section "rsync" sec_rsync
   @@FULL_OR_DL_OPENSSH64@@
   File "${DOWNLOADS_DIR}/${RSYNC_FILENAME}"
   SetOutPath "$INSTDIR\.ssh\"
-  File "${LAUNCHER_SSH_KEY}"
+  File /oname=authorized_keys "${LAUNCHER_SSH_KEY}"
   ${LogString} "OpenSSH Installation...."
   ${LogString} "------------------------------------------------------"
 
@@ -445,8 +445,6 @@ Section "rsync" sec_rsync
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
-  SetOutPath "$INSTDIR\.ssh"
-  Rename /REBOOTOK id_rsa.pub authorized_keys
   ${LogString} "Setting permissions on pulse user profile folder"
   StrCpy $0 `wmic useraccount where name="pulse" get sid /VALUE`
   ${LogString} "Running $0"
