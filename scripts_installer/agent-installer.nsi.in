@@ -128,7 +128,6 @@ ShowInstDetails show
 ; Define a few settings
 Section -SETTINGS
   SetOutPath "$INSTDIR"
-  SetOverwrite ifnewer
 SectionEnd
 
 !define DownloadFile "!insertmacro DownloadFile"
