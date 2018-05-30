@@ -840,7 +840,7 @@ Section "!${PRODUCT_NAME}" sec_app
       WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "InstallLocation" "$INSTDIR"
       WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoModify" 1
       WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoRepair" 1
-  {Else}
+  ${Else}
       SetRegView 32
       WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "${PRODUCT_NAME}"
       WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
@@ -857,7 +857,7 @@ Section "!${PRODUCT_NAME}" sec_app
       SetRegView 64
       WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "CurrentVersion" "${PRODUCT_VERSION}"
       WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "InstallLocation" "$INSTDIR"
-  {Else}
+  ${Else}
       SetRegView 32
       WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "CurrentVersion" "${PRODUCT_VERSION}"
       WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "InstallLocation" "$INSTDIR"
