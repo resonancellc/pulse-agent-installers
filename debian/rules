@@ -34,7 +34,7 @@ build:
 	cp scripts_installer/generate-pulse-agent-win.sh var/lib/pulse2/clients/win32
 	cp scripts_installer/agent-installer.nsi.in var/lib/pulse2/clients/win32
 	cp scripts_installer/pulse-agent-task.xml var/lib/pulse2/clients/win32
-	cp scripts_installer/generate-kiosk-package var/lib/pulse2/client/win32
+	cp scripts_installer/generate-kiosk-package var/lib/pulse2/clients/win32
 	mkdir -p var/lib/pulse2/clients/linux
 	cp scripts_installer/*linux* var/lib/pulse2/clients/linux
 	mkdir -p var/lib/pulse2/clients/mac
