@@ -53,9 +53,9 @@ fi
 PACKAGE_NAME="Pulse Kiosk"
 PACKAGE_DESC="Kiosk module for machines managed by Pulse"
 
-KIOSK_VERSION="0.1"
+KIOSK_VERSION="0.2"
 PYTHON_VERSION="3.6.5"
-PYTHON_MODULES_PACKAGE_VERSION="1.0"
+PYTHON_MODULES_PACKAGE_VERSION="1.1"
 WIN32_PYTHON_FILENAME="python-${PYTHON_VERSION}.exe"
 WIN64_PYTHON_FILENAME="python-${PYTHON_VERSION}-amd64.exe"
 WIN32_PYWIN32_FILENAME="pywin32-223.win32-py3.6.exe"
@@ -218,35 +218,55 @@ else
     "win": {
         "sequence": [
             {
-                "typescript": "Batch",
-                "script": "${PYWIN32_INSTALL_COMMAND_ENCODED}",
-                "actionlabel": "f81c3cc2",
-                "step": 0,
+                "success": 2,
+                "actionlabel": "94825ae3",
                 "codereturn": "",
-                "action": "actionprocessscriptfile",
-                "success": 1,
-                "error": 3,
+                "step": 0,
+                "command": "py -3 -c \"import win32api\"",
+                "error": 1,
+                "action": "actionprocessscript",
                 "@resultcommand": "@resultcommand"
             },
             {
                 "typescript": "Batch",
+                "script": "${PYWIN32_INSTALL_COMMAND_ENCODED}",
+                "actionlabel": "f81c3cc2",
+                "step": 1,
+                "codereturn": "",
+                "action": "actionprocessscriptfile",
                 "success": 2,
+                "error": 5,
+                "@resultcommand": "@resultcommand"
+            },
+            {
+                "success": 4,
+                "actionlabel": "95a13aa6",
+                "codereturn": "",
+                "step": 2,
+                "command": "py -3 -c \"import PyQt5\"",
+                "error": 3,
+                "action": "actionprocessscript",
+                "@resultcommand": "@resultcommand"
+            },
+            {
+                "typescript": "Batch",
+                "success": 4,
                 "script": "${PYQT5_INSTALL_COMMAND_ENCODED}",
                 "actionlabel": "f8bd0cd6",
                 "codereturn": "",
-                "step": 1,
-                "error": 3,
+                "step": 3,
+                "error": 5,
                 "action": "actionprocessscriptfile",
                 "@resultcommand": "@resultcommand"
             },
             {
                 "action": "actionsuccescompletedend",
-                "step": 2,
+                "step": 4,
                 "actionlabel": "END_SUCCESS"
             },
             {
                 "action": "actionerrorcompletedend",
-                "step": 3,
+                "step": 5,
                 "actionlabel": "END_ERROR"
             }
         ]
@@ -254,10 +274,12 @@ else
     "metaparameter": {
         "win": {
             "label": {
-                "END_SUCCESS": 2,
-                "f8bd0cd6": 1,
-                "f81c3cc2": 0,
-                "END_ERROR": 3
+                "END_SUCCESS": 4,
+                "f8bd0cd6": 3,
+                "f81c3cc2": 1,
+                "94825ae3": 0,
+                "95a13aa6": 2,
+                "END_ERROR": 5
             }
         },
         "os": [
@@ -288,10 +310,17 @@ old_uuid=$(grep "${PACKAGE_NAME} v${AGENT_VERSION}" /var/lib/pulse2/packages/* -
 mkdir -p /var/lib/pulse2/packages/${PACKAGE_UUID}
 pushd /var/lib/pulse2/packages/${PACKAGE_UUID}
 
-# Copy the kiosk and dependencies to the package folder
+# Copy the kiosk to the package folder
 cp ${PULSE_KIOSK_PATH}/${PULSE_KIOSK_FILENAME} .
 
+# Generate bat file used for running the kiosk at startup
+cat <<EOF > PulseKiosk.bat
+cd %ProgramFiles%\Python36\Lib\site-packages\kiosk_interface
+cmd.exe /K py -3 __init__.py
+EOF
 
+KIOSK_COPY_BAT_COMMAND="copy PulseKiosk.bat \"%ALLUSERSPROFILE%\Microsoft\Windows\Start Menu\Programs\StartUp\""
+KIOSK_COPY_BAT_COMMAND_ENCODED=$(echo -e ${KIOSK_COPY_BAT_COMMAND} | base64 --wrap=0)
 # Generate xmppdeploy.json
 cat <<EOF > xmppdeploy.json
 {
@@ -314,21 +343,32 @@ cat <<EOF > xmppdeploy.json
                 "typescript": "Batch",
                 "script": "py -3 -m pip install --upgrade --no-index --find-links=\".\" ${PULSE_KIOSK_FILENAME}",
                 "actionlabel": "e11c5ac2",
-                "step": 1,
+                "step": 0,
                 "codereturn": "",
                 "action": "actionprocessscriptfile",
                 "success": 1,
-                "error": 2,
+                "error": 3,
+                "@resultcommand": "@resultcommand"
+            },
+            {
+                "typescript": "Batch",
+                "script": "${KIOSK_COPY_BAT_COMMAND_ENCODED}",
+                "actionlabel": "e843a25b",
+                "step": 1,
+                "codereturn": "",
+                "action": "actionprocessscriptfile",
+                "success": 2,
+                "error": 3,
                 "@resultcommand": "@resultcommand"
             },
             {
                 "action": "actionsuccescompletedend",
-                "step": 1,
+                "step": 2,
                 "actionlabel": "END_SUCCESS"
             },
             {
                 "action": "actionerrorcompletedend",
-                "step": 2,
+                "step": 3,
                 "actionlabel": "END_ERROR"
             }
         ]
@@ -336,9 +376,10 @@ cat <<EOF > xmppdeploy.json
     "metaparameter": {
         "win": {
             "label": {
-                "END_SUCCESS": 1,
+                "END_SUCCESS": 2,
                 "e11c5ac2": 0,
-                "END_ERROR": 2
+                "e843a25b": 1,
+                "END_ERROR": 3
             }
         },
         "os": [
