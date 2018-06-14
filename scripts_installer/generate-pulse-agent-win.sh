@@ -602,6 +602,16 @@ generate_agent_installer() {
 		colored_echo red "### ER... Generation of agent failed. Please restart"
 		exit 1
 	fi
+
+    # Create symlinks to latest version
+    if [[ ${INVENTORY_TAG} == '' ]]; then
+        if [[ ${MINIMAL} -eq 1 ]]; then
+            ln -s -f Pulse-Agent-win32-MINIMAL-${AGENT_VERSION}.exe Pulse-Agent-win32-MINIMAL-latest.exe
+        else
+            ln -s -f Pulse-Agent-win32-FULL-${AGENT_VERSION}.exe Pulse-Agent-win32-FULL-latest.exe
+        fi
+    fi
+    
 	colored_echo green "### INFO  Generating installer... Done"
 }
 

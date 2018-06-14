@@ -303,6 +303,16 @@ generate_agent_pkg() {
 		colored_echo red "### ER... Generation of agent failed. Please restart"
 		exit 1
 	fi
+
+    # Create symlinks to latest version
+    if [[ ${INVENTORY_TAG} == '' ]]; then
+        if [[ ${MINIMAL} -eq 1 ]]; then
+            ln -s -f Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg.tar.gz Pulse-Agent-mac-MINIMAL-latest.pkg.tar.gz
+        else
+            ln -s -f Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg.tar.gz Pulse-Agent-mac-FULL-latest.pkg.tar.gz
+        fi
+    fi
+
 	colored_echo green "### INFO  Generating installer... Done"
 }
 
