@@ -113,9 +113,9 @@ SetCompressor lzma
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
 !If "${INVENTORY_TAG}" == ''
-  OutFile "Pulse-Agent-win32-${GENERATED_SIZE}-${PRODUCT_VERSION}.exe"
+  OutFile "Pulse-Agent-windows-${GENERATED_SIZE}-${PRODUCT_VERSION}.exe"
 !Else
-  OutFile "Pulse-Agent-win32-${GENERATED_SIZE}-${PRODUCT_VERSION}-${INVENTORY_TAG}.exe"
+  OutFile "Pulse-Agent-windows-${GENERATED_SIZE}-${PRODUCT_VERSION}-${INVENTORY_TAG}.exe"
 !EndIf
 !If "$PROGRAMFILES64" != ""
   InstallDir "$PROGRAMFILES64\Pulse"
