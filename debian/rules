@@ -2,23 +2,27 @@
 
 DESTDIR = $(CURDIR)/debian/pulse-agent-installer
 
-VERSION_XMPP_AGENT=1.9.4
-VERSION_AGENT_PLUGINS=1.6.1
+VERSION_XMPP_AGENT=1.9.3
+VERSION_AGENT_PLUGINS=1.6
+VERSION_KIOSK_INTERFACE=0.2
+
 build:
 	mkdir -p $(DESTDIR)/tmp
 
-	GIT_SSL_NO_VERIFY=true git clone -b master https://github.com/pulse-project/pulse-xmpp-agent.git
+	GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-xmpp-agent.git
 	mv pulse-xmpp-agent pulse-xmpp-agent-${VERSION_XMPP_AGENT}
-	cd pulse-xmpp-agent-${VERSION_XMPP_AGENT}
 	tar czvf pulse-xmpp-agent-${VERSION_XMPP_AGENT}.tar.gz pulse-xmpp-agent-${VERSION_XMPP_AGENT}
 	rm -fr pulse-xmpp-agent/
 	mkdir -p var/lib/pulse2/clients
 	mv  $(CURDIR)/pulse-xmpp-agent-${VERSION_XMPP_AGENT}.tar.gz var/lib/pulse2/clients
-	GIT_SSL_NO_VERIFY=true git clone -b master https://github.com/pulse-project/pulse-agent-plugins.git
+	GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-agent-plugins.git
 	mv pulse-agent-plugins pulse-agent-plugins-${VERSION_AGENT_PLUGINS}
-	cd pulse-agent-plugins-${VERSION_AGENT_PLUGINS}
 	tar czvf pulse-agent-plugins-${VERSION_AGENT_PLUGINS}.tar.gz pulse-agent-plugins-${VERSION_AGENT_PLUGINS}
 	mv pulse-agent-plugins-${VERSION_AGENT_PLUGINS}.tar.gz var/lib/pulse2/clients
+	GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/kiosk-interface.git
+	mv kiosk-interface kiosk-interface-${VERSION_KIOSK_INTERFACE}
+	tar czvf kiosk-interface-${VERSION_KIOSK_INTERFACE}.tar.gz kiosk-interface-${VERSION_KIOSK_INTERFACE}
+	mv kiosk-interface-${VERSION_KIOSK_INTERFACE}.tar.gz var/lib/pulse2/clients
 	tar xzvf var/lib/pulse2/clients/pulse-xmpp-agent-${VERSION_XMPP_AGENT}.tar.gz -C $(DESTDIR)/tmp
 	mkdir -p etc/mmc/plugins/
 	mkdir -p var/lib/pulse2/clients/config/
@@ -30,6 +34,7 @@ build:
 	cp scripts_installer/generate-pulse-agent-win.sh var/lib/pulse2/clients/win32
 	cp scripts_installer/agent-installer.nsi.in var/lib/pulse2/clients/win32
 	cp scripts_installer/pulse-agent-task.xml var/lib/pulse2/clients/win32
+	cp scripts_installer/generate-kiosk-package var/lib/pulse2/clients/win32
 	mkdir -p var/lib/pulse2/clients/linux
 	cp scripts_installer/*linux* var/lib/pulse2/clients/linux
 	mkdir -p var/lib/pulse2/clients/mac
@@ -43,6 +48,7 @@ build:
 	cp -fr scripts_installer/nsis_libs/* var/lib/pulse2/clients/win32/libs
 	chmod +x var/lib/pulse2/clients/*.sh
 	chmod +x var/lib/pulse2/clients/generate-agent-package
+	chmod +x var/lib/pulse2/clients/win32/generate-kiosk-package
 	rm -frv $(DESTDIR)/tmp
 clean:
 	dh_testdir
