@@ -34,12 +34,12 @@
 echo "INFO: Generating package ${PACKAGE_NAME}..."
 
 # Detect if uuid or uuidgen is available
-if uuid; then
+if [ -x "$(command -v uuid)" ]; then
     PACKAGE_UUID=$(uuid)
     echo "  Package UUID: ${PACKAGE_UUID}"
     PYTHON_PACKAGE_UUID=$(uuid)
     PYTHON_MODULES_PACKAGE_UUID=$(uuid)
-elif uuidgen; then
+elif [ -x "$(command -v uuidgen)" ]; then
     PACKAGE_UUID=$(uuidgen)
     echo "  Package UUID: ${PACKAGE_UUID}"
     PYTHON_PACKAGE_UUID=$(uuidgen)
