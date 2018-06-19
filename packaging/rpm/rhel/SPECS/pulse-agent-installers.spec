@@ -81,6 +81,7 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
         cp scripts_installer/generate-pulse-agent-win.sh %{buildroot}/var/lib/pulse2/clients/win32
         cp scripts_installer/agent-installer.nsi.in %{buildroot}/var/lib/pulse2/clients/win32
         cp scripts_installer/pulse-agent-task.xml %{buildroot}/var/lib/pulse2/clients/win32
+	cp scripts_installer/generate-kiosk-package %{buildroot}/var/lib/pulse2/client/win32
         mkdir -p %{buildroot}/var/lib/pulse2/clients/linux
         cp scripts_installer/*linux* %{buildroot}/var/lib/pulse2/clients/linux
         mkdir -p %{buildroot}/var/lib/pulse2/clients/mac
@@ -94,6 +95,7 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
         cp -fr scripts_installer/nsis_libs/* %{buildroot}/var/lib/pulse2/clients/win32/libs
         chmod +x %{buildroot}/var/lib/pulse2/clients/*.sh
         chmod +x %{buildroot}/var/lib/pulse2/clients/generate-agent-package
+	chmod +x %{buildroot}/var/lib/pulse2/clients/win32/generate-kiosk-package
 
 %post
 if [ $1 == 2 ]; then
