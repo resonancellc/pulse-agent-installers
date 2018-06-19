@@ -1,4 +1,4 @@
-%define   rel   0
+%define   rel   1
 
 %define branch  BRANCH
 
