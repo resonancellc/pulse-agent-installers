@@ -173,7 +173,7 @@ Section "Python" sec_py
     StrCpy $PYTHON_FILENAME "${PYTHON32_FILENAME}"
   ${EndIf}
   ; Install Python
-  StrCpy $0 `msiexec /i "$INSTDIR\tmp\$PYTHON_FILENAME" /quiet /norestart ALLUSERS=1 ADDLOCAL=ALL`
+  StrCpy $0 `msiexec /i "$INSTDIR\tmp\$PYTHON_FILENAME" /quiet /qn /norestart ALLUSERS=1 ADDLOCAL=ALL`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -181,7 +181,7 @@ Section "Python" sec_py
   ${LogString} "-------------------"
 
   ; Install of Visual C++ Compiler for Python
-  StrCpy $0 `msiexec /i "$INSTDIR\tmp\${PY_VCPYTHON27}" /quiet /norestart ALLUSERS=1`
+  StrCpy $0 `msiexec /i "$INSTDIR\tmp\${PY_VCPYTHON27}" /quiet /qn /norestart ALLUSERS=1`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -669,7 +669,7 @@ Section "VNC Setup" sec_vnc
   ; Create installation command line                                                          ;
   ; http://www.tightvnc.com/doc/win/TightVNC_2.7_for_Windows_Installing_from_MSI_Packages.pdf ;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  StrCpy $0 `msiexec /i "$INSTDIR\tmp\$VNC_AGENT_FILENAME" /quiet /norestart`
+  StrCpy $0 `msiexec /i "$INSTDIR\tmp\$VNC_AGENT_FILENAME" /quiet /qn /norestart`
   StrCpy $0 `$0 ADDLOCAL=Server SERVER_REGISTER_AS_SERVICE=1 SERVER_ADD_FIREWALL_EXCEPTION=1 SERVER_ALLOW_SAS=1`
   ; Disable embedded Java WebSrv on port 5800
   StrCpy $0 `$0 SET_ACCEPTHTTPCONNECTIONS=1 VALUE_OF_ACCEPTHTTPCONNECTIONS=0`
