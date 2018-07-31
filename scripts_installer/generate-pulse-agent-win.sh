@@ -603,12 +603,12 @@ generate_agent_installer() {
 		exit 1
 	fi
 
-    # Create symlinks to latest version
+    # Copy installer to latest version named exe.
     if [[ ${INVENTORY_TAG} == '' ]]; then
         if [[ ${MINIMAL} -eq 1 ]]; then
-	    ln -s -f Pulse-Agent-windows-MINIMAL-${AGENT_VERSION}.exe Pulse-Agent-windows-MINIMAL-latest.exe
+	        cp -fv Pulse-Agent-windows-MINIMAL-${AGENT_VERSION}.exe Pulse-Agent-windows-MINIMAL-latest.exe
         else
-	    ln -s -f Pulse-Agent-windows-FULL-${AGENT_VERSION}.exe Pulse-Agent-windows-FULL-latest.exe
+	        cp -fv Pulse-Agent-windows-FULL-${AGENT_VERSION}.exe Pulse-Agent-windows-FULL-latest.exe
         fi
     fi
 
