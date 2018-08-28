@@ -614,9 +614,7 @@ generate_agent_installer() {
 
     for package in Pulse-Agent-windows-MINIMAL-latest Pulse-Agent-windows-FULL-latest;
     do
-        if [ ! -e "/var/lib/pulse2/imaging/postinst/winutils/${package}.exe" ]; then
-            cp -fv /var/lib/pulse2/clients/win32/${package}.exe /var/lib/pulse2/imaging/postinst/winutils/${package}.exe
-        fi
+        cp -fv /var/lib/pulse2/clients/win32/${package}.exe /var/lib/pulse2/imaging/postinst/winutils/${package}.exe
     done
 
         colored_echo green "### INFO  Generating installer... Done"
