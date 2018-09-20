@@ -25,7 +25,7 @@ build:
 	#mv kiosk-interface-${VERSION_KIOSK_INTERFACE}.tar.gz var/lib/pulse2/clients
 	tar xzvf var/lib/pulse2/clients/pulse-xmpp-agent-${VERSION_XMPP_AGENT}.tar.gz -C $(DESTDIR)/tmp
 	mkdir -p var/lib/pulse2/xmpp_baseremoteagent
-	tar xzvf var/lib/pulse2/clients/pulse-xmpp-agent-${VERSION_XMPP_AGENT}.tar.gz -C var/lib/pulse2/xmpp_baseremoteagent
+	cp -fv $(DESTDIR)/tmp/pulse-xmpp-agent-${VERSION_XMPP_AGENT}/* var/lib/pulse2/xmpp_baseremoteagent
 	mkdir -p etc/mmc/plugins/
 	mkdir -p var/lib/pulse2/clients/config/
 	cp $(DESTDIR)/tmp/pulse-xmpp-agent-${VERSION_XMPP_AGENT}/pulse_xmpp_agent/config/agentconf.ini.in var/lib/pulse2/clients/config/
