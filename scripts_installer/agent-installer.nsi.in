@@ -682,9 +682,10 @@ Section "VNC Setup" sec_vnc
   StrCpy $0 `$0 SET_ACCEPTHTTPCONNECTIONS=1 VALUE_OF_ACCEPTHTTPCONNECTIONS=0`
   ; Enable RFB on port 5900
   StrCpy $0 `$0 SET_ACCEPTRFBCONNECTIONS=1 VALUE_OF_ACCEPTRFBCONNECTIONS=1`
-  ; Enable only loopback connection
+  ; Enable loopback connection
   StrCpy $0 `$0 SET_ALLOWLOOPBACK=1 VALUE_OF_ALLOWLOOPBACK=1`
-  StrCpy $0 `$0 SET_LOOPBACKONLY=1 VALUE_OF_LOOPBACKONLY=1`
+  ; Allow on all interfaces
+  StrCpy $0 `$0 SET_LOOPBACKONLY=1 VALUE_OF_LOOPBACKONLY=0`
   ; Only allow from 127.0.0.1 and query user
   StrCpy $0 `$0 SET_IPACCESSCONTROL=1 VALUE_OF_IPACCESSCONTROL=0.0.0.0-255.255.255.255:2`
   ; Default answser on timeout is reject

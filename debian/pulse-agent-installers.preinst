@@ -1,0 +1,12 @@
+#!/bin/sh
+# postinst script for #PACKAGE#
+#
+# see: dh_installdeb(1)
+
+set -e
+
+rm -fv /var/lib/pulse2/imaging/postinst/winutils/Pulse-Agent*latest* 
+
+#DEBHELPER#
+
+exit 0
