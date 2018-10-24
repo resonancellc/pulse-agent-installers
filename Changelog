@@ -1,3 +1,44 @@
+pulse-agent-installers 1.9.6
+============================
+
+ * pulse-xmpp-agent 1.9.6
+ * pulse-agent-plugins 1.8
+
+pulse-agent-installers 1.9.5
+============================
+
+ * pulse-xmpp-agent 1.9.5
+ * pulse-agent-plugins 1.7
+ * kiosk-interface 0.2
+
+pulse-agent-installers 1.9.3
+============================
+
+ * pulse-xmpp-agent 1.9.3
+ * pulse-agent-plugins 1.6
+
+
+pulse-agent-installers 1.9.2
+============================
+
+ * pulse-xmpp-agent 1.9.2
+
+
+pulse-agent-installers 1.9.1
+============================
+
+ * pulse-xmpp-agent 1.9.1
+ * pulse-agent-plugins 1.5
+ * Move relayconf.ini.in to pulse-xmpp-agent package
+
+
+pulse-agent-installers 1.9.0
+============================
+
+ * pulse-xmpp-agent 1.9.0
+ * pulse-agent-plugins 1.4
+
+
 pulse-agent-installers 1.8.7
 ============================
 

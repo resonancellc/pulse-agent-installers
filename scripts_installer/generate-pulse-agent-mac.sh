@@ -28,20 +28,21 @@
 
 #	Files needed for the full version of the installer:
 #	In /var/lib/pulse2/clients/mac/downloads/:
-# https://github.com/fusioninventory/fusioninventory-agent/releases/download/2.3.20/FusionInventory-Agent-2.3.20-1.pkg.tar.gz
+# https://github.com/Homebrew/brew/archive/1.5.12.tar.gz
+# https://github.com/fusioninventory/fusioninventory-agent/releases/download/2.4/FusionInventory-Agent-2.4-1.pkg.tar.gz
+# https://github.com/stweil/OSXvnc/releases/download/V5_2_1/OSXvnc-5.2.1.dmg
 #	In /var/lib/pulse2/clients/mac/downloads/python_modules/:
 #	https://pypi.python.org/packages/a7/4c/8e0771a59fd6e55aac993a7cc1b6a0db993f299514c464ae6a1ecf83b31d/netifaces-0.10.5.tar.gz
 #	https://pypi.python.org/packages/7c/69/c2ce7e91c89dc073eb1aa74c0621c3eefbffe8216b3f9af9d3885265c01c/configparser-3.5.0.tar.gz
 #	https://pypi.python.org/packages/07/49/42c86388fed58455e7e18d3821d7687f4921e47a40cb312e69b82f75c660/utils-0.9.0.tar.gz
 #	https://pypi.python.org/packages/2e/33/7adcc8d6b35cb72f9cc56785a3d9c63d540200c476b0cb3a0926f5b51102/sleekxmpp-1.3.1.tar.gz
 #	https://pypi.python.org/packages/60/ad/d6bc08f235b66c11bbb76df41b973ce93544a907cc0e23c726ea374eee79/zipfile2-0.0.12-py2.py3-none-any.whl
-#	https://pypi.python.org/packages/69/f1/387306c495d8f9b6518ea35348668bc1e8bf56b9c7f1425b5f12df79c356/pycurl-7.43.0.tar.gz
+#	https://pypi.python.org/packages/77/d9/d272b38e6e25d2686e22f6058820298dadead69340b1c57ff84c87ef81f0/pycurl-7.43.0.1.tar.gz
 #	https://pypi.python.org/packages/f1/c7/e19d317cc948095abc872a6e6ae78ac80260f2b45771dfa7a7ce86865f5b/lxml-3.6.0.tar.gz
 #	https://pypi.python.org/packages/60/db/645aa9af249f059cc3a368b118de33889219e0362141e75d4eaf6f80f163/pycrypto-2.6.1.tar.gz
 # https://pypi.python.org/packages/40/8b/275015d7a9ec293cf1bbf55433258fbc9d0711890a7f6dc538bac7b86bce/python_dateutil-2.6.0-py2.py3-none-any.whl
 # https://pypi.python.org/packages/c8/0a/b6723e1bc4c516cb687841499455a8505b44607ab535be01091c0f24f079/six-1.10.0-py2.py3-none-any.whl
 # https://pypi.python.org/packages/58/2a/17d003f2a9a0188cf9365d63b3351c6522b7d83996b70270c65c789e35b9/croniter-0.3.16.tar.gz
-# https://pypi.python.org/packages/5e/41/93bf8f289b476bc5d8cece7948a166cbcea761f5b1262e5fdd7076a5e02a/PyQt5-5.9.2-5.9.3-cp35.cp36.cp37-abi3-macosx_10_6_intel.whl
 # https://pypi.python.org/packages/e2/e1/600326635f97fee89bf8426fef14c5c29f4849c79f68fd79f433d8c1bd96/psutil-5.4.3.tar.gz
 # https://pypi.python.org/packages/28/df/755dab9f83c37031aea1cd9915673b5633665c575d649e812657df95b944/plyvel-1.0.1.tar.gz
 
@@ -52,9 +53,10 @@ BASE_URL="https://agents.siveo.net" # Overridden if --base-url is defined
 cd "`dirname $0`"
 
 # To be defined
-AGENT_VERSION="1.8.7"
+AGENT_VERSION="1.9.6"
+HOMEBREW_VERSION="1.5.12"
 FUSION_INVENTORY_AGENT_NAME="FusionInventory-Agent"
-FUSION_INVENTORY_AGENT_VERSION="2.3.20-1"
+FUSION_INVENTORY_AGENT_VERSION="2.4-1"
 PY_NETIFACES_MODULE="netifaces"
 PY_NETIFACES_VERSION="0.10.5"
 PY_CONFIGPARSER_MODULE="configparser"
@@ -66,7 +68,7 @@ PY_SLEEKXMPP_VERSION="1.3.1"
 PY_ZIPFILE_MODULE="zipfile2"
 PY_ZIPFILE_VERSION="0.0.12"
 PY_CURL_MODULE="pycurl"
-PY_CURL_VERSION="7.43.0"
+PY_CURL_VERSION="7.43.0.1"
 PY_LXML_MODULE="lxml"
 PY_LXML_VERSION="3.6.0"
 PY_CRYPTO_MODULE="pycrypto"
@@ -77,8 +79,6 @@ PY_CRON_DEPS_1_MODULE="python_dateutil"
 PY_CRON_DEPS_1_VERSION="2.6.0"
 PY_CRON_DEPS_2_MODULE="six"
 PY_CRON_DEPS_2_VERSION="1.10.0"
-PY3_QT5_MODULE="PyQt5"
-PY3_QT5_VERSION="5.9.2-5.9.3"
 PY_PSUTIL_MODULE="psutil"
 PY_PSUTIL_VERSION="5.4.3"
 PY_PLYVEL_MODULE="plyvel"
@@ -87,8 +87,12 @@ PULSE_AGENT_NAME="pulse-xmpp-agent"
 PULSE_AGENT_MODULE="pulse_xmpp_agent"
 SSH_PUB_KEY="/root/.ssh/id_rsa.pub"
 PULSE_AGENT_PLUGINS_NAME="pulse-agent-plugins"
-PULSE_AGENT_PLUGINS_VERSION="1.3"
+PULSE_AGENT_PLUGINS_VERSION="1.8"
 PKG_FOLDER_TMP="mac_package_tmp"
+VNC_SERVER_NAME="OSXvnc"
+VNC_SERVER_VERSION="5.2.1"
+VNC_SERVER_MOUNTED="VineServer"
+VNC_SERVER_APP="Vine Server.app"
 
 
 # Display usage
@@ -134,6 +138,7 @@ check_arguments() {
 }
 
 compute_parameters() {
+	HOMEBREW_FILENAME="${HOMEBREW_VERSION}.tar.gz"
 	PYTHON_FILENAME="python-${PYTHON_VERSION}-macosx10.6.pkg"
 	PY_NETIFACES_FILENAME="${PY_NETIFACES_MODULE}-${PY_NETIFACES_VERSION}.tar.gz"
 	PY_CONFIGPARSER_FILENAME="${PY_CONFIGPARSER_MODULE}-${PY_CONFIGPARSER_VERSION}.tar.gz"
@@ -146,15 +151,16 @@ compute_parameters() {
 	PY_CRON_FILENAME="${PY_CRON_MODULE}-${PY_CRON_VERSION}.tar.gz"
 	PY_CRON_DEPS_1_FILENAME="${PY_CRON_DEPS_1_MODULE}-${PY_CRON_DEPS_1_VERSION}-py2.py3-none-any.whl"
 	PY_CRON_DEPS_2_FILENAME="${PY_CRON_DEPS_2_MODULE}-${PY_CRON_DEPS_2_VERSION}-py2.py3-none-any.whl"
-	PY3_QT5_FILENAME="${PY3_QT5_MODULE}-${PY3_QT5_VERSION}-cp35.cp36.cp37-abi3-macosx_10_6_intel.whl"
 	PY_PSUTIL_FILENAME="${PY_PSUTIL_MODULE}-${PY_PSUTIL_VERSION}.tar.gz"
 	PY_PLYVEL_FILENAME="${PY_PLYVEL_MODULE}-${PY_PLYVEL_VERSION}.tar.gz"
 	PULSE_AGENT_FILENAME="${PULSE_AGENT_NAME}-${AGENT_VERSION}.tar.gz"
 	PULSE_AGENT_CONFFILE_FILENAME="agentconf.ini"
 	PULSE_SCHEDULER_CONFFILE_FILENAME="manage_scheduler.ini"
+	PULSE_INVENTORY_CONFFILE_FILENAME="inventory.ini"
 	PULSE_AGENT_PLUGINS_FILENAME="${PULSE_AGENT_PLUGINS_NAME}-${PULSE_AGENT_PLUGINS_VERSION}.tar.gz"
 	FUSION_INVENTORY_AGENT_PKG="${FUSION_INVENTORY_AGENT_NAME}-${FUSION_INVENTORY_AGENT_VERSION}.pkg"
 	FUSION_INVENTORY_AGENT_ARCHIVE="${FUSION_INVENTORY_AGENT_PKG}.tar.gz"
+	VNC_SERVER_FILENAME="${VNC_SERVER_NAME}-${VNC_SERVER_VERSION}.dmg"
 	V_MAJOR=`echo ${AGENT_VERSION} | cut -d. -f1`
 	V_MINOR=`echo ${AGENT_VERSION} | cut -d. -f2`
 	BUILD_DATE=$(date +'%Y-%m-%dT%H:%M:%SZ')
@@ -185,11 +191,14 @@ create_folder_structure() {
 	# Copy config files
 	cp ../config/${PULSE_AGENT_CONFFILE_FILENAME} ${PKG_FOLDER_TMP}/Contents/Resources/
 	cp ../config/${PULSE_SCHEDULER_CONFFILE_FILENAME} ${PKG_FOLDER_TMP}/Contents/Resources/
+	cp ../config/${PULSE_INVENTORY_CONFFILE_FILENAME} ${PKG_FOLDER_TMP}/Contents/Resources/
 	# Create package_version
 	echo "Major: ${V_MAJOR}" > ${PKG_FOLDER_TMP}/Contents/package_version
 	echo "Minor: ${V_MINOR}" >> ${PKG_FOLDER_TMP}/Contents/package_version
 	# Copy service descriptor
 	cp net.siveo.pulse_xmpp_agent.plist ${PKG_FOLDER_TMP}/Contents/Resources/
+	# Copy launcher
+	cp runpulseagent ${PKG_FOLDER_TMP}/Contents/Resources/
 }
 
 colored_echo() {
@@ -225,9 +234,12 @@ update_postflight_script_mini() {
 	sed -e "s/@@BASE_URL@@/$(sed_escape ${BASE_URL})/" \
 		-e "s/@@FUSION_INVENTORY_AGENT_PKG@@/${FUSION_INVENTORY_AGENT_PKG}/" \
 		-e "s/@@FUSION_INVENTORY_AGENT_ARCHIVE@@/${FUSION_INVENTORY_AGENT_ARCHIVE}/" \
+		-e "s/@@VNC_SERVER_FILENAME@@/${VNC_SERVER_FILENAME}/" \
+		-e "s/@@VNC_SERVER_MOUNTED@@/${VNC_SERVER_MOUNTED}/" \
+		-e "s/@@VNC_SERVER_APP@@/${VNC_SERVER_APP}/" \
 		-e "s/@@INVENTORY_TAG@@/${INVENTORY_TAG}/" \
+		-e "s/@@HOMEBREW_FILENAME@@/${HOMEBREW_FILENAME}/" \
 		-e "s/@@PYTHON_FILENAME@@/${PYTHON_FILENAME}/" \
-		-e "s/@@PYTHON3_FILENAME@@/${PYTHON3_FILENAME}/" \
 		-e "s/@@PY_NETIFACES_FILENAME@@/${PY_NETIFACES_FILENAME}/" \
 		-e "s/@@PY_CONFIGPARSER_FILENAME@@/${PY_CONFIGPARSER_FILENAME}/" \
 		-e "s/@@PY_UTILS_FILENAME@@/${PY_UTILS_FILENAME}/" \
@@ -239,13 +251,13 @@ update_postflight_script_mini() {
 		-e "s/@@PY_CRON_FILENAME@@/${PY_CRON_FILENAME}/" \
 		-e "s/@@PY_CRON_DEPS_1_FILENAME@@/${PY_CRON_DEPS_1_FILENAME}/" \
 		-e "s/@@PY_CRON_DEPS_2_FILENAME@@/${PY_CRON_DEPS_2_FILENAME}/" \
-		-e "s/@@PY3_QT5_FILENAME@@/${PY3_QT5_FILENAME}/" \
 		-e "s/@@PY_PSUTIL_FILENAME@@/${PY_PSUTIL_FILENAME}/" \
 		-e "s/@@PY_PLYVEL_FILENAME@@/${PY_PLYVEL_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_FILENAME@@/${PULSE_AGENT_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_PLUGINS_FILENAME@@/${PULSE_AGENT_PLUGINS_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_CONFFILE_FILENAME@@/${PULSE_AGENT_CONFFILE_FILENAME}/" \
 		-e "s/@@PULSE_SCHEDULER_CONFFILE_FILENAME@@/${PULSE_SCHEDULER_CONFFILE_FILENAME}/" \
+		-e "s/@@PULSE_INVENTORY_CONFFILE_FILENAME@@/${PULSE_INVENTORY_CONFFILE_FILENAME}/" \
 		postflight.in \
 		> ${PKG_FOLDER_TMP}/Contents/Resources/postflight
 		chmod 0755 ${PKG_FOLDER_TMP}/Contents/Resources/postflight
@@ -291,6 +303,16 @@ generate_agent_pkg() {
 		colored_echo red "### ER... Generation of agent failed. Please restart"
 		exit 1
 	fi
+
+    # Create symlinks to latest version
+    if [[ ${INVENTORY_TAG} == '' ]]; then
+        if [[ ${MINIMAL} -eq 1 ]]; then
+            ln -s -f Pulse-Agent-mac-MINIMAL-${AGENT_VERSION}.pkg.tar.gz Pulse-Agent-mac-MINIMAL-latest.pkg.tar.gz
+        else
+            ln -s -f Pulse-Agent-mac-FULL-${AGENT_VERSION}.pkg.tar.gz Pulse-Agent-mac-FULL-latest.pkg.tar.gz
+        fi
+    fi
+
 	colored_echo green "### INFO  Generating installer... Done"
 }
 
