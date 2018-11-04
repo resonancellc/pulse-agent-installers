@@ -405,6 +405,12 @@ Section "rsync" sec_rsync
   IfFileExists "$SSH_PATH" 0 +3
   ${PowerShellExecFileLog} "$SSH_PATH\uninstall-sshd.ps1"
   RMDir /r "$SSH_PATH"
+  ; Uninstall Mandriva SSH if found
+  IfFileExists $PROGRAMFILES\Mandriva\OpenSSH 0 +5
+  StrCpy $0 `$PROGRAMFILES\Mandriva\OpenSSH\uninst.exe /S`
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+  RMDir /r "$PROGRAMFILES\Mandriva\OpenSSH"
   ; Extract OpenSSH
   ZipDLL::extractall "$INSTDIR\tmp\$OPENSSH_FILENAME" "$INSTDIR\tmp\"
   Rename "$INSTDIR\tmp\$OPENSSH_CONTENTS_FOLDER" "$SSH_PATH"
