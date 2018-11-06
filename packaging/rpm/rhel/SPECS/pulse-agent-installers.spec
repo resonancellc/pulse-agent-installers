@@ -4,7 +4,7 @@
 
 Summary:	Files to create pulse windows installer
 Name:		pulse-agent-installers
-Version:	1.9.6
+Version:	1.9.7
 Release:	%{rel}%{?dist}
 Source0:        pulse-agent-installers-%version.tar.gz
 License:	MIT
@@ -58,8 +58,8 @@ cd pulse-agent-plugins
 git checkout %branch
 cd ..
 
-mv pulse-agent-plugins pulse-agent-plugins-1.8
-tar czvf pulse-agent-plugins-1.8.tar.gz pulse-agent-plugins-1.8
+mv pulse-agent-plugins pulse-agent-plugins-1.9
+tar czvf pulse-agent-plugins-1.9.tar.gz pulse-agent-plugins-1.9
 
 
 %install
@@ -68,7 +68,7 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
 
 
 	# We create pulse-agent-plugins tarball
-        mv pulse-agent-plugins-1.8.tar.gz %{buildroot}/var/lib/pulse2/clients
+        mv pulse-agent-plugins-1.9.tar.gz %{buildroot}/var/lib/pulse2/clients
 
         mkdir -p %{buildroot}/etc/mmc/plugins/
         mkdir -p %{buildroot}/var/lib/pulse2/clients/config/
