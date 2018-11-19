@@ -892,6 +892,14 @@ SectionEnd
 
 ; What needs to be done for uninstalling
 Section "Uninstall"
+
+  ; Stop Pulse agent
+  StrCpy $0 `taskkill /F /IM python.exe`
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
+
   ; Remove pulse user
   StrCpy $0 `net user "pulse" /DELETE`
   ${LogString} "Running $0"
@@ -900,12 +908,12 @@ Section "Uninstall"
   ${LogString} "Return code was: $1"
 
   ; Remove OpenSSH
-  StrCpy $0 `sc.exe stop ssh-agent`
+  StrCpy $0 `sc.exe stop sshd`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
-  StrCpy $0 `sc.exe stop sshd`
+  StrCpy $0 `sc.exe stop ssh-agent`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -927,7 +935,7 @@ Section "Uninstall"
   Delete "$SYSDIR\${LIBCURL_FILENAME}"
 
   ; Uninstall agent
-  StrCpy $0 `SCHTASKS /Delete /TN "Pulse Agent"`
+  StrCpy $0 `SCHTASKS /Delete /TN "Pulse Agent" -f`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -953,9 +961,21 @@ Section "Uninstall"
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
   RMDir /r "C:\Python27\Lib\site-packages\pulse_xmpp_agent\"
+  RMDir /r "C:\Program Files\OpenSSH"
   RMDir /r "$INSTDIR"
   DeleteRegKey HKLM "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
+
+  ; Remove Pulse profile
+  StrCpy $0 `wmic /node:localhost path win32_UserProfile where LocalPath="c:\\Program Files\\Pulse" Delete`
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+
+  ; Remove SSHD profile
+  StrCpy $0 `wmic /node:localhost path win32_UserProfile where LocalPath="c:\\Users\\SSHD" Delete`
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+
 SectionEnd
 
 ; Functions
