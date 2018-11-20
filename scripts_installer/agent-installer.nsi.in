@@ -71,6 +71,7 @@ RequestExecutionLevel admin
 !define FUSION_INVENTORY_AGENT64_FILENAME "@@FUSION_INVENTORY_AGENT64_FILENAME@@"
 !define INVENTORY_TAG "@@INVENTORY_TAG@@"
 !define PULSE_AGENT_PLUGINS "@@PULSE_AGENT_PLUGINS@@"
+!define PULSE_AGENT_PLUGINS_NAME "@@PULSE_AGENT_PLUGINS_NAME@@"
 !define RSYNC_FILENAME "@@RSYNC_FILENAME@@"
 !define GENERATED_SIZE "@@GENERATED_SIZE@@"
 !define RDPWRAP_FILENAME "@@RDPWRAP_FILENAME@@"
@@ -109,6 +110,7 @@ SetCompressor lzma
 !Include "psexec.nsh"
 !include "x64.nsh"
 !include "TextReplace.nsh"
+!include "StrRep.nsh"
 
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
@@ -944,7 +946,7 @@ Section "Uninstall"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
-  StrCpy $0 `C:\Python27\Scripts\pip uninstall "${PULSE_AGENT_PLUGINS}" -y`
+  StrCpy $0 `C:\Python27\Scripts\pip uninstall "${PULSE_AGENT_PLUGINS_NAME}" -y`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -961,7 +963,11 @@ Section "Uninstall"
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
 
   ; Remove Pulse profile
-  StrCpy $0 `wmic /node:localhost path win32_UserProfile where LocalPath="c:\\Program Files\\Pulse" Delete`
+  Var /GLOBAL P_PROFILE
+  !insertmacro StrRep $0 $INSTDIR "\" "\\"
+  Pop $0
+  StrCpy $P_PROFILE $0
+  StrCpy $0 `wmic /node:localhost path win32_UserProfile where LocalPath="$P_PROFILE" Delete`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
 
