@@ -929,7 +929,7 @@ Section "Uninstall"
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
   Delete "$SYSDIR\ssh-lsa.dll"
-  RMDir /r "$PROGRAMFILES\${OPENSSH_NAME}"
+  RMDir /r "$SSH_PATH"
 
   ; Remove libcurl
   Delete "$SYSDIR\${LIBCURL_FILENAME}"
@@ -961,20 +961,24 @@ Section "Uninstall"
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
   RMDir /r "C:\Python27\Lib\site-packages\pulse_xmpp_agent\"
-  RMDir /r "C:\Program Files\OpenSSH"
   RMDir /r "$INSTDIR"
-  DeleteRegKey HKLM "${PRODUCT_UNINST_KEY}"
-  DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
 
   ; Remove Pulse profile
-  StrCpy $0 `wmic /node:localhost path win32_UserProfile where LocalPath="c:\\Program Files\\Pulse" Delete`
+  StrCpy $0 `wmic /node:localhost path win32_UserProfile where LocalPath="$INSTDIR" Delete`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
 
   ; Remove SSHD profile
   StrCpy $0 `wmic /node:localhost path win32_UserProfile where LocalPath="c:\\Users\\SSHD" Delete`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
+
+  DeleteRegKey HKLM "${PRODUCT_UNINST_KEY}"
+  DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
 
 SectionEnd
 
