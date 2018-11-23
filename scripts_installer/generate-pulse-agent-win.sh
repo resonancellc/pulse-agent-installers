@@ -439,6 +439,7 @@ update_nsi_script_full() {
 		-e "s/@@FULL_OR_DL_VNC_AGENT32@@/$(sed_escape ${FULL_VNC_AGENT32})/" \
 		-e "s/@@FULL_OR_DL_VNC_AGENT64@@/$(sed_escape ${FULL_VNC_AGENT64})/" \
 		-e "s/@@PULSE_AGENT_PLUGINS@@/${PULSE_AGENT_PLUGINS}/" \
+                -e "s/@@PULSE_AGENT_PLUGINS_NAME@@/${PULSE_AGENT_PLUGINS_NAME}/" \
 		-e "s/@@RSYNC_FILENAME@@/rsync.zip/" \
 		-e "s/@@GENERATED_SIZE@@/FULL/" \
 		agent-installer.nsi.in \
@@ -588,6 +589,7 @@ update_nsi_script_dl() {
 		-e "s/@@FULL_OR_DL_VNC_AGENT32@@/$(sed_escape ${DL_VNC_AGENT32})/" \
 		-e "s/@@FULL_OR_DL_VNC_AGENT64@@/$(sed_escape ${DL_VNC_AGENT64})/" \
 		-e "s/@@PULSE_AGENT_PLUGINS@@/${PULSE_AGENT_PLUGINS}/" \
+                -e "s/@@PULSE_AGENT_PLUGINS_NAME@@/${PULSE_AGENT_PLUGINS_NAME}/" \
 		-e "s/@@RSYNC_FILENAME@@/rsync.zip/" \
 		-e "s/@@GENERATED_SIZE@@/MINIMAL/" \
 		agent-installer.nsi.in \
