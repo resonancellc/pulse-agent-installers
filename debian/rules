@@ -9,13 +9,13 @@ VERSION_KIOSK_INTERFACE=0.2
 build:
 	mkdir -p $(DESTDIR)/tmp
 
-	GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-xmpp-agent.git -b xmppmaster
+	GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-xmpp-agent.git -b hotfixes
 	mv pulse-xmpp-agent pulse-xmpp-agent-${VERSION_XMPP_AGENT}
 	tar czvf pulse-xmpp-agent-${VERSION_XMPP_AGENT}.tar.gz pulse-xmpp-agent-${VERSION_XMPP_AGENT}
 	rm -fr pulse-xmpp-agent/
 	mkdir -p var/lib/pulse2/clients
 	mv  $(CURDIR)/pulse-xmpp-agent-${VERSION_XMPP_AGENT}.tar.gz var/lib/pulse2/clients
-	GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-agent-plugins.git -b xmppmaster
+	GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-agent-plugins.git -b hotfixes
 	mv pulse-agent-plugins pulse-agent-plugins-${VERSION_AGENT_PLUGINS}
 	tar czvf pulse-agent-plugins-${VERSION_AGENT_PLUGINS}.tar.gz pulse-agent-plugins-${VERSION_AGENT_PLUGINS}
 	mv pulse-agent-plugins-${VERSION_AGENT_PLUGINS}.tar.gz var/lib/pulse2/clients
