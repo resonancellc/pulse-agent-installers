@@ -3,18 +3,14 @@
 PREFIX="/opt"
 ssh_pub_key="${PREFIX}/id_rsa.pub"
 tag_file="${PREFIX}/inventory.tag"
+KEY=@@kEY@@
 
-
-if [ -e ${ssh_pub_key} ]; then
-    if ! [ -d "/root/.ssh" ]; then
-	echo "Create missing SSH profile ..."
-        mkdir -p /root/.ssh
-    fi
-
-    tee -a /root/.ssh/authorized_keys < ${ssh_pub_key}
-    rm -f ${ssh_pub_key}
+if ! [ -d "/root/.ssh" ]; then
+    echo "Create missing SSH profile ..."
+    mkdir -p /root/.ssh
 fi
 
+tee -a /root/.ssh/authorized_keys < $KEY
 
 fusion_dir="/etc/fusioninventory"
 fusion_cfg="$fusion_dir/agent.cfg"
