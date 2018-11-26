@@ -53,5 +53,3 @@ if hash linuxvnc 2>/dev/null; then
     /etc/init.d/linuxvnc start
 fi
 
-echo "INFO: Running initial inventory"
-/usr/bin/fusioninventory-agent
