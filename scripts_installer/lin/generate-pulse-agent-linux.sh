@@ -27,11 +27,6 @@
 # TODO: Create rpm and deb repositories
 #				Manage inventory tags
 
-. /etc/os-release
-
-PULSE_REPO_URL=""
-GIT_BRANCH=""
-
 # Go to own folder
 cd "$(dirname $0)"
 
@@ -107,19 +102,6 @@ prepare_system() {
 }
 
 create_repos() {
-    LINUX_DISTRO=$ID
-    case ${LINUX_DISTRO} in
-        "mageia"|"rhel")
-        # Create RPM repository
-        exit 1
-        ;;
-
-        "debian")
-        # Create DEB repository
-        echo "deb ${PULSE_REPO_URL} ${GIT_BRANCH} mmc-core pulse 3rdparty" > /etc/apt/sources.list.d/pulse.list
-            ;;
-    esac
-
 	colored_echo blue "### INFO Creating package repositories..."
 	# Create RPM repository
 
