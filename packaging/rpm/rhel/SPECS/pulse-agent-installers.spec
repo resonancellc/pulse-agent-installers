@@ -83,7 +83,8 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
         cp scripts_installer/win/pulse-agent-task.xml %{buildroot}/var/lib/pulse2/clients/win
 	cp scripts_installer/generate-kiosk-package %{buildroot}/var/lib/pulse2/clients/win
         mkdir -p %{buildroot}/var/lib/pulse2/clients/linux
-        cp scripts_installer/*linux* %{buildroot}/var/lib/pulse2/clients/linux
+    	cp scripts_installer/lin/generate-pulse-agent-linux.sh %{buildroot}/var/lib/pulse2/clients/linux
+    	cp scripts_installer/lin/install-pulse-agent-linux.sh.in %{buildroot}/var/lib/pulse2/clients/linux
         mkdir -p %{buildroot}/var/lib/pulse2/clients/mac
         cp scripts_installer/mac/generate-pulse-agent-mac.sh %{buildroot}/var/lib/pulse2/clients/mac
         cp scripts_installer/mac/Info.plist.in %{buildroot}/var/lib/pulse2/clients/mac
