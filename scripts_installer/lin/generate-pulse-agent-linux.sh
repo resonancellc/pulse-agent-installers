@@ -39,15 +39,15 @@ display_usage() {
 check_arguments() {
 	for i in "$@"; do
 		case $i in
-      --inventory-tag=*)
-        INVENTORY_TAG="${i#*=}"
-        shift
-        ;;
+	  --inventory-tag=*)
+		INVENTORY_TAG="${i#*=}"
+		shift
+		;;
 			*)
-        # unknown option
-        display_usage
-        exit 0
-    		;;
+		# unknown option
+		display_usage
+		exit 0
+			;;
 		esac
 	done
 }
@@ -97,8 +97,8 @@ sed_escape() {
 prepare_system() {
 	colored_echo blue "### INFO Installing tools needed..."
 	# Install needed tools
-    apt-get -y install createrepo
-    apt-get -y install dpkg-dev
+	apt-get -y install createrepo
+	apt-get -y install dpkg-dev
 	colored_echo green "### INFO Installing tools needed... Done"
 }
 
@@ -116,7 +116,7 @@ generate_agent_installer() {
 	colored_echo blue "### INFO Generating installer..."
 
 	PULSE_SERVER=`grep public_ip /etc/mmc/pulse2/package-server/package-server.ini.local | awk '{print $3}'`
-    KEY=`cat /root/.ssh/id_rsa.pub`
+	KEY=`cat /root/.ssh/id_rsa.pub`
 	sed -e "s/@@PULSE_SERVER@@/${PULSE_SERVER}/" install-pulse-agent-linux.sh.in > install-pulse-agent-linux.sh
     sed -e "s/@@SSH_PUB_KEY@@/${SSH_PUB_KEY}/" install-pulse-agent-linux.sh
 
