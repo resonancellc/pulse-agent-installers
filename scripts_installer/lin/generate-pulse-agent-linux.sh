@@ -97,7 +97,8 @@ sed_escape() {
 prepare_system() {
 	colored_echo blue "### INFO Installing tools needed..."
 	# Install needed tools
-	apt-get -y install createrepo
+    apt-get -y install createrepo
+    apt-get -y install dpkg-dev
 	colored_echo green "### INFO Installing tools needed... Done"
 }
 
