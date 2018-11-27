@@ -1,34 +1,76 @@
 #!/bin/bash
 
 PREFIX="/opt"
-ssh_pub_key="${PREFIX}/id_rsa.pub"
-tag_file="${PREFIX}/inventory.tag"
-KEY=@@kEY@@
+INVENTORY_TAG="@@INVENTORY_TAG@@"
+SSH_PUB_KEY=@@SSH_PUB_KEY@@
 
-if ! [ -d "/root/.ssh" ]; then
+
+
+### Pulse account
+
+echo
+echo "#########################"
+echo "1. CREATING PULSE ACCOUNT"
+echo "#########################"
+echo
+
+# Create pulse user
+adduser --system --group --home /var/lib/pulse2 --shell /bin/rbash --disabled-password pulse
+if ! [ -d "/var/lib/pulse2/.ssh" ]; then
     echo "Create missing SSH profile ..."
-    mkdir -p /root/.ssh
+    mkdir -p /var/lib/pulse2/.ssh
 fi
 
-tee -a /root/.ssh/authorized_keys < $KEY
 
+
+### SSH Key
+
+echo
+echo "###########################################"
+echo "2. ADDING SERVER SSH KEY TO AUTHORIZED KEYS"
+echo "###########################################"
+echo
+
+# Copy SSH keys
+tee -a /var/lib/pulse2/.ssh/authorized_keys < ${SSH_PUB_KEY}
+chown -R pulse: /var/lib/pulse2
+chmod -R 700 /var/lib/pulse2
+chmod 600 /var/lib/pulse2/.ssh/authorized_keys
+
+
+
+### Fusion-Inventory agent
+
+echo
+echo "##############################"
+echo "3. SETUP FUSIONINVENTORY AGENT"
+echo "##############################"
+echo
+
+# Setup FusionInventory
 fusion_dir="/etc/fusioninventory"
 fusion_cfg="$fusion_dir/agent.cfg"
-tag=$(sed '1q;d' ${tag_file})
-
 
 if [ -f ${fusion_cfg} ];then
     sed -i '/^server\ =/d' ${fusion_cfg}
     sed -i '/^server\=/d' ${fusion_cfg}
-    grep -q "${tag}" ${fusion_cfg} || echo "${tag}" >> ${fusion_cfg}
-    rm -f ${tag_file}
+    grep -q "${INVENTORY_TAG}" ${fusion_cfg} || echo "${INVENTORY_TAG}" >> ${fusion_cfg}
 else
     echo "ERROR: Unable to find fusioninventory config file"
     exit 1
 fi
 
 
-# ----------- VNC server config -----------------
+
+### Setup VNC server
+
+echo
+echo "###################"
+echo "4. SETUP VNC SERVER"
+echo "###################"
+echo
+
+
 if hash x11vnc 2>/dev/null; then
 
     x11_cfg="x11vnc.desktop"
@@ -48,4 +90,3 @@ if hash linuxvnc 2>/dev/null; then
     update-rc.d linuxvnc defaults
     /etc/init.d/linuxvnc start
 fi
-

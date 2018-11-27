@@ -117,7 +117,7 @@ generate_agent_installer() {
 	PULSE_SERVER=`grep public_ip /etc/mmc/pulse2/package-server/package-server.ini.local | awk '{print $3}'`
     KEY=`cat /root/.ssh/id_rsa.pub`
 	sed -e "s/@@PULSE_SERVER@@/${PULSE_SERVER}/" install-pulse-agent-linux.sh.in > install-pulse-agent-linux.sh
-    sed -e "s/@@KEY@@/${KEY}/" install-pulse-agent-linux.sh
+    sed -e "s/@@SSH_PUB_KEY@@/${SSH_PUB_KEY}/" install-pulse-agent-linux.sh
 
 	if [ ! $? -eq 0 ]; then
 		colored_echo red "### ER... Generation of agent failed. Please restart"
