@@ -39,27 +39,25 @@ display_usage() {
 check_arguments() {
 	for i in "$@"; do
 		case $i in
-      --inventory-tag=*)
-        INVENTORY_TAG="${i#*=}"
-        shift
-        ;;
+	  --inventory-tag=*)
+		INVENTORY_TAG="${i#*=}"
+		shift
+		;;
 			*)
-        # unknown option
-        display_usage
-        exit 0
-    		;;
+		# unknown option
+		display_usage
+		exit 0
+			;;
 		esac
 	done
 }
 
 compute_parameters() {
 	PULSE_AGENT_FILENAME="${PULSE_AGENT_NAME}-${AGENT_VERSION}.tar.gz"
+    SSH_PUB_KEY=`cat /root/.ssh/id_rsa.pub`
 	PULSE_AGENT_CONFFILE_FILENAME="agentconf.ini"
 	PULSE_SCHEDULER_CONFFILE_FILENAME="manage_scheduler.ini"
 	PULSE_INVENTORY_CONFFILE_FILENAME="inventory.ini"
-	PULSE_AGENT_PLUGINS="${PULSE_AGENT_PLUGINS_NAME}-${PULSE_AGENT_PLUGINS_VERSION}.tar.gz"
-	FUSION_INVENTORY_AGENT_FILENAME="${FUSION_INVENTORY_AGENT_NAME}_windows-x86_${FUSION_INVENTORY_AGENT_VERSION}.exe"
-	FUSION_INVENTORY_AGENT_URL="https://github.com/tabad/fusioninventory-agent-windows-installer/releases/download/${FUSION_INVENTORY_AGENT_VERSION}/${FUSION_INVENTORY_AGENT_FILENAME}"
 }
 
 display_usage() {
@@ -98,6 +96,7 @@ prepare_system() {
 	colored_echo blue "### INFO Installing tools needed..."
 	# Install needed tools
 	apt-get -y install createrepo
+	apt-get -y install dpkg-dev
 	colored_echo green "### INFO Installing tools needed... Done"
 }
 
@@ -109,13 +108,19 @@ create_repos() {
 
 	colored_echo green "### INFO Creating package repositories... Done"
 }
-
-
 generate_agent_installer() {
 	colored_echo blue "### INFO Generating installer..."
 
+    # We copy the config files to deb bundle
+    mkdir -p deb/pulse-agent-linux/etc/pulse-xmpp-agent
+    for config_files in $PULSE_AGENT_CONFFILE_FILENAME $PULSE_SCHEDULER_CONFFILE_FILENAME $PULSE_INVENTORY_CONFFILE_FILENAME; do
+        cp /var/lib/pulse2/clients/config/ $config_files deb/pulse-agent-linux/etc/pulse-xmpp-agent
+    done
+
 	PULSE_SERVER=`grep public_ip /etc/mmc/pulse2/package-server/package-server.ini.local | awk '{print $3}'`
 	sed -e "s/@@PULSE_SERVER@@/${PULSE_SERVER}/" install-pulse-agent-linux.sh.in > install-pulse-agent-linux.sh
+    sed -e "s/@@SSH_PUB_KEY@@/${SSH_PUB_KEY}/" install-pulse-agent-linux.sh
+
 	if [ ! $? -eq 0 ]; then
 		colored_echo red "### ER... Generation of agent failed. Please restart"
 		exit 1
@@ -125,16 +130,9 @@ generate_agent_installer() {
 	colored_echo green "### INFO  Generating installer... Done"
 }
 
-create_pulse_user() {
-	useradd pulse -d /var/lib/pulse2 -s /bin/rbash
-	mkdir -p /var/lib/pulse2/packages
-	chmod -R 770 /var/lib/pulse2/packages
-}
-
 # Run the script
 check_arguments "$@"
 compute_parameters
 prepare_system
 create_repos
 generate_agent_installer
-create_pulse_user

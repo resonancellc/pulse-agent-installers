@@ -66,7 +66,7 @@ WIN32_PYQT5_FILENAME="PyQt5-5.10.1-5.10.1-cp35.cp36.cp37.cp38-none-win32.whl"
 WIN64_PYQT5_FILENAME="PyQt5-5.10.1-5.10.1-cp35.cp36.cp37.cp38-none-win_amd64.whl"
 PULSE_KIOSK_FILENAME="kiosk-interface-${KIOSK_VERSION}.tar.gz"
 PULSE_KIOSK_PATH="/var/lib/pulse2/clients"
-PULSE_KIOSK_DEPS_PATH="/var/lib/pulse2/clients/win32/downloads"
+PULSE_KIOSK_DEPS_PATH="/var/lib/pulse2/clients/win/downloads"
 
 
 

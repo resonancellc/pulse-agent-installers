@@ -228,9 +228,9 @@ generate_agent_win() {
   # Generate Pulse Agent for Windows
   colored_echo blue "Generating Pulse Agent for Windows..."
 	if [ -n "${INVENTORY_TAG}" ]; then
-		COMMAND="./win32/generate-pulse-agent-win.sh --inventory-tag=${INVENTORY_TAG} ${OPTIONS_MINIMAL}"
+		COMMAND="./win/generate-pulse-agent-win.sh --inventory-tag=${INVENTORY_TAG} ${OPTIONS_MINIMAL}"
 	else
-		COMMAND="./win32/generate-pulse-agent-win.sh ${OPTIONS_MINIMAL}"
+		COMMAND="./win/generate-pulse-agent-win.sh ${OPTIONS_MINIMAL}"
 	fi
 	echo "Running "${COMMAND}
 	${COMMAND}
