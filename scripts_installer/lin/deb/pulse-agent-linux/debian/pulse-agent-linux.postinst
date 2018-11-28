@@ -1,7 +1,5 @@
 #!/bin/bash
-PREFIX="/opt"
 INVENTORY_TAG="@@INVENTORY_TAG@@"
-SSH_PUB_KEY=@@SSH_PUB_KEY@@
 PULSE_AGENT_CONFFILE_FILENAME="@@PULSE_AGENT_CONFFILE_FILENAME@@"
 PULSE_SCHEDULER_CONFFILE_FILENAME="@@PULSE_SCHEDULER_CONFFILE_FILENAME@@"
 PULSE_INVENTORY_CONFFILE_FILENAME="@@PULSE_INVENTORY_CONFFILE_FILENAME@@"
@@ -27,17 +25,25 @@ fi
 ### SSH Key
 
 echo
-echo "###########################################"
-echo "2. ADDING SERVER SSH KEY TO AUTHORIZED KEYS"
-echo "###########################################"
+echo "############"
+echo "2. SETUP SSH"
+echo "############"
 echo
 
 # Copy SSH keys
-tee -a /var/lib/pulse2/.ssh/authorized_keys < ${SSH_PUB_KEY}
+cp var/lib/pulse2/.ssh/authorized_keys /var/lib/pulse2/.ssh/
 chown -R pulse: /var/lib/pulse2
 chmod -R 700 /var/lib/pulse2
 chmod 600 /var/lib/pulse2/.ssh/authorized_keys
 
+# Open firewall port 22 - TODO
+# if shorewall
+# echo "ACCEPT net fw tcp 22" >> /etc/shorewall/rules
+# service shorewall restart
+#
+# if ufw
+# ufw enable
+# sudo ufw allow 5900
 
 
 ### Fusion-Inventory agent
@@ -71,26 +77,19 @@ echo "###################"
 echo
 
 
-if hash x11vnc 2>/dev/null; then
-
-    x11_cfg="x11vnc.desktop"
-
-    echo "[Desktop Entry]" >> $x11_cfg
-    echo "Type=Application" >> $x11_cfg
-    echo "Name=x11vnc" >> $x11_cfg
-    echo "Exec=x11vnc -many -rfbport 5900 -listen localhost" >> $x11_cfg
-
-    for user in /home/*; do
-        mkdir -p $user/.config/autostart/
-        cp $x11_cfg $user/.config/autostart/
-    done
+if pgrep x11vnc 2>/dev/null; then
+    cp etc/xdg/autostart/x11vnc.desktop /etc/xdg/autostart/
 fi
 
-if hash linuxvnc 2>/dev/null; then
-    update-rc.d linuxvnc defaults
-    /etc/init.d/linuxvnc start
-fi
 
+# Open firewall port 5900 - TODO
+# if shorewall
+# echo "ACCEPT net fw tcp 5900" >> /etc/shorewall/rules
+# service shorewall restart
+#
+# if ufw
+# ufw enable
+# sudo ufw allow 5900
 
 
 ### Pulse agent and plugins
@@ -102,10 +101,8 @@ echo "##############"
 echo
 
 # Copy config files
-cp "${PREFIX}/${PULSE_AGENT_CONFFILE_FILENAME}" "/etc/"
-# Only copy scheduler config file if is does not already exist
-if [[ ! -f /etc/${PULSE_SCHEDULER_CONFFILE_FILENAME} ]]; then
-  cp "${PREFIX}/${PULSE_SCHEDULER_CONFFILE_FILENAME}" "/etc/"
-fi
-# Copy inventory config file
-cp "${PREFIX}/${PULSE_INVENTORY_CONFFILE_FILENAME}" "/etc/"
+for CONFIG_FILE in $PULSE_AGENT_CONFFILE_FILENAME $PULSE_SCHEDULER_CONFFILE_FILENAME $PULSE_INVENTORY_CONFFILE_FILENAME; do
+    if [[ ! -e /etc/pulse-xmpp-agent/${CONFIG_FILE} ]]; then
+        cp "${CONFIG_FILE}" /etc/pulse-xmpp-agent/
+    fi
+done
