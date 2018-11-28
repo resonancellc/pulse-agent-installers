@@ -54,7 +54,7 @@ check_arguments() {
 
 compute_parameters() {
 	PULSE_AGENT_FILENAME="${PULSE_AGENT_NAME}-${AGENT_VERSION}.tar.gz"
-    SSH_PUB_KEY=`cat /root/.ssh/id_rsa.pub`
+	SSH_PUB_KEY=`cat /root/.ssh/id_rsa.pub`
 	PULSE_AGENT_CONFFILE_FILENAME="agentconf.ini"
 	PULSE_SCHEDULER_CONFFILE_FILENAME="manage_scheduler.ini"
 	PULSE_INVENTORY_CONFFILE_FILENAME="inventory.ini"
@@ -111,13 +111,13 @@ create_repos() {
 generate_agent_installer() {
 	colored_echo blue "### INFO Generating installer..."
 
-    # We copy the config files to deb bundle
-    mkdir -p deb/pulse-agent-linux/etc/pulse-xmpp-agent
-    for config_files in $PULSE_AGENT_CONFFILE_FILENAME $PULSE_SCHEDULER_CONFFILE_FILENAME $PULSE_INVENTORY_CONFFILE_FILENAME; do
-        cp /var/lib/pulse2/clients/config/$config_files deb/pulse-agent-linux/etc/pulse-xmpp-agent
-    done
-    mkdir -p deb/pulse-agent-linux/root/.ssh
-    cp -fv /root/.ssh/id_rsa.pub deb/pulse-agent-linux/root/.ssh
+	# We copy the config files to deb bundle
+	mkdir -p deb/pulse-agent-linux/etc/pulse-xmpp-agent
+	for config_files in $PULSE_AGENT_CONFFILE_FILENAME $PULSE_SCHEDULER_CONFFILE_FILENAME $PULSE_INVENTORY_CONFFILE_FILENAME; do
+		cp /var/lib/pulse2/clients/config/$config_files deb/pulse-agent-linux/etc/pulse-xmpp-agent
+	done
+	mkdir -p deb/pulse-agent-linux/root/.ssh
+	cp -fv /root/.ssh/id_rsa.pub deb/pulse-agent-linux/root/.ssh
 
 	PULSE_SERVER=`grep public_ip /etc/mmc/pulse2/package-server/package-server.ini.local | awk '{print $3}'`
 
@@ -130,9 +130,9 @@ generate_agent_installer() {
 }
 
 build_deb() {
-    pushd /var/lib/pulse2/clients/linux/deb/pulse-agent-linux/
-        dpkg-buildpackage
-    popd
+	pushd /var/lib/pulse2/clients/linux/deb/pulse-agent-linux/
+		dpkg-buildpackage
+	popd
 }
 
 # Run the script
