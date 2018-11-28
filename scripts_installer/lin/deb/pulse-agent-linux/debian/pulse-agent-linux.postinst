@@ -96,6 +96,7 @@ echo
 # Copy config files
 for CONFIG_FILE in $PULSE_AGENT_CONFFILE_FILENAME $PULSE_SCHEDULER_CONFFILE_FILENAME $PULSE_INVENTORY_CONFFILE_FILENAME; do
     if [[ ! -e /etc/pulse-xmpp-agent/${CONFIG_FILE} ]]; then
-        cp "${CONFIG_FILE}" /etc/pulse-xmpp-agent/
+        cp /etc/pulse-xmpp-agent/${CONFIG_FILE}.siv /etc/pulse-xmpp-agent/${CONFIG_FILE}
     fi
+    rm -f /etc/pulse-xmpp-agent/${CONFIG_FILE}.siv
 done
