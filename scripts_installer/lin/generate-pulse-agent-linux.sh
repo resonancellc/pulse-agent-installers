@@ -54,12 +54,10 @@ check_arguments() {
 
 compute_parameters() {
 	PULSE_AGENT_FILENAME="${PULSE_AGENT_NAME}-${AGENT_VERSION}.tar.gz"
+    SSH_PUB_KEY=`cat /root/.ssh/id_rsa.pub`
 	PULSE_AGENT_CONFFILE_FILENAME="agentconf.ini"
 	PULSE_SCHEDULER_CONFFILE_FILENAME="manage_scheduler.ini"
 	PULSE_INVENTORY_CONFFILE_FILENAME="inventory.ini"
-	PULSE_AGENT_PLUGINS="${PULSE_AGENT_PLUGINS_NAME}-${PULSE_AGENT_PLUGINS_VERSION}.tar.gz"
-	FUSION_INVENTORY_AGENT_FILENAME="${FUSION_INVENTORY_AGENT_NAME}_windows-x86_${FUSION_INVENTORY_AGENT_VERSION}.exe"
-	FUSION_INVENTORY_AGENT_URL="https://github.com/tabad/fusioninventory-agent-windows-installer/releases/download/${FUSION_INVENTORY_AGENT_VERSION}/${FUSION_INVENTORY_AGENT_FILENAME}"
 }
 
 display_usage() {
@@ -116,7 +114,6 @@ generate_agent_installer() {
 	colored_echo blue "### INFO Generating installer..."
 
 	PULSE_SERVER=`grep public_ip /etc/mmc/pulse2/package-server/package-server.ini.local | awk '{print $3}'`
-	KEY=`cat /root/.ssh/id_rsa.pub`
 	sed -e "s/@@PULSE_SERVER@@/${PULSE_SERVER}/" install-pulse-agent-linux.sh.in > install-pulse-agent-linux.sh
     sed -e "s/@@SSH_PUB_KEY@@/${SSH_PUB_KEY}/" install-pulse-agent-linux.sh
 
@@ -129,16 +126,9 @@ generate_agent_installer() {
 	colored_echo green "### INFO  Generating installer... Done"
 }
 
-create_pulse_user() {
-	useradd pulse -d /var/lib/pulse2 -s /bin/rbash
-	mkdir -p /var/lib/pulse2/packages
-	chmod -R 770 /var/lib/pulse2/packages
-}
-
 # Run the script
 check_arguments "$@"
 compute_parameters
 prepare_system
 create_repos
 generate_agent_installer
-create_pulse_user

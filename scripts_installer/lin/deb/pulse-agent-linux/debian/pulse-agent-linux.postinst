@@ -1,9 +1,10 @@
 #!/bin/bash
-
 PREFIX="/opt"
 INVENTORY_TAG="@@INVENTORY_TAG@@"
 SSH_PUB_KEY=@@SSH_PUB_KEY@@
-
+PULSE_AGENT_CONFFILE_FILENAME="@@PULSE_AGENT_CONFFILE_FILENAME@@"
+PULSE_SCHEDULER_CONFFILE_FILENAME="@@PULSE_SCHEDULER_CONFFILE_FILENAME@@"
+PULSE_INVENTORY_CONFFILE_FILENAME="@@PULSE_INVENTORY_CONFFILE_FILENAME@@"
 
 
 ### Pulse account
@@ -48,13 +49,12 @@ echo "##############################"
 echo
 
 # Setup FusionInventory
-fusion_dir="/etc/fusioninventory"
-fusion_cfg="$fusion_dir/agent.cfg"
+FUSION_DIR="/etc/fusioninventory"
+FUSION_CFG="${FUSION_DIR}/agent.cfg"
 
-if [ -f ${fusion_cfg} ];then
-    sed -i '/^server\ =/d' ${fusion_cfg}
-    sed -i '/^server\=/d' ${fusion_cfg}
-    grep -q "${INVENTORY_TAG}" ${fusion_cfg} || echo "${INVENTORY_TAG}" >> ${fusion_cfg}
+if [ -f ${FUSION_CFG} ];then
+    sed -i '/^server/d' ${FUSION_CFG}
+    echo "tag = ${INVENTORY_TAG}" > ${FUSION_DIR}/conf.d/tag.cfg 
 else
     echo "ERROR: Unable to find fusioninventory config file"
     exit 1
@@ -90,3 +90,22 @@ if hash linuxvnc 2>/dev/null; then
     update-rc.d linuxvnc defaults
     /etc/init.d/linuxvnc start
 fi
+
+
+
+### Pulse agent and plugins
+
+echo
+echo "##############"
+echo "5. PULSE AGENT"
+echo "##############"
+echo
+
+# Copy config files
+cp "${PREFIX}/${PULSE_AGENT_CONFFILE_FILENAME}" "/etc/"
+# Only copy scheduler config file if is does not already exist
+if [[ ! -f /etc/${PULSE_SCHEDULER_CONFFILE_FILENAME} ]]; then
+  cp "${PREFIX}/${PULSE_SCHEDULER_CONFFILE_FILENAME}" "/etc/"
+fi
+# Copy inventory config file
+cp "${PREFIX}/${PULSE_INVENTORY_CONFFILE_FILENAME}" "/etc/"
