@@ -125,7 +125,6 @@ generate_agent_installer() {
 		colored_echo red "### ER... Generation of agent failed. Please restart"
 		exit 1
 	fi
-	chmod +x install-pulse-agent-linux.sh
 
 	colored_echo green "### INFO  Generating installer... Done"
 }
