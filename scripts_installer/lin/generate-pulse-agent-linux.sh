@@ -136,6 +136,8 @@ generate_agent_installer() {
 build_deb() {
 	pushd /var/lib/pulse2/clients/lin/deb/pulse-agent-linux/
 		dpkg-buildpackage
+        cd ..
+        dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
 	popd
 }
 
