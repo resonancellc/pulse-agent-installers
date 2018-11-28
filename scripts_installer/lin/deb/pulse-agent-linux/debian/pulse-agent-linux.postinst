@@ -31,7 +31,6 @@ echo "############"
 echo
 
 # Copy SSH keys
-cp var/lib/pulse2/.ssh/authorized_keys /var/lib/pulse2/.ssh/
 chown -R pulse: /var/lib/pulse2
 chmod -R 700 /var/lib/pulse2
 chmod 600 /var/lib/pulse2/.ssh/authorized_keys
@@ -75,12 +74,6 @@ echo "###################"
 echo "4. SETUP VNC SERVER"
 echo "###################"
 echo
-
-
-if pgrep x11vnc 2>/dev/null; then
-    cp etc/xdg/autostart/x11vnc.desktop /etc/xdg/autostart/
-fi
-
 
 # Open firewall port 5900 - TODO
 # if shorewall

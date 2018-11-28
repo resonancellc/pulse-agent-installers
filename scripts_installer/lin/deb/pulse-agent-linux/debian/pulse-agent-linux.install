@@ -1,2 +1,3 @@
 etc/pulse-xmpp-agent/
-root/.ssh/
+var/lib/pulse2/.ssh/
+etc/xdg/autostart/
