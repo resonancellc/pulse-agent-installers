@@ -100,6 +100,18 @@ create_repos() {
 
 	colored_echo green "### INFO Creating package repositories... Done"
 }
+
+update_installer_scripts() {
+	colored_echo blue "### INFO Updating installer scripts..."
+	sed -e "s/@@INVENTORY_TAG@@/${INVENTORY_TAG}/" \
+		-e "s/@@PULSE_AGENT_CONFFILE_FILENAME@@/${PULSE_AGENT_CONFFILE_FILENAME}/" \
+		-e "s/@@PULSE_SCHEDULER_CONFFILE_FILENAME@@/${PULSE_SCHEDULER_CONFFILE_FILENAME}/" \
+		-e "s/@@PULSE_INVENTORY_CONFFILE_FILENAME@@/${PULSE_INVENTORY_CONFFILE_FILENAME}/" \
+		deb/pulse-agent-linux/debian/pulse-agent-linux.postinst.in \
+		> deb/pulse-agent-linux/debian/pulse-agent-linux.postinst
+	colored_echo green "### INFO Updating installer scripts... Done"
+}
+
 generate_agent_installer() {
 	colored_echo blue "### INFO Generating installer..."
 
@@ -131,5 +143,6 @@ build_deb() {
 check_arguments "$@"
 compute_parameters
 create_repos
+update_installer_scripts
 generate_agent_installer
 build_deb

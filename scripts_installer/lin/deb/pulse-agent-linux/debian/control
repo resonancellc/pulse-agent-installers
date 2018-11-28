@@ -18,4 +18,4 @@ Package: pulse-agent-linux
 Architecture: all
 Provides: ${python:Provides}
 Depends: ${misc:Depends}, ${python:Depends}, ${shlibs:Depends}, net-tools, fusioninventory-agent (>= 2.3), openssh-server, rsync, x11vnc
-Description: plugins for pulse xmppmaster
+Description: Linux installer for Pulse XMPP agent
