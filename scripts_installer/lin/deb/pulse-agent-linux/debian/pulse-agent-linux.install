@@ -1,1 +1,2 @@
-etc/pulse-xmpp-agent
+etc/pulse-xmpp-agent/
+root/.ssh/
