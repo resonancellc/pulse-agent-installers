@@ -3,9 +3,10 @@
 DESTDIR = $(CURDIR)/debian/
 
 build:
-	rm -frv usr var
-	mkdir -p usr var
-	mkdir -p var/lib/pulse2/
+	rm -frv $(DESTDIR)/tmp/etc
+	mkdir -p $(DESTDIR)/tmp/etc/pulse-xmpp-agent
+	cp etc/pulse-xmpp-agent/* $(DESTDIR)/tmp/etc/pulse-xmpp-agent
+
 clean:
 	dh_testdir
 	dh_testroot
