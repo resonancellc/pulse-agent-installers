@@ -114,7 +114,7 @@ generate_agent_installer() {
     # We copy the config files to deb bundle
     mkdir -p deb/pulse-agent-linux/etc/pulse-xmpp-agent
     for config_files in $PULSE_AGENT_CONFFILE_FILENAME $PULSE_SCHEDULER_CONFFILE_FILENAME $PULSE_INVENTORY_CONFFILE_FILENAME; do
-        cp /var/lib/pulse2/clients/config/ $config_files deb/pulse-agent-linux/etc/pulse-xmpp-agent
+        cp /var/lib/pulse2/clients/config/$config_files deb/pulse-agent-linux/etc/pulse-xmpp-agent
     done
 
 	PULSE_SERVER=`grep public_ip /etc/mmc/pulse2/package-server/package-server.ini.local | awk '{print $3}'`
