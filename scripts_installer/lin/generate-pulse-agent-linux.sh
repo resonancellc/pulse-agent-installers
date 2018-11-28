@@ -92,14 +92,6 @@ sed_escape() {
 	echo "$@" |sed -e 's/[\/&\$"]/\\&/g'
 }
 
-prepare_system() {
-	colored_echo blue "### INFO Installing tools needed..."
-	# Install needed tools
-	apt-get -y install createrepo
-	apt-get -y install dpkg-dev
-	colored_echo green "### INFO Installing tools needed... Done"
-}
-
 create_repos() {
 	colored_echo blue "### INFO Creating package repositories..."
 	# Create RPM repository
@@ -130,7 +122,7 @@ generate_agent_installer() {
 }
 
 build_deb() {
-	pushd /var/lib/pulse2/clients/linux/deb/pulse-agent-linux/
+	pushd /var/lib/pulse2/clients/lin/deb/pulse-agent-linux/
 		dpkg-buildpackage
 	popd
 }
@@ -138,7 +130,6 @@ build_deb() {
 # Run the script
 check_arguments "$@"
 compute_parameters
-prepare_system
 create_repos
 generate_agent_installer
 build_deb

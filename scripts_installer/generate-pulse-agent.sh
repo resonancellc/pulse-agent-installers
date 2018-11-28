@@ -240,9 +240,9 @@ generate_agent_lin() {
   # Generate Pulse Agent for Linux
   colored_echo blue "Generating Pulse Agent for Linux..."
 	if [ -n "${INVENTORY_TAG}" ]; then
-		COMMAND="./linux/generate-pulse-agent-linux.sh --inventory-tag=${INVENTORY_TAG}"
+		COMMAND="./lin/generate-pulse-agent-linux.sh --inventory-tag=${INVENTORY_TAG}"
 	else
-		COMMAND="./linux/generate-pulse-agent-linux.sh"
+		COMMAND="./lin/generate-pulse-agent-linux.sh"
 	fi
 	echo "Running "${COMMAND}
 	${COMMAND}
