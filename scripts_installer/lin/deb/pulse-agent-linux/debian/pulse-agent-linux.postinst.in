@@ -14,7 +14,7 @@ echo "#########################"
 echo
 
 # Create pulse user
-adduser --system --group --home /var/lib/pulse2 --shell /bin/rbash --disabled-password pulse
+adduser --system --group --home /var/lib/pulse2 --shell /bin/rbash --disabled-password pulseuser
 if ! [ -d "/var/lib/pulse2/.ssh" ]; then
     echo "Create missing SSH profile ..."
     mkdir -p /var/lib/pulse2/.ssh
