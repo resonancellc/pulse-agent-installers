@@ -29,6 +29,7 @@
 SIVEO_BASE_URL="@@SIVEO_BASE_URL@@"
 BASE_URL="@@BASE_URL@@"
 INVENTORY_TAG="@@INVENTORY_TAG@@"
+AGENT_VERSION="@@AGENT_VERSION@@"
 
 
 check_root() {
@@ -74,10 +75,10 @@ configure_repo() {
 install_agent() {
     case "$DISTRO" in
       mageia)
-  	    yum install -q -y pulse-agent-linux
+  	    yum install -q -y pulse-agent-linux=${AGENT_VERSION}-1
         ;;
       ubuntu|debian)
-  	    apt install -q -y pulse-agent-linux
+  	    apt install -q -y pulse-agent-linux=${AGENT_VERSION}-1
         ;;
       *)
         ;;
