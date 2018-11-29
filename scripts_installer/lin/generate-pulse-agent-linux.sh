@@ -29,6 +29,7 @@
 
 # To be defined
 AGENT_VERSION="1.9.7"
+PULSE_AGENT_PLUGINS_VERSION="1.9"
 SIVEO_BASE_URL="https://agents.siveo.net"
 SSH_PUB_KEY="/root/.ssh/id_rsa.pub"
 PULSE_AGENT_CONFFILE_FILENAME="agentconf.ini"
@@ -141,6 +142,10 @@ update_installer_scripts() {
 		-e "s/@@PULSE_INVENTORY_CONFFILE_FILENAME@@/${PULSE_INVENTORY_CONFFILE_FILENAME}/" \
 		deb/pulse-agent-linux/debian/pulse-agent-linux.postinst.in \
 		> deb/pulse-agent-linux/debian/pulse-agent-linux.postinst
+    sed -e "s/@@AGENT_VERSION@@/${AGENT_VERSION}/" \
+        -e "s/@@PULSE_AGENT_PLUGINS_VERSION@@/${PULSE_AGENT_PLUGINS_VERSION}/" \
+        deb/pulse-agent-linux/debian/control.in \
+		> deb/pulse-agent-linux/debian/control
     sed -e "s/@@INVENTORY_TAG@@/${INVENTORY_TAG}/" \
 		-e "s/@@SIVEO_BASE_URL@@/$(sed_escape ${SIVEO_BASE_URL})/" \
 		-e "s/@@BASE_URL@@/$(sed_escape ${BASE_URL})/" \

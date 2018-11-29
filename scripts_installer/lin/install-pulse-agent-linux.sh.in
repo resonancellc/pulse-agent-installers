@@ -75,10 +75,10 @@ configure_repo() {
 install_agent() {
     case "$DISTRO" in
       mageia)
-  	    yum install -q -y pulse-agent-linux=${AGENT_VERSION}-1
+  	    yum install -q -y pulse-agent-linux=${AGENT_VERSION}\*
         ;;
       ubuntu|debian)
-  	    apt install -q -y pulse-agent-linux=${AGENT_VERSION}-1
+  	    apt install -q -y pulse-agent-linux=${AGENT_VERSION}\*
         ;;
       *)
         ;;
