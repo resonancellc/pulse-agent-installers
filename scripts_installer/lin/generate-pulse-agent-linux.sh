@@ -182,7 +182,23 @@ build_deb() {
 	pushd /var/lib/pulse2/clients/lin/deb/pulse-agent-linux/
 		dpkg-buildpackage
         cd ..
-        dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
+
+        if [ -d "debian" ]; then
+            cp -fv *.deb debian
+            pushd debian
+               dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
+            popd
+        fi
+
+        if [ -d "ubuntu/16.04" ]; then
+            cp -fv *.deb ubuntu/16.04
+            pushd ubuntu/16.04
+               dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
+            popd
+        fi
+
+        pushd debian
+
 	popd
 }
 
