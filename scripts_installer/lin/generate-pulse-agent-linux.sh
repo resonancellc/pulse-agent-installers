@@ -142,15 +142,24 @@ update_installer_scripts() {
 		deb/pulse-agent-linux/debian/pulse-agent-linux.postinst.in \
 		> deb/pulse-agent-linux/debian/pulse-agent-linux.postinst
     sed -e "s/@@INVENTORY_TAG@@/${INVENTORY_TAG}/" \
-		-e "s/@@SIVEO_BASE_URL@@/${SIVEO_BASE_URL}/" \
-		-e "s/@@BASE_URL@@/${BASE_URL}/" \
+		-e "s/@@SIVEO_BASE_URL@@/$(sed_escape ${SIVEO_BASE_URL})/" \
+		-e "s/@@BASE_URL@@/$(sed_escape ${BASE_URL})/" \
 		install-pulse-agent-linux.sh.in \
 		> ${GENERATED_FILE}
+
+    # Create symlinks to latest version
+    if [[ ${INVENTORY_TAG} == '' ]]; then
+        if [[ ${MINIMAL} -eq 1 ]]; then
+            ln -s -f Pulse-Agent-linux-MINIMAL-${AGENT_VERSION}.sh Pulse-Agent-linux-MINIMAL-latest.sh
+        else
+            ln -s -f Pulse-Agent-linux-FULL-${AGENT_VERSION}.sh Pulse-Agent-linux-FULL-latest.sh
+        fi
+    fi
 	colored_echo green "### INFO Updating installer scripts... Done"
 }
 
-generate_agent_installer() {
-	colored_echo blue "### INFO Generating installer..."
+generate_agent_package() {
+	colored_echo blue "### INFO Generating agent package..."
 
 	# We copy the config files to deb bundle
 	mkdir -p deb/pulse-agent-linux/etc/pulse-xmpp-agent
@@ -160,14 +169,7 @@ generate_agent_installer() {
 	mkdir -p deb/pulse-agent-linux/var/lib/pulse2/.ssh
 	cp -fv $SSH_PUB_KEY deb/pulse-agent-linux/var/lib/pulse2/.ssh/authorized_keys
 
-	PULSE_SERVER=`grep public_ip /etc/mmc/pulse2/package-server/package-server.ini.local | awk '{print $3}'`
-
-	if [ ! $? -eq 0 ]; then
-		colored_echo red "### ER... Generation of agent failed. Please restart"
-		exit 1
-	fi
-
-	colored_echo green "### INFO  Generating installer... Done"
+	colored_echo green "### INFO  Generating agent package... Done"
 }
 
 build_deb() {
@@ -182,5 +184,5 @@ build_deb() {
 check_arguments "$@"
 create_repos
 update_installer_scripts
-generate_agent_installer
+generate_agent_package
 build_deb
