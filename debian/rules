@@ -32,6 +32,8 @@ build:
 	cp $(DESTDIR)/tmp/pulse-xmpp-agent-${VERSION_XMPP_AGENT}/pulse_xmpp_agent/config/manage_scheduler.ini var/lib/pulse2/clients/config/
 	cp scripts_installer/generate-pulse-agent.sh var/lib/pulse2/clients
 	cp scripts_installer/generate-agent-package var/lib/pulse2/clients
+	cp scripts_installer/HEADER.html var/lib/pulse2/clients
+	cp scripts_installer/style.css var/lib/pulse2/clients
 	mkdir -p var/lib/pulse2/clients/win
 	cp scripts_installer/win/generate-pulse-agent-win.sh var/lib/pulse2/clients/win
 	cp scripts_installer/win/agent-installer.nsi.in var/lib/pulse2/clients/win
