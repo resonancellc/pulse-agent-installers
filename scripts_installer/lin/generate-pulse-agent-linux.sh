@@ -204,7 +204,6 @@ build_deb() {
 
 # Run the script
 check_arguments "$@"
-create_repos
 update_installer_scripts
 generate_agent_package
 build_deb
