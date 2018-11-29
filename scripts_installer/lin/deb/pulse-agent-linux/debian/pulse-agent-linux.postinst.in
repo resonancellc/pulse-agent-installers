@@ -1,9 +1,4 @@
 #!/bin/bash
-INVENTORY_TAG="@@INVENTORY_TAG@@"
-PULSE_AGENT_CONFFILE_FILENAME="@@PULSE_AGENT_CONFFILE_FILENAME@@"
-PULSE_SCHEDULER_CONFFILE_FILENAME="@@PULSE_SCHEDULER_CONFFILE_FILENAME@@"
-PULSE_INVENTORY_CONFFILE_FILENAME="@@PULSE_INVENTORY_CONFFILE_FILENAME@@"
-
 
 ### Pulse account
 
@@ -45,33 +40,12 @@ chmod 600 /var/lib/pulse2/.ssh/authorized_keys
 # sudo ufw allow 5900
 
 
-### Fusion-Inventory agent
-
-echo
-echo "##############################"
-echo "3. SETUP FUSIONINVENTORY AGENT"
-echo "##############################"
-echo
-
-# Setup FusionInventory
-FUSION_DIR="/etc/fusioninventory"
-FUSION_CFG="${FUSION_DIR}/agent.cfg"
-
-if [ -f ${FUSION_CFG} ];then
-    sed -i '/^server/d' ${FUSION_CFG}
-    echo "tag = ${INVENTORY_TAG}" > ${FUSION_DIR}/conf.d/tag.cfg
-else
-    echo "ERROR: Unable to find fusioninventory config file"
-    exit 1
-fi
-
-
 
 ### Setup VNC server
 
 echo
 echo "###################"
-echo "4. SETUP VNC SERVER"
+echo "3. SETUP VNC SERVER"
 echo "###################"
 echo
 
@@ -83,14 +57,3 @@ echo
 # if ufw
 # ufw enable
 # sudo ufw allow 5900
-
-
-### Pulse agent and plugins
-
-echo
-echo "##############"
-echo "5. PULSE AGENT"
-echo "##############"
-echo
-
-# Start pulse agent - TODO

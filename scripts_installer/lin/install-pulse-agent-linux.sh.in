@@ -26,12 +26,15 @@
 # TODO: Install freerdp
 #       Make use of deb and rpm repositories for installing packages
 
-PACKAGELIST="wget shorewall pulse-xmpp-agent pulse-xmppmaster-agentplugins pulseagent-plugins-machine freerdp openssh-server"
+SIVEO_BASE_URL="@@SIVEO_BASE_URL@@"
+BASE_URL="@@BASE_URL@@"
+INVENTORY_TAG="@@INVENTORY_TAG@@"
+
 
 check_root() {
     if [ "$(id -u)" != "0" ]; then
         echo "This script must be run as root" 1>&2
-	exit 1
+        exit 1
     fi
 }
 
@@ -40,72 +43,74 @@ check_distro() {
         echo "We are not able to find your linux distibution"
     else
         DISTRO=`cat /etc/os-release | grep ^ID= | cut -f2 -d'='`
+        VERSION=`cat /etc/os-release | grep ^VERSION_ID= | cut -f2 -d'='`
     fi
+    case "$DISTRO" in
+      mageia|debian|ubuntu)
+        ;;
+      *)
+  	    echo "We do not support your distribution yet"
+        exit 1
+        ;;
+    esac
+}
+
+configure_repo() {
+    case "$DISTRO" in
+      mageia)
+        ;;
+      debian|ubuntu)
+        if [[ "${BASE_URL}" != "" ]]; then
+            echo "deb [trusted=yes] ${BASE_URL}/lin/${DISTRO}/${VERSION}/ ./" > /etc/apt/sources.list.d/pulseagent.list
+        fi
+        echo "deb [trusted=yes] ${SIVEO_BASE_URL}/lin/${DISTRO}/${VERSION}/ ./" >> /etc/apt/sources.list.d/pulseagent.list
+        apt update
+        ;;
+      *)
+        ;;
+    esac
 }
 
 install_agent() {
     case "$DISTRO" in
       mageia)
-        # Use repository
-
-        # Install packages
-  	    urpmi $PACKAGELIST
+  	    yum install -q -y pulse-agent-linux
         ;;
-      debian)
-        # Use repository
-
-        # Install packages
-  	    apt-get install $PACKAGELIST
+      ubuntu|debian)
+  	    apt install -q -y pulse-agent-linux
         ;;
       *)
-  	    echo "We do not support your distribution yet"
         ;;
     esac
 }
 
-check_python_modules() {
-	MODULELIST="netifaces configparser utils sleekxmpp zipfile2 pycurl lxml pycrypto python_dateutil six croniter"
-	# TODO: Add support for debian
-	for MODULE in $MODULELIST
-	do
-		case "$DISTRO" in
-		mageia)
-			urpmq -i python-$MODULE &> /dev/null
-			if [ $? == "0" ]; then
-				urpmi --auto python-$MODULE
-			else
-				pip install $MODULE
-			fi
-		;;
-		case debian)
-			dpkg -l python-$MODULE &> /dev/null
-			if [ $? == "0" ]; then
-				apt-get install python-$MODULE
-			else
-				pip install $MODULE
-			fi
-		;;
-		esac
-	done
-}
+configure_inventory() {
+    TAG="$1"
+    # Setup FusionInventory
+    FUSION_DIR="/etc/fusioninventory"
+    FUSION_CFG="${FUSION_DIR}/agent.cfg"
 
-configure_pulse() {
-    if [[ ! -d /etc/pulse-xmpp-agent ]]; then
-      mkdir /etc/pulse-xmpp-agent
+    if [ -f ${FUSION_CFG} ];then
+        sed -i '/^server/d' ${FUSION_CFG}
+        echo "tag = ${TAG}" > ${FUSION_DIR}/conf.d/tag.cfg
+    else
+        echo "ERROR: Unable to find fusioninventory config file"
+        exit 1
     fi
-    pushd /etc/pulse-xmpp-agent
-        wget http://@@PULSE_SERVER@@/downloads/config/agentconf.ini
-    popd
 }
 
-configure_iptables() {
-	echo "ACCEPT net fw tcp 22" >> /etc/shorewall/rules
-	service shorewall restart
+start_agent() {
+    # Enable and start the service
+	systemctl enable pulse-xmpp-agent-machine.service
+	systemctl start pulse-xmpp-agent-machine.service
 }
+
 
 check_root
 check_distro
+configure_repo
 install_agent
-check_python_modules
-configure_pulse
-configure_iptables
+if [[ ${INVENTORY_TAG} != "" ]]; then
+    configure_inventory ${INVENTORY_TAG}
+fi
+start_agent

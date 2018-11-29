@@ -27,13 +27,22 @@
 # TODO: Create rpm and deb repositories
 #				Manage inventory tags
 
+# To be defined
+AGENT_VERSION="1.9.7"
+SIVEO_BASE_URL="https://agents.siveo.net"
+SSH_PUB_KEY="/root/.ssh/id_rsa.pub"
+PULSE_AGENT_CONFFILE_FILENAME="agentconf.ini"
+PULSE_SCHEDULER_CONFFILE_FILENAME="manage_scheduler.ini"
+PULSE_INVENTORY_CONFFILE_FILENAME="inventory.ini"
+
+
 # Go to own folder
 cd "$(dirname $0)"
 
 # Display usage
 display_usage() {
 	echo -e "\nUsage:\n$0 [--inventory-tag=<Tag added to the inventory>]\n"
-	echo -e "\t [--minimal]\n"
+    echo -e "\t [--minimal [--base-url=<URL for downloading agent and dependencies from>]]\n"
 }
 
 check_arguments() {
@@ -43,6 +52,14 @@ check_arguments() {
 		INVENTORY_TAG="${i#*=}"
 		shift
 		;;
+      --minimal*)
+        MINIMAL=1
+        shift
+        ;;
+      --base-url*)
+        TEST_URL="${i#*=}"
+        shift
+        ;;
 			*)
 		# unknown option
 		display_usage
@@ -50,14 +67,19 @@ check_arguments() {
 			;;
 		esac
 	done
-}
 
-compute_parameters() {
-	PULSE_AGENT_FILENAME="${PULSE_AGENT_NAME}-${AGENT_VERSION}.tar.gz"
-	SSH_PUB_KEY="/root/.ssh/id_rsa.pub"
-	PULSE_AGENT_CONFFILE_FILENAME="agentconf.ini"
-	PULSE_SCHEDULER_CONFFILE_FILENAME="manage_scheduler.ini"
-	PULSE_INVENTORY_CONFFILE_FILENAME="inventory.ini"
+	if [[ ${MINIMAL} ]] && [[ ${TEST_URL} ]]; then
+		URL_REGEX='^https?://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$'
+		if [[ ${TEST_URL} =~ ${URL_REGEX} ]]; then
+			BASE_URL=${TEST_URL}
+		else
+			colored_echo red "The base-url parameter is not valid"
+            BASE_URL=""
+		fi
+	fi
+	if [[ ! ${MINIMAL} ]]; then
+		exit 0 # Remove when we support full version as well
+	fi
 }
 
 display_usage() {
@@ -103,12 +125,27 @@ create_repos() {
 
 update_installer_scripts() {
 	colored_echo blue "### INFO Updating installer scripts..."
+    if [[ ${MINIMAL} -eq 1 ]]; then
+        GENERATED_FILE="Pulse-Agent-linux-MINIMAL-${AGENT_VERSION}"
+	else
+        GENERATED_FILE="Pulse-Agent-linux-FULL-${AGENT_VERSION}"
+	fi
+    if [[ "${INVENTORY_TAG}" == "" ]]; then
+        GENERATED_FILE="${GENERATED_FILE}.sh"
+    else
+        GENERATED_FILE="${GENERATED_FILE}-${INVENTORY_TAG}.sh"
+    fi
 	sed -e "s/@@INVENTORY_TAG@@/${INVENTORY_TAG}/" \
 		-e "s/@@PULSE_AGENT_CONFFILE_FILENAME@@/${PULSE_AGENT_CONFFILE_FILENAME}/" \
 		-e "s/@@PULSE_SCHEDULER_CONFFILE_FILENAME@@/${PULSE_SCHEDULER_CONFFILE_FILENAME}/" \
 		-e "s/@@PULSE_INVENTORY_CONFFILE_FILENAME@@/${PULSE_INVENTORY_CONFFILE_FILENAME}/" \
 		deb/pulse-agent-linux/debian/pulse-agent-linux.postinst.in \
 		> deb/pulse-agent-linux/debian/pulse-agent-linux.postinst
+    sed -e "s/@@INVENTORY_TAG@@/${INVENTORY_TAG}/" \
+		-e "s/@@SIVEO_BASE_URL@@/${SIVEO_BASE_URL}/" \
+		-e "s/@@BASE_URL@@/${BASE_URL}/" \
+		install-pulse-agent-linux.sh.in \
+		> ${GENERATED_FILE}
 	colored_echo green "### INFO Updating installer scripts... Done"
 }
 
@@ -143,7 +180,6 @@ build_deb() {
 
 # Run the script
 check_arguments "$@"
-compute_parameters
 create_repos
 update_installer_scripts
 generate_agent_installer
