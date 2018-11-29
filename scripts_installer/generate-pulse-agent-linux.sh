@@ -29,9 +29,6 @@
 
 . /etc/os-release
 
-PULSE_REPO_URL=""
-GIT_BRANCH=""
-
 # Go to own folder
 cd "$(dirname $0)"
 
@@ -106,29 +103,6 @@ prepare_system() {
 	colored_echo green "### INFO Installing tools needed... Done"
 }
 
-create_repos() {
-    LINUX_DISTRO=$ID
-    case ${LINUX_DISTRO} in
-        "mageia"|"rhel")
-        # Create RPM repository
-        exit 1
-        ;;
-
-        "debian")
-        # Create DEB repository
-        echo "deb ${PULSE_REPO_URL} ${GIT_BRANCH} mmc-core pulse 3rdparty" > /etc/apt/sources.list.d/pulse.list
-            ;;
-    esac
-
-	colored_echo blue "### INFO Creating package repositories..."
-	# Create RPM repository
-
-	# Create DEB repository
-
-	colored_echo green "### INFO Creating package repositories... Done"
-}
-
-
 generate_agent_installer() {
 	colored_echo blue "### INFO Generating installer..."
 
@@ -153,6 +127,5 @@ create_pulse_user() {
 check_arguments "$@"
 compute_parameters
 prepare_system
-create_repos
 generate_agent_installer
 create_pulse_user
