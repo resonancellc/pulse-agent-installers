@@ -59,7 +59,7 @@ FUSION_CFG="${FUSION_DIR}/agent.cfg"
 
 if [ -f ${FUSION_CFG} ];then
     sed -i '/^server/d' ${FUSION_CFG}
-    echo "tag = ${INVENTORY_TAG}" > ${FUSION_DIR}/conf.d/tag.cfg
+    echo "tag = ${INVENTORY_TAG}" > ${FUSION_DIR}/conf.d/tag.cfg 
 else
     echo "ERROR: Unable to find fusioninventory config file"
     exit 1
