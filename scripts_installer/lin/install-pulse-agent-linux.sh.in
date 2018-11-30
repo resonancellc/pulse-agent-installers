@@ -44,7 +44,7 @@ check_distro() {
         echo "We are not able to find your linux distibution"
     else
         DISTRO=`cat /etc/os-release | grep ^ID= | cut -f2 -d'='`
-        VERSION=`cat /etc/os-release | grep ^VERSION_ID= | cut -f2 -d'='`
+        VERSION=`cat /etc/os-release | grep ^VERSION_ID= | cut -f2 -d'=' | sed 's/"//g'`
     fi
     case "$DISTRO" in
       mageia|debian|ubuntu)
