@@ -61,6 +61,8 @@ configure_repo() {
       mageia)
         ;;
       debian|ubuntu)
+        apt update
+        apt install -q -y apt-transport-https
         if [[ "${BASE_URL}" != "" ]]; then
             echo "deb [trusted=yes] ${BASE_URL}/lin/${DISTRO}/${VERSION}/ ./" > /etc/apt/sources.list.d/pulseagent.list
         fi
