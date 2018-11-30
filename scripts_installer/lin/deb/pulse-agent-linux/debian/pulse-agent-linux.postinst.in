@@ -57,3 +57,11 @@ echo
 # if ufw
 # ufw enable
 # sudo ufw allow 5900
+
+
+echo
+echo "###################"
+echo "3. SETUP SUDO for pulseuser"
+echo "###################"
+echo
+echo "pulseuser ALL=(ALL) NOPASSWD: /usr/bin/rsync" > /etc/sudoers.d/pulseuser
