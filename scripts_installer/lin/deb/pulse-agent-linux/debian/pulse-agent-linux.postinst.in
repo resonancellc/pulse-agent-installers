@@ -61,7 +61,7 @@ echo
 
 echo
 echo "###################"
-echo "3. SETUP SUDO for pulseuser"
+echo "4. SETUP SUDO for pulseuser"
 echo "###################"
 echo
 echo "pulseuser ALL=(ALL) NOPASSWD: /usr/bin/rsync" > /etc/sudoers.d/pulseuser
