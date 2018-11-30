@@ -183,9 +183,9 @@ build_deb() {
 		dpkg-buildpackage
         cd ..
 
-        if [ -d "debian" ]; then
-            cp -fv *.deb debian
-            pushd debian
+        if [ -d "debian/9" ]; then
+            cp -fv *.deb debian/9
+            pushd debian/9
                dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
             popd
         fi
@@ -196,8 +196,6 @@ build_deb() {
                dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
             popd
         fi
-
-        pushd debian
 
 	popd
 }
