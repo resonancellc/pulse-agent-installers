@@ -32,25 +32,29 @@ build:
 	cp $(DESTDIR)/tmp/pulse-xmpp-agent-${VERSION_XMPP_AGENT}/pulse_xmpp_agent/config/manage_scheduler.ini var/lib/pulse2/clients/config/
 	cp scripts_installer/generate-pulse-agent.sh var/lib/pulse2/clients
 	cp scripts_installer/generate-agent-package var/lib/pulse2/clients
-	mkdir -p var/lib/pulse2/clients/win32
-	cp scripts_installer/generate-pulse-agent-win.sh var/lib/pulse2/clients/win32
-	cp scripts_installer/agent-installer.nsi.in var/lib/pulse2/clients/win32
-	cp scripts_installer/pulse-agent-task.xml var/lib/pulse2/clients/win32
-	#cp scripts_installer/generate-kiosk-package var/lib/pulse2/clients/win32
-	mkdir -p var/lib/pulse2/clients/linux
-	cp scripts_installer/*linux* var/lib/pulse2/clients/linux
+	cp scripts_installer/HEADER.html var/lib/pulse2/clients
+	cp scripts_installer/style.css var/lib/pulse2/clients
+	mkdir -p var/lib/pulse2/clients/win
+	cp scripts_installer/win/generate-pulse-agent-win.sh var/lib/pulse2/clients/win
+	cp scripts_installer/win/agent-installer.nsi.in var/lib/pulse2/clients/win
+	cp scripts_installer/win/pulse-agent-task.xml var/lib/pulse2/clients/win
+	#cp scripts_installer/generate-kiosk-package var/lib/pulse2/clients/win
+	mkdir -p var/lib/pulse2/clients/lin
+	cp -r scripts_installer/lin/* var/lib/pulse2/clients/lin
 	mkdir -p var/lib/pulse2/clients/mac
-	cp scripts_installer/generate-pulse-agent-mac.sh var/lib/pulse2/clients/mac
-	cp scripts_installer/Info.plist.in var/lib/pulse2/clients/mac
-	cp scripts_installer/postflight.in var/lib/pulse2/clients/mac
-	cp scripts_installer/net.siveo.pulse_xmpp_agent.plist var/lib/pulse2/clients/mac
-	cp scripts_installer/rbash var/lib/pulse2/clients/mac
-	cp scripts_installer/runpulseagent var/lib/pulse2/clients/mac
-	mkdir -p var/lib/pulse2/clients/win32/libs
-	cp -fr scripts_installer/nsis_libs/* var/lib/pulse2/clients/win32/libs
+	cp scripts_installer/mac/generate-pulse-agent-mac.sh var/lib/pulse2/clients/mac
+	cp scripts_installer/mac/Info.plist.in var/lib/pulse2/clients/mac
+	cp scripts_installer/mac/postflight.in var/lib/pulse2/clients/mac
+	cp scripts_installer/mac/net.siveo.pulse_xmpp_agent.plist var/lib/pulse2/clients/mac
+	cp scripts_installer/mac/rbash var/lib/pulse2/clients/mac
+	cp scripts_installer/mac/runpulseagent var/lib/pulse2/clients/mac
+	mkdir -p var/lib/pulse2/clients/win/libs
+	cp -fr scripts_installer/win/nsis_libs/* var/lib/pulse2/clients/win/libs
+	mkdir -p var/lib/pulse2/clients/win/artwork
+	cp -fr scripts_installer/win/artwork/* var/lib/pulse2/clients/win/artwork
 	chmod +x var/lib/pulse2/clients/*.sh
 	chmod +x var/lib/pulse2/clients/generate-agent-package
-	#chmod +x var/lib/pulse2/clients/win32/generate-kiosk-package
+	#chmod +x var/lib/pulse2/clients/win/generate-kiosk-package
 	rm -frv $(DESTDIR)/tmp
 clean:
 	dh_testdir
