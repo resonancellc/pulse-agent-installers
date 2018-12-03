@@ -8,6 +8,5 @@ Homepage: http://www.siveo.net/
 
 Package: pulse-agent-installers
 Architecture: all
-Breaks: pulse2-common (<< 4.4.1git20181129101527.5e41590-1)
-Depends: ${misc:Depends}, pulse-xmpp-agent-deps, dos2unix, unzip, zip, nsis-plugins-accesscontrol, nsis-plugins-inetc, nsis-plugins-pwgen, nsis-plugins-zipdll, uuid, nsis-plugins-textreplace, xar, pulse-kiosk-agent-deps, xz-utils
+Depends: ${misc:Depends}, pulse-xmpp-agent-deps, dos2unix, unzip, zip, nsis-plugins-accesscontrol, nsis-plugins-inetc, nsis-plugins-pwgen, nsis-plugins-zipdll, uuid, nsis-plugins-textreplace, xar, pulse-kiosk-agent-deps, xz-utils, dpkg-dev, debhelper, python-all-dev, build-essential, createrepo, pulse-agent-linux-repo-xenial, pulse-agent-linux-repo-stretch
 Description: Pulse 2 Xmpp agent
