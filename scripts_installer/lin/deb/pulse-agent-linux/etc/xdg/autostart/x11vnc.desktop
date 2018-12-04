@@ -1,4 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=x11vnc
-Exec=x11vnc -many -rfbport 5900 -auth ~/.Xauthority
