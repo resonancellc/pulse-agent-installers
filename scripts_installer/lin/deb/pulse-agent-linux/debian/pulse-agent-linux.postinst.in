@@ -41,27 +41,9 @@ chmod 600 /var/lib/pulse2/.ssh/authorized_keys
 
 
 
-### Setup VNC server
-
-echo
-echo "###################"
-echo "3. SETUP VNC SERVER"
-echo "###################"
-echo
-
-# Open firewall port 5900 - TODO
-# if shorewall
-# echo "ACCEPT net fw tcp 5900" >> /etc/shorewall/rules
-# service shorewall restart
-#
-# if ufw
-# ufw enable
-# sudo ufw allow 5900
-
-
 echo
 echo "###########################"
-echo "4. SETUP SUDO for pulseuser"
+echo "3. SETUP SUDO for pulseuser"
 echo "###########################"
 echo
 echo "pulseuser ALL=(ALL) NOPASSWD: /usr/bin/rsync" > /etc/sudoers.d/pulseuser
@@ -72,7 +54,7 @@ echo "pulseuser ALL=(ALL) NOPASSWD: /usr/bin/rsync" > /etc/sudoers.d/pulseuser
 
 echo
 echo "###################"
-echo "5. SETUP RDP SERVER"
+echo "4. SETUP RDP SERVER"
 echo "###################"
 echo
 
