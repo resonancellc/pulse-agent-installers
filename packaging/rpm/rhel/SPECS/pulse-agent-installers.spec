@@ -102,6 +102,23 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
         chmod +x %{buildroot}/var/lib/pulse2/clients/generate-agent-package
 	chmod +x %{buildroot}/var/lib/pulse2/clients/win/generate-kiosk-package
 
+%pre
+rm -fv /var/lib/pulse2/imaging/postinst/winutils/Pulse-Agent*latest*
+
+if [ ! -d "/var/lib/pulse2/clients/win" ]; then
+    mkdir /var/lib/pulse2/clients/win
+fi
+
+if [ -d "/var/lib/pulse2/clients/win32" ]; then
+    mv /var/lib/pulse2/clients/win32/*.exe /var/lib/pulse2/clients/win/
+    rm -fr /var/lib/pulse2/clients/win32/
+fi
+
+if [ -d "/var/lib/pulse2/clients/linux" ]; then
+    rm -fr /var/lib/pulse2/clients/linux/
+fi
+
+
 %post
 if [ $1 == 2 ]; then
 	if [ -f %_var/lib/pulse2/clients/config/agentconf.ini ]; then
