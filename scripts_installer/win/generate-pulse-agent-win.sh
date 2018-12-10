@@ -68,7 +68,7 @@ BASE_URL="https://agents.siveo.net" # Overridden if --base-url is defined
 cd "`dirname $0`"
 
 # To be defined
-AGENT_VERSION="1.9.6"
+AGENT_VERSION="1.9.7"
 PYTHON_VERSION="2.7.9"
 PY_WIN32_MODULE="pypiwin32"
 PY_WIN32_VERSION="219"
@@ -117,7 +117,7 @@ RDPWRAP_NAME="RDPWrap"
 RDPWRAP_VERSION="1.6.1"
 DOWNLOAD_FOLDER="downloads"
 PULSE_AGENT_PLUGINS_NAME="pulse-agent-plugins"
-PULSE_AGENT_PLUGINS_VERSION="1.8"
+PULSE_AGENT_PLUGINS_VERSION="1.9"
 
 
 # Display usage
@@ -162,50 +162,50 @@ check_arguments() {
 compute_parameters() {
 	PYTHON32_FILENAME="python-${PYTHON_VERSION}.msi"
     PYTHON64_FILENAME="python-${PYTHON_VERSION}.amd64.msi"
-	PYTHON32_URL="${BASE_URL}/win32/downloads/${PYTHON32_FILENAME}"
-	PYTHON64_URL="${BASE_URL}/win32/downloads/${PYTHON64_FILENAME}"
+	PYTHON32_URL="${BASE_URL}/win/downloads/${PYTHON32_FILENAME}"
+	PYTHON64_URL="${BASE_URL}/win/downloads/${PYTHON64_FILENAME}"
 	PY_VCPYTHON27_FILENAME="VCForPython27.msi"
-	PY_VCPYTHON27_URL="${BASE_URL}/win32/downloads/${PY_VCPYTHON27_FILENAME}"
+	PY_VCPYTHON27_URL="${BASE_URL}/win/downloads/${PY_VCPYTHON27_FILENAME}"
 	PY_WIN3232_FILENAME="${PY_WIN32_MODULE}-${PY_WIN32_VERSION}-cp27-none-win32.whl"
 	PY_WIN3264_FILENAME="${PY_WIN32_MODULE}-${PY_WIN32_VERSION}-cp27-none-win_amd64.whl"
-	PY_WIN3232_URL="${BASE_URL}/win32/downloads/python_modules/${PY_WIN3232_FILENAME}"
-	PY_WIN3264_URL="${BASE_URL}/win32/downloads/python_modules/${PY_WIN3264_FILENAME}"
+	PY_WIN3232_URL="${BASE_URL}/win/downloads/python_modules/${PY_WIN3232_FILENAME}"
+	PY_WIN3264_URL="${BASE_URL}/win/downloads/python_modules/${PY_WIN3264_FILENAME}"
 	PY_NETIFACES_FILENAME="${PY_NETIFACES_MODULE}-${PY_NETIFACES_VERSION}.tar.gz"
-	PY_NETIFACES_URL="${BASE_URL}/win32/downloads/python_modules/${PY_NETIFACES_FILENAME}"
+	PY_NETIFACES_URL="${BASE_URL}/win/downloads/python_modules/${PY_NETIFACES_FILENAME}"
 	PY_COMTYPES_FILENAME="${PY_COMTYPES_MODULE}-${PY_COMTYPES_VERSION}.zip"
-	PY_COMTYPES_URL="${BASE_URL}/win32/downloads/python_modules/${PY_COMTYPES_FILENAME}"
+	PY_COMTYPES_URL="${BASE_URL}/win/downloads/python_modules/${PY_COMTYPES_FILENAME}"
 	PY_CONFIGPARSER_FILENAME="${PY_CONFIGPARSER_MODULE}-${PY_CONFIGPARSER_VERSION}.tar.gz"
-	PY_CONFIGPARSER_URL="${BASE_URL}/win32/downloads/python_modules/${PY_CONFIGPARSER_FILENAME}"
+	PY_CONFIGPARSER_URL="${BASE_URL}/win/downloads/python_modules/${PY_CONFIGPARSER_FILENAME}"
 	PY_UTILS_FILENAME="${PY_UTILS_MODULE}-${PY_UTILS_VERSION}.tar.gz"
-	PY_UTILS_URL="${BASE_URL}/win32/downloads/python_modules/${PY_UTILS_FILENAME}"
+	PY_UTILS_URL="${BASE_URL}/win/downloads/python_modules/${PY_UTILS_FILENAME}"
 	PY_SLEEKXMPP_FILENAME="${PY_SLEEKXMPP_MODULE}-${PY_SLEEKXMPP_VERSION}.tar.gz"
-	PY_SLEEKXMPP_URL="${BASE_URL}/win32/downloads/python_modules/${PY_SLEEKXMPP_FILENAME}"
+	PY_SLEEKXMPP_URL="${BASE_URL}/win/downloads/python_modules/${PY_SLEEKXMPP_FILENAME}"
 	PY_WMI_FILENAME="WMI-${PY_WMI_VERSION}.zip"
-	PY_WMI_URL="${BASE_URL}/win32/downloads/python_modules/${PY_WMI_FILENAME}"
+	PY_WMI_URL="${BASE_URL}/win/downloads/python_modules/${PY_WMI_FILENAME}"
 	PY_ZIPFILE_FILENAME="${PY_ZIPFILE_MODULE}-${PY_ZIPFILE_VERSION}-py2.py3-none-any.whl"
-	PY_ZIPFILE_URL="${BASE_URL}/win32/downloads/python_modules/${PY_ZIPFILE_FILENAME}"
+	PY_ZIPFILE_URL="${BASE_URL}/win/downloads/python_modules/${PY_ZIPFILE_FILENAME}"
 	LIBCURL_DL_FILENAME="${LIBCURL_NAME}-${LIBCURL_VERSION}.tar.xz"
-	LIBCURL_URL="${BASE_URL}/win32/downloads/${LIBCURL_DL_FILENAME}"
+	LIBCURL_URL="${BASE_URL}/win/downloads/${LIBCURL_DL_FILENAME}"
 	PY_CURL32_FILENAME="${PY_CURL_MODULE}-${PY_CURL_VERSION}-cp27-none-win32.whl"
 	PY_CURL64_FILENAME="${PY_CURL_MODULE}-${PY_CURL_VERSION}-cp27-none-win_amd64.whl"
-	PY_CURL32_URL="${BASE_URL}/win32/downloads/python_modules/${PY_CURL32_FILENAME}"
-	PY_CURL64_URL="${BASE_URL}/win32/downloads/python_modules/${PY_CURL64_FILENAME}"
+	PY_CURL32_URL="${BASE_URL}/win/downloads/python_modules/${PY_CURL32_FILENAME}"
+	PY_CURL64_URL="${BASE_URL}/win/downloads/python_modules/${PY_CURL64_FILENAME}"
 	PY_LXML32_FILENAME="${PY_LXML_MODULE}-${PY_LXML_VERSION}-cp27-none-win32.whl"
 	PY_LXML64_FILENAME="${PY_LXML_MODULE}-${PY_LXML_VERSION}-cp27-none-win_amd64.whl"
-	PY_LXML32_URL="${BASE_URL}/win32/downloads/python_modules/${PY_LXML32_FILENAME}"
-	PY_LXML64_URL="${BASE_URL}/win32/downloads/python_modules/${PY_LXML64_FILENAME}"
+	PY_LXML32_URL="${BASE_URL}/win/downloads/python_modules/${PY_LXML32_FILENAME}"
+	PY_LXML64_URL="${BASE_URL}/win/downloads/python_modules/${PY_LXML64_FILENAME}"
 	PY_CRYPTO_FILENAME="${PY_CRYPTO_MODULE}-${PY_CRYPTO_VERSION}.tar.gz"
-	PY_CRYPTO_URL="${BASE_URL}/win32/downloads/python_modules/${PY_CRYPTO_FILENAME}"
+	PY_CRYPTO_URL="${BASE_URL}/win/downloads/python_modules/${PY_CRYPTO_FILENAME}"
 	PY_CRON_FILENAME="${PY_CRON_MODULE}-${PY_CRON_VERSION}.tar.gz"
-	PY_CRON_URL="${BASE_URL}/win32/downloads/python_modules/${PY_CRON_FILENAME}"
+	PY_CRON_URL="${BASE_URL}/win/downloads/python_modules/${PY_CRON_FILENAME}"
 	PY_CRON_DEPS_1_FILENAME="${PY_CRON_DEPS_1_MODULE}-${PY_CRON_DEPS_1_VERSION}-py2.py3-none-any.whl"
-	PY_CRON_DEPS_1_URL="${BASE_URL}/win32/downloads/python_modules/${PY_CRON_DEPS_1_FILENAME}"
+	PY_CRON_DEPS_1_URL="${BASE_URL}/win/downloads/python_modules/${PY_CRON_DEPS_1_FILENAME}"
 	PY_CRON_DEPS_2_FILENAME="${PY_CRON_DEPS_2_MODULE}-${PY_CRON_DEPS_2_VERSION}-py2.py3-none-any.whl"
-	PY_CRON_DEPS_2_URL="${BASE_URL}/win32/downloads/python_modules/${PY_CRON_DEPS_2_FILENAME}"
+	PY_CRON_DEPS_2_URL="${BASE_URL}/win/downloads/python_modules/${PY_CRON_DEPS_2_FILENAME}"
 	PY_PSUTIL32_FILENAME="${PY_PSUTIL_MODULE}-${PY_PSUTIL_VERSION}-cp27-none-win32.whl"
 	PY_PSUTIL64_FILENAME="${PY_PSUTIL_MODULE}-${PY_PSUTIL_VERSION}-cp27-none-win_amd64.whl"
-	PY_PSUTIL32_URL="${BASE_URL}/win32/downloads/python_modules/${PY_PSUTIL32_FILENAME}"
-	PY_PSUTIL64_URL="${BASE_URL}/win32/downloads/python_modules/${PY_PSUTIL64_FILENAME}"
+	PY_PSUTIL32_URL="${BASE_URL}/win/downloads/python_modules/${PY_PSUTIL32_FILENAME}"
+	PY_PSUTIL64_URL="${BASE_URL}/win/downloads/python_modules/${PY_PSUTIL64_FILENAME}"
 	PULSE_AGENT_FILENAME="${PULSE_AGENT_NAME}-${AGENT_VERSION}.tar.gz"
 	PULSE_AGENT_CONFFILE_FILENAME="agentconf.ini"
 	PULSE_SCHEDULER_CONFFILE_FILENAME="manage_scheduler.ini"
@@ -213,22 +213,22 @@ compute_parameters() {
 	PULSE_AGENT_TASK_XML="pulse-agent-task.xml"
 	PULSE_AGENT_PLUGINS="${PULSE_AGENT_PLUGINS_NAME}-${PULSE_AGENT_PLUGINS_VERSION}.tar.gz"
 	RSYNC_FILENAME="${RSYNC_NAME}_${RSYNC_VERSION}_x86_Free.zip"
-	RSYNC_URL="${BASE_URL}/win32/downloads/${RSYNC_FILENAME}"
+	RSYNC_URL="${BASE_URL}/win/downloads/${RSYNC_FILENAME}"
 	OPENSSH32_FILENAME="${OPENSSH_NAME}-Win32.zip"
-	OPENSSH32_URL="${BASE_URL}/win32/downloads/${OPENSSH32_FILENAME}"
+	OPENSSH32_URL="${BASE_URL}/win/downloads/${OPENSSH32_FILENAME}"
 	OPENSSH64_FILENAME="${OPENSSH_NAME}-Win64.zip"
-	OPENSSH64_URL="${BASE_URL}/win32/downloads/${OPENSSH64_FILENAME}"
+	OPENSSH64_URL="${BASE_URL}/win/downloads/${OPENSSH64_FILENAME}"
 	FUSION_INVENTORY_AGENT32_FILENAME="${FUSION_INVENTORY_AGENT_NAME}_windows-x86_${FUSION_INVENTORY_AGENT_VERSION}.exe"
 	FUSION_INVENTORY_AGENT64_FILENAME="${FUSION_INVENTORY_AGENT_NAME}_windows-x64_${FUSION_INVENTORY_AGENT_VERSION}.exe"
-	FUSION_INVENTORY_AGENT32_URL="${BASE_URL}/win32/downloads/${FUSION_INVENTORY_AGENT32_FILENAME}"
-	FUSION_INVENTORY_AGENT64_URL="${BASE_URL}/win32/downloads/${FUSION_INVENTORY_AGENT64_FILENAME}"
+	FUSION_INVENTORY_AGENT32_URL="${BASE_URL}/win/downloads/${FUSION_INVENTORY_AGENT32_FILENAME}"
+	FUSION_INVENTORY_AGENT64_URL="${BASE_URL}/win/downloads/${FUSION_INVENTORY_AGENT64_FILENAME}"
 	RDPWRAP_FILENAME="${RDPWRAP_NAME}-v${RDPWRAP_VERSION}.zip"
 	RDPWRAP_FOLDERNAME="${RDPWRAP_NAME}-v${RDPWRAP_VERSION}"
-	RDPWRAP_URL="${BASE_URL}/win32/downloads/${RDPWRAP_FILENAME}"
+	RDPWRAP_URL="${BASE_URL}/win/downloads/${RDPWRAP_FILENAME}"
 	VNC_AGENT32_FILENAME="${VNC_AGENT_NAME}-${VNC_AGENT_VERSION}-gpl-setup-32bit.msi"
 	VNC_AGENT64_FILENAME="${VNC_AGENT_NAME}-${VNC_AGENT_VERSION}-gpl-setup-64bit.msi"
-	VNC_AGENT32_URL="${BASE_URL}/win32/downloads/${VNC_AGENT32_FILENAME}"
-	VNC_AGENT64_URL="${BASE_URL}/win32/downloads/${VNC_AGENT64_FILENAME}"
+	VNC_AGENT32_URL="${BASE_URL}/win/downloads/${VNC_AGENT32_FILENAME}"
+	VNC_AGENT64_URL="${BASE_URL}/win/downloads/${VNC_AGENT64_FILENAME}"
 }
 
 display_usage() {
@@ -439,6 +439,7 @@ update_nsi_script_full() {
 		-e "s/@@FULL_OR_DL_VNC_AGENT32@@/$(sed_escape ${FULL_VNC_AGENT32})/" \
 		-e "s/@@FULL_OR_DL_VNC_AGENT64@@/$(sed_escape ${FULL_VNC_AGENT64})/" \
 		-e "s/@@PULSE_AGENT_PLUGINS@@/${PULSE_AGENT_PLUGINS}/" \
+                -e "s/@@PULSE_AGENT_PLUGINS_NAME@@/${PULSE_AGENT_PLUGINS_NAME}/" \
 		-e "s/@@RSYNC_FILENAME@@/rsync.zip/" \
 		-e "s/@@GENERATED_SIZE@@/FULL/" \
 		agent-installer.nsi.in \
@@ -588,6 +589,7 @@ update_nsi_script_dl() {
 		-e "s/@@FULL_OR_DL_VNC_AGENT32@@/$(sed_escape ${DL_VNC_AGENT32})/" \
 		-e "s/@@FULL_OR_DL_VNC_AGENT64@@/$(sed_escape ${DL_VNC_AGENT64})/" \
 		-e "s/@@PULSE_AGENT_PLUGINS@@/${PULSE_AGENT_PLUGINS}/" \
+                -e "s/@@PULSE_AGENT_PLUGINS_NAME@@/${PULSE_AGENT_PLUGINS_NAME}/" \
 		-e "s/@@RSYNC_FILENAME@@/rsync.zip/" \
 		-e "s/@@GENERATED_SIZE@@/MINIMAL/" \
 		agent-installer.nsi.in \
@@ -614,7 +616,7 @@ generate_agent_installer() {
 
     for package in Pulse-Agent-windows-MINIMAL-latest Pulse-Agent-windows-FULL-latest;
     do
-        cp -fv /var/lib/pulse2/clients/win32/${package}.exe /var/lib/pulse2/imaging/postinst/winutils/
+        cp -fv /var/lib/pulse2/clients/win/${package}.exe /var/lib/pulse2/imaging/postinst/winutils/
     done
 
         colored_echo green "### INFO  Generating installer... Done"
