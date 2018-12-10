@@ -4,9 +4,7 @@ Architecture: all
 Priority: optional
 Maintainer: Nicolas Lécureuil <nicolas.lecureuil@siveo.net>
 Uploaders: Nicolas Lécureuil <nicolas.lecureuil@siveo.net>
-Build-Depends: debhelper (>= 9),
-               dh-python,
-               python-all-dev (>= 2.6.6-3~),
+Build-Depends: dh-python,
 	       python-setuptools
 Standards-Version: 3.9.8
 Homepage: http://www.siveo.net/
