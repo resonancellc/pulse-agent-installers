@@ -115,15 +115,6 @@ sed_escape() {
 	echo "$@" |sed -e 's/[\/&\$"]/\\&/g'
 }
 
-create_repos() {
-	colored_echo blue "### INFO Creating package repositories..."
-	# Create RPM repository
-
-	# Create DEB repository
-
-	colored_echo green "### INFO Creating package repositories... Done"
-}
-
 update_installer_scripts() {
 	colored_echo blue "### INFO Updating installer scripts..."
     if [[ ${MINIMAL} -eq 1 ]]; then
