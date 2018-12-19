@@ -28,8 +28,8 @@
 #				Manage inventory tags
 
 # To be defined
-AGENT_VERSION="1.9.7"
-PULSE_AGENT_PLUGINS_VERSION="1.9"
+AGENT_VERSION="1.9.8"
+PULSE_AGENT_PLUGINS_VERSION="1.10"
 SIVEO_BASE_URL="https://agents.siveo.net"
 SSH_PUB_KEY="/root/.ssh/id_rsa.pub"
 PULSE_AGENT_CONFFILE_FILENAME="agentconf.ini"
@@ -113,15 +113,6 @@ exit_code() {
 
 sed_escape() {
 	echo "$@" |sed -e 's/[\/&\$"]/\\&/g'
-}
-
-create_repos() {
-	colored_echo blue "### INFO Creating package repositories..."
-	# Create RPM repository
-
-	# Create DEB repository
-
-	colored_echo green "### INFO Creating package repositories... Done"
 }
 
 update_installer_scripts() {

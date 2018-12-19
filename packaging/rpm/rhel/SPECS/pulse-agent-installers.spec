@@ -1,10 +1,10 @@
-%define   rel   8
+%define   rel   9
 
 %define branch  BRANCH
 
 Summary:	Files to create pulse windows installer
 Name:		pulse-agent-installers
-Version:	1.9.7
+Version:	1.9.8
 Release:	%{rel}%{?dist}
 Source0:        pulse-agent-installers-%version.tar.gz
 License:	MIT
@@ -58,8 +58,8 @@ cd pulse-agent-plugins
 git checkout %branch
 cd ..
 
-mv pulse-agent-plugins pulse-agent-plugins-1.9
-tar czvf pulse-agent-plugins-1.9.tar.gz pulse-agent-plugins-1.9
+mv pulse-agent-plugins pulse-agent-plugins-1.10
+tar czvf pulse-agent-plugins-1.10.tar.gz pulse-agent-plugins-1.10
 
 
 %install
@@ -68,7 +68,7 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
 
 
 	# We create pulse-agent-plugins tarball
-        mv pulse-agent-plugins-1.9.tar.gz %{buildroot}/var/lib/pulse2/clients
+        mv pulse-agent-plugins-1.10.tar.gz %{buildroot}/var/lib/pulse2/clients
 
         mkdir -p %{buildroot}/etc/mmc/plugins/
         mkdir -p %{buildroot}/var/lib/pulse2/clients/config/
@@ -101,6 +101,23 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
         chmod +x %{buildroot}/var/lib/pulse2/clients/*.sh
         chmod +x %{buildroot}/var/lib/pulse2/clients/generate-agent-package
 	chmod +x %{buildroot}/var/lib/pulse2/clients/win/generate-kiosk-package
+
+%pre
+rm -fv /var/lib/pulse2/imaging/postinst/winutils/Pulse-Agent*latest*
+
+if [ ! -d "/var/lib/pulse2/clients/win" ]; then
+    mkdir /var/lib/pulse2/clients/win
+fi
+
+if [ -d "/var/lib/pulse2/clients/win32" ]; then
+    mv /var/lib/pulse2/clients/win32/*.exe /var/lib/pulse2/clients/win/
+    rm -fr /var/lib/pulse2/clients/win32/
+fi
+
+if [ -d "/var/lib/pulse2/clients/linux" ]; then
+    rm -fr /var/lib/pulse2/clients/linux/
+fi
+
 
 %post
 if [ $1 == 2 ]; then
