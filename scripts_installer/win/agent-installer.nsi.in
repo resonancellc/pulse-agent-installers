@@ -931,7 +931,13 @@ Section "Uninstall"
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
   Delete "$SYSDIR\ssh-lsa.dll"
-  RMDir /r "$SSH_PATH"
+  ${If} ${RunningX64}
+    ${PowerShellExecFileLog} "$PROGRAMFILES64\OpenSSH\uninstall-sshd.ps1"
+    RMDir /r "$PROGRAMFILES64\OpenSSH"
+  ${Else}
+    ${PowerShellExecFileLog} "$PROGRAMFILES\OpenSSH\uninstall-sshd.ps1"
+    RMDir /r "$PROGRAMFILES\OpenSSH"
+  ${EndIf}
 
   ; Remove libcurl
   Delete "$SYSDIR\${LIBCURL_FILENAME}"
