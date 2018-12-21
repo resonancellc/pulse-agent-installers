@@ -73,6 +73,7 @@ mkdir -p %{buildroot}/tmp
 tar xzvf %{buildroot}/var/lib/pulse2/clients/pulse-xmpp-agent-%version.tar.gz -C %{buildroot}/tmp
 mkdir -p %{buildroot}/var/lib/pulse2/xmpp_baseremoteagent
 cp -frv %{buildroot}/tmp/pulse-xmpp-agent-%version/pulse_xmpp_agent/* %{buildroot}/var/lib/pulse2/xmpp_baseremoteagent/
+rm -fr %{buildroot}/tmp
 
 # We create pulse-agent-plugins tarball
 mv pulse-agent-plugins-1.10.tar.gz %{buildroot}/var/lib/pulse2/clients
