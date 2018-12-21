@@ -2,6 +2,9 @@
 
 %define branch  BRANCH
 
+%define VERSION_XMPP_AGENT 1.9.8
+%define VERSION_AGENT_PLUGINS 1.10
+
 Summary:	Files to create pulse windows installer
 Name:		pulse-agent-installers
 Version:	1.9.8
@@ -66,6 +69,10 @@ tar czvf pulse-agent-plugins-1.10.tar.gz pulse-agent-plugins-1.10
 mkdir -p %{buildroot}/var/lib/pulse2/clients
 mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
 
+mkdir -p %{buildroot}/tmp
+tar xzvf {buildroot}/var/lib/pulse2/clients/pulse-xmpp-agent-%version.tar.gz -C %{buildroot}/tmp
+mkdir -p {buildroot}/var/lib/pulse2/xmpp_baseremoteagent
+cp -frv %{buildroot}/tmp/pulse-xmpp-agent-%version/pulse_xmpp_agent/* %{buildroot}/var/lib/pulse2/xmpp_baseremoteagent/
 
 # We create pulse-agent-plugins tarball
 mv pulse-agent-plugins-1.10.tar.gz %{buildroot}/var/lib/pulse2/clients
@@ -130,3 +137,4 @@ fi
 
 %files
 %_var/lib/pulse2/clients
+/var/lib/pulse2/xmpp_baseremoteagent/
