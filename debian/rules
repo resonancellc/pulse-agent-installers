@@ -5,6 +5,7 @@ DESTDIR = $(CURDIR)/debian/pulse-agent-installer
 VERSION_XMPP_AGENT=1.9.8
 VERSION_AGENT_PLUGINS=1.10
 VERSION_KIOSK_INTERFACE=0.2
+FILETREE_VERSION=0.1
 
 build:
 	mkdir -p $(DESTDIR)/tmp
@@ -55,6 +56,11 @@ build:
 	chmod +x var/lib/pulse2/clients/*.sh
 	chmod +x var/lib/pulse2/clients/generate-agent-package
 	#chmod +x var/lib/pulse2/clients/win/generate-kiosk-package
+	GIT_SSL_NO_VERIFY=true git clone git@github.com:pulse-project/pulse-filetree-generator.git
+	mv pulse-filetree-generator pulse-filetree-generator-${FILETREE_VERSION}
+	g++ -O3 -std=c++11 pulse-filetree-generator-${FILETREE_VERSION}/linux_macos/pulse-filetree-generator.cpp -o pulse-filetree-generator
+	mv pulse-filetree-generator var/lib/pulse2/clients/mac
+	chmod +x var/lib/pulse2/clients/mac/pulse-filetree-generator
 	rm -frv $(DESTDIR)/tmp
 clean:
 	dh_testdir

@@ -199,6 +199,8 @@ create_folder_structure() {
 	cp net.siveo.pulse_xmpp_agent.plist ${PKG_FOLDER_TMP}/Contents/Resources/
 	# Copy launcher
 	cp runpulseagent ${PKG_FOLDER_TMP}/Contents/Resources/
+	# Copy pulse filetree generator
+	cp pulse-filetree-generator ${PKG_FOLDER_TMP}/Contents/Resources/
 }
 
 colored_echo() {
