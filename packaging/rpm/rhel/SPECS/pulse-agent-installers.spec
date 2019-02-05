@@ -10,7 +10,6 @@ Source0:        pulse-agent-installers-%version.tar.gz
 License:	MIT
 Group:		Development/Other
 Url:		http://www.siveo.net/
-BuildArch:	noarch
 
 BuildRequires:  git
 
