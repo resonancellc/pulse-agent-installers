@@ -110,11 +110,11 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
 
 
 mkdir -p %{buildroot}/var/lib/pulse2/clients/lin/deb/pulse-agent-linux/usr/sbin
-cp pulse-filetree-generator/pulse-filetree-generator %{buildroot}/var/lib/pulse2/clients/lin/deb/pulse-agent-linux/usr/sbin
+cp pulse-filetree-generator %{buildroot}/var/lib/pulse2/clients/lin/deb/pulse-agent-linux/usr/sbin
 
 chmod +x %{buildroot}/var/lib/pulse2/clients/lin/deb/pulse-agent-linux/usr/sbin/pulse-filetree-generator
 mkdir -p %{buildroot}/var/lib/pulse2/clients/lin/rpm/package/SOURCES
-cp pulse-filetree-generator/pulse-filetree-generator var/lib/pulse2/clients/lin/rpm/package/SOURCES
+cp pulse-filetree-generator var/lib/pulse2/clients/lin/rpm/package/SOURCES
 chmod +x %{buildroot}/var/lib/pulse2/clients/lin/rpm/package/SOURCES/pulse-filetree-generator
 
 %pre
