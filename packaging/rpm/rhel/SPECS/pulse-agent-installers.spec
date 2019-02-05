@@ -114,7 +114,7 @@ cp pulse-filetree-generator %{buildroot}/var/lib/pulse2/clients/lin/deb/pulse-ag
 
 chmod +x %{buildroot}/var/lib/pulse2/clients/lin/deb/pulse-agent-linux/usr/sbin/pulse-filetree-generator
 mkdir -p %{buildroot}/var/lib/pulse2/clients/lin/rpm/package/SOURCES
-cp pulse-filetree-generator var/lib/pulse2/clients/lin/rpm/package/SOURCES
+cp pulse-filetree-generator %{buildroot}/var/lib/pulse2/clients/lin/rpm/package/SOURCES
 chmod +x %{buildroot}/var/lib/pulse2/clients/lin/rpm/package/SOURCES/pulse-filetree-generator
 
 %pre
