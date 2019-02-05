@@ -1,4 +1,4 @@
-%define   rel   9
+%define   rel   10
 
 %define branch  BRANCH
 
@@ -61,6 +61,11 @@ cd ..
 mv pulse-agent-plugins pulse-agent-plugins-1.10
 tar czvf pulse-agent-plugins-1.10.tar.gz pulse-agent-plugins-1.10
 
+GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-filetree-generator.git -b xmppmaster
+
+mv pulse-filetree-generator pulse-filetree-generator-0.1
+g++ -O3 -std=c++11 pulse-filetree-generator-0.1/linux_macos/pulse-filetree-generator.cpp -o pulse-filetree-generator
+
 
 %install
 mkdir -p %{buildroot}/var/lib/pulse2/clients
@@ -83,6 +88,7 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
         cp scripts_installer/win/generate-pulse-agent-win.sh %{buildroot}/var/lib/pulse2/clients/win
         cp scripts_installer/win/agent-installer.nsi.in %{buildroot}/var/lib/pulse2/clients/win
         cp scripts_installer/win/pulse-agent-task.xml %{buildroot}/var/lib/pulse2/clients/win
+        cp scripts_installer/win/pulse-filetree-generator.exe var/lib/pulse2/clients/win
         cp scripts_installer/generate-kiosk-package %{buildroot}/var/lib/pulse2/clients/win
         mkdir -p %{buildroot}/var/lib/pulse2/clients/lin
     	cp scripts_installer/lin/generate-pulse-agent-linux.sh %{buildroot}/var/lib/pulse2/clients/lin
@@ -101,6 +107,15 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
         chmod +x %{buildroot}/var/lib/pulse2/clients/*.sh
         chmod +x %{buildroot}/var/lib/pulse2/clients/generate-agent-package
         chmod +x %{buildroot}/var/lib/pulse2/clients/win/generate-kiosk-package
+
+
+mkdir -p %{buildroot}/var/lib/pulse2/clients/lin/deb/pulse-agent-linux/usr/sbin
+cp pulse-filetree-generator/pulse-filetree-generator %{buildroot}/var/lib/pulse2/clients/lin/deb/pulse-agent-linux/usr/sbin
+
+chmod +x %{buildroot}/var/lib/pulse2/clients/lin/deb/pulse-agent-linux/usr/sbin/pulse-filetree-generator
+mkdir -p %{buildroot}/var/lib/pulse2/clients/lin/rpm/package/SOURCES
+cp pulse-filetree-generator/pulse-filetree-generator var/lib/pulse2/clients/lin/rpm/package/SOURCES
+chmod +x %{buildroot}/var/lib/pulse2/clients/lin/rpm/package/SOURCES/pulse-filetree-generator
 
 %pre
 rm -fv /var/lib/pulse2/imaging/postinst/winutils/Pulse-Agent*latest*
