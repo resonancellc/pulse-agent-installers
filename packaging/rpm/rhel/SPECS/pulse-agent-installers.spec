@@ -83,7 +83,7 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
         cp scripts_installer/win/generate-pulse-agent-win.sh %{buildroot}/var/lib/pulse2/clients/win
         cp scripts_installer/win/agent-installer.nsi.in %{buildroot}/var/lib/pulse2/clients/win
         cp scripts_installer/win/pulse-agent-task.xml %{buildroot}/var/lib/pulse2/clients/win
-	cp scripts_installer/generate-kiosk-package %{buildroot}/var/lib/pulse2/clients/win
+        cp scripts_installer/generate-kiosk-package %{buildroot}/var/lib/pulse2/clients/win
         mkdir -p %{buildroot}/var/lib/pulse2/clients/lin
     	cp scripts_installer/lin/generate-pulse-agent-linux.sh %{buildroot}/var/lib/pulse2/clients/lin
     	cp scripts_installer/lin/install-pulse-agent-linux.sh.in %{buildroot}/var/lib/pulse2/clients/lin
@@ -100,7 +100,7 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
         cp -fr scripts_installer/win/artwork/* %{buildroot}/var/lib/pulse2/clients/win/artwork
         chmod +x %{buildroot}/var/lib/pulse2/clients/*.sh
         chmod +x %{buildroot}/var/lib/pulse2/clients/generate-agent-package
-	chmod +x %{buildroot}/var/lib/pulse2/clients/win/generate-kiosk-package
+        chmod +x %{buildroot}/var/lib/pulse2/clients/win/generate-kiosk-package
 
 %pre
 rm -fv /var/lib/pulse2/imaging/postinst/winutils/Pulse-Agent*latest*
