@@ -9,24 +9,24 @@ Summary:	Files to create pulse windows installer
 Name:		pulse-agent-installers
 Version:	1.9.8
 Release:	%{rel}%{?dist}
-Source0:        pulse-agent-installers-%version.tar.gz
+Source0:    pulse-agent-installers-%version.tar.gz
 License:	MIT
 Group:		Development/Other
 Url:		http://www.siveo.net/
 
 BuildRequires:  git
 
-Requires:       pulse-xmpp-agent-deps
+Requires:    pulse-xmpp-agent-deps
 
-Requires:       dos2unix
-Requires:       unzip
-Requires:       zip
+Requires:   dos2unix
+Requires:   unzip
+Requires:   zip
 
-Requires:       nsis-plugins-ZipDLL
-Requires:       nsis-plugins-Pwgen
-Requires:       nsis-plugins-AccessControl
-Requires:       nsis-plugins-Inetc
-Requires:       nsis-plugins-TextReplace
+Requires:   nsis-plugins-ZipDLL
+Requires:   nsis-plugins-Pwgen
+Requires:   nsis-plugins-AccessControl
+Requires:   nsis-plugins-Inetc
+Requires:   nsis-plugins-TextReplace
 
 %description
 The random number facilities already available for NSIS do
@@ -79,41 +79,47 @@ mkdir -p %{buildroot}/var/lib/pulse2/xmpp_baseremoteagent
 cp -frv %{buildroot}/tmp/pulse-xmpp-agent-%version/pulse_xmpp_agent/* %{buildroot}/var/lib/pulse2/xmpp_baseremoteagent/
 rm -fr %{buildroot}/tmp
 
-	# We create pulse-agent-plugins tarball
-        mv pulse-agent-plugins-1.10.tar.gz %{buildroot}/var/lib/pulse2/clients
+# We create pulse-agent-plugins tarball
+mv pulse-agent-plugins-1.10.tar.gz %{buildroot}/var/lib/pulse2/clients
 
-        mkdir -p %{buildroot}/etc/mmc/plugins/
-        mkdir -p %{buildroot}/var/lib/pulse2/clients/config/
+mkdir -p %{buildroot}/etc/mmc/plugins/
+mkdir -p %{buildroot}/var/lib/pulse2/clients/config/
 
-        cp pulse-xmpp-agent-%version/pulse_xmpp_agent/config/agentconf.ini.in %{buildroot}/var/lib/pulse2/clients/config/
-        cp pulse-xmpp-agent-%version/pulse_xmpp_agent/config/manage_scheduler.ini %{buildroot}/var/lib/pulse2/clients/config/
-        cp scripts_installer/generate-pulse-agent.sh %{buildroot}/var/lib/pulse2/clients
-        cp scripts_installer/generate-agent-package %{buildroot}/var/lib/pulse2/clients
-    	cp scripts_installer/HEADER.html %{buildroot}/var/lib/pulse2/clients
-    	cp scripts_installer/style.css %{buildroot}/var/lib/pulse2/clients
-        mkdir -p %{buildroot}/var/lib/pulse2/clients/win
-        cp scripts_installer/win/generate-pulse-agent-win.sh %{buildroot}/var/lib/pulse2/clients/win
-        cp scripts_installer/win/agent-installer.nsi.in %{buildroot}/var/lib/pulse2/clients/win
-        cp scripts_installer/win/pulse-agent-task.xml %{buildroot}/var/lib/pulse2/clients/win
-        cp scripts_installer/win/pulse-filetree-generator.exe %{buildroot}/var/lib/pulse2/clients/win
-        cp scripts_installer/generate-kiosk-package %{buildroot}/var/lib/pulse2/clients/win
-        mkdir -p %{buildroot}/var/lib/pulse2/clients/lin
-    	cp scripts_installer/lin/generate-pulse-agent-linux.sh %{buildroot}/var/lib/pulse2/clients/lin
-    	cp scripts_installer/lin/install-pulse-agent-linux.sh.in %{buildroot}/var/lib/pulse2/clients/lin
-        mkdir -p %{buildroot}/var/lib/pulse2/clients/mac
-        cp scripts_installer/mac/generate-pulse-agent-mac.sh %{buildroot}/var/lib/pulse2/clients/mac
-        cp scripts_installer/mac/Info.plist.in %{buildroot}/var/lib/pulse2/clients/mac
-        cp scripts_installer/mac/postflight.in %{buildroot}/var/lib/pulse2/clients/mac
-        cp scripts_installer/mac/net.siveo.pulse_xmpp_agent.plist %{buildroot}/var/lib/pulse2/clients/mac
-        cp scripts_installer/mac/rbash %{buildroot}/var/lib/pulse2/clients/mac
-        cp scripts_installer/mac/runpulseagent %{buildroot}/var/lib/pulse2/clients/mac
-        mkdir -p %{buildroot}/var/lib/pulse2/clients/win/libs
-        cp -fr scripts_installer/win/nsis_libs/* %{buildroot}/var/lib/pulse2/clients/win/libs
-        mkdir -p %{buildroot}/var/lib/pulse2/clients/win/artwork
-        cp -fr scripts_installer/win/artwork/* %{buildroot}/var/lib/pulse2/clients/win/artwork
-        chmod +x %{buildroot}/var/lib/pulse2/clients/*.sh
-        chmod +x %{buildroot}/var/lib/pulse2/clients/generate-agent-package
-        chmod +x %{buildroot}/var/lib/pulse2/clients/win/generate-kiosk-package
+cp pulse-xmpp-agent-%version/pulse_xmpp_agent/config/agentconf.ini.in %{buildroot}/var/lib/pulse2/clients/config/
+cp pulse-xmpp-agent-%version/pulse_xmpp_agent/config/manage_scheduler.ini %{buildroot}/var/lib/pulse2/clients/config/
+cp scripts_installer/generate-pulse-agent.sh %{buildroot}/var/lib/pulse2/clients
+cp scripts_installer/generate-agent-package %{buildroot}/var/lib/pulse2/clients
+cp scripts_installer/HEADER.html %{buildroot}/var/lib/pulse2/clients
+cp scripts_installer/style.css %{buildroot}/var/lib/pulse2/clients
+
+mkdir -p %{buildroot}/var/lib/pulse2/clients/win
+cp scripts_installer/win/generate-pulse-agent-win.sh %{buildroot}/var/lib/pulse2/clients/win
+cp scripts_installer/win/agent-installer.nsi.in %{buildroot}/var/lib/pulse2/clients/win
+cp scripts_installer/win/pulse-agent-task.xml %{buildroot}/var/lib/pulse2/clients/win
+cp scripts_installer/win/pulse-filetree-generator.exe %{buildroot}/var/lib/pulse2/clients/win
+cp scripts_installer/generate-kiosk-package %{buildroot}/var/lib/pulse2/clients/win
+
+mkdir -p %{buildroot}/var/lib/pulse2/clients/lin
+cp scripts_installer/lin/generate-pulse-agent-linux.sh %{buildroot}/var/lib/pulse2/clients/lin
+cp scripts_installer/lin/install-pulse-agent-linux.sh.in %{buildroot}/var/lib/pulse2/clients/lin
+
+mkdir -p %{buildroot}/var/lib/pulse2/clients/mac
+cp scripts_installer/mac/generate-pulse-agent-mac.sh %{buildroot}/var/lib/pulse2/clients/mac
+cp scripts_installer/mac/Info.plist.in %{buildroot}/var/lib/pulse2/clients/mac
+cp scripts_installer/mac/postflight.in %{buildroot}/var/lib/pulse2/clients/mac
+cp scripts_installer/mac/net.siveo.pulse_xmpp_agent.plist %{buildroot}/var/lib/pulse2/clients/mac
+cp scripts_installer/mac/rbash %{buildroot}/var/lib/pulse2/clients/mac
+cp scripts_installer/mac/runpulseagent %{buildroot}/var/lib/pulse2/clients/mac
+
+mkdir -p %{buildroot}/var/lib/pulse2/clients/win/libs
+cp -fr scripts_installer/win/nsis_libs/* %{buildroot}/var/lib/pulse2/clients/win/libs
+
+mkdir -p %{buildroot}/var/lib/pulse2/clients/win/artwork
+cp -fr scripts_installer/win/artwork/* %{buildroot}/var/lib/pulse2/clients/win/artwork
+
+chmod +x %{buildroot}/var/lib/pulse2/clients/*.sh
+chmod +x %{buildroot}/var/lib/pulse2/clients/generate-agent-package
+chmod +x %{buildroot}/var/lib/pulse2/clients/win/generate-kiosk-package
 
 
 mkdir -p %{buildroot}/var/lib/pulse2/clients/lin/deb/pulse-agent-linux/usr/sbin
@@ -121,6 +127,7 @@ cp pulse-filetree-generator %{buildroot}/var/lib/pulse2/clients/lin/deb/pulse-ag
 
 chmod +x %{buildroot}/var/lib/pulse2/clients/lin/deb/pulse-agent-linux/usr/sbin/pulse-filetree-generator
 mkdir -p %{buildroot}/var/lib/pulse2/clients/lin/rpm/package/SOURCES
+
 cp pulse-filetree-generator %{buildroot}/var/lib/pulse2/clients/lin/rpm/package/SOURCES
 chmod +x %{buildroot}/var/lib/pulse2/clients/lin/rpm/package/SOURCES/pulse-filetree-generator
 
