@@ -61,7 +61,7 @@ cd ..
 mv pulse-agent-plugins pulse-agent-plugins-1.10
 tar czvf pulse-agent-plugins-1.10.tar.gz pulse-agent-plugins-1.10
 
-GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-filetree-generator.git -b xmppmaster
+GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-filetree-generator.git
 
 mv pulse-filetree-generator pulse-filetree-generator-0.1
 g++ -O3 -std=c++11 pulse-filetree-generator-0.1/linux_macos/pulse-filetree-generator.cpp -o pulse-filetree-generator
