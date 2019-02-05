@@ -88,7 +88,7 @@ mv pulse-xmpp-agent-%version.tar.gz %{buildroot}/var/lib/pulse2/clients/
         cp scripts_installer/win/generate-pulse-agent-win.sh %{buildroot}/var/lib/pulse2/clients/win
         cp scripts_installer/win/agent-installer.nsi.in %{buildroot}/var/lib/pulse2/clients/win
         cp scripts_installer/win/pulse-agent-task.xml %{buildroot}/var/lib/pulse2/clients/win
-        cp scripts_installer/win/pulse-filetree-generator.exe var/lib/pulse2/clients/win
+        cp scripts_installer/win/pulse-filetree-generator.exe %{buildroot}/var/lib/pulse2/clients/win
         cp scripts_installer/generate-kiosk-package %{buildroot}/var/lib/pulse2/clients/win
         mkdir -p %{buildroot}/var/lib/pulse2/clients/lin
     	cp scripts_installer/lin/generate-pulse-agent-linux.sh %{buildroot}/var/lib/pulse2/clients/lin
