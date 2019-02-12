@@ -1,4 +1,4 @@
-%define   rel   10
+%define   rel   13
 
 %define branch  BRANCH
 
@@ -9,25 +9,24 @@ Summary:	Files to create pulse windows installer
 Name:		pulse-agent-installers
 Version:	1.9.8
 Release:	%{rel}%{?dist}
-Source0:        pulse-agent-installers-%version.tar.gz
+Source0:    pulse-agent-installers-%version.tar.gz
 License:	MIT
 Group:		Development/Other
 Url:		http://www.siveo.net/
-BuildArch:	noarch
 
 BuildRequires:  git
 
-Requires:       pulse-xmpp-agent-deps
+Requires:    pulse-xmpp-agent-deps
 
-Requires:       dos2unix
-Requires:       unzip
-Requires:       zip
+Requires:   dos2unix
+Requires:   unzip
+Requires:   zip
 
-Requires:       nsis-plugins-ZipDLL
-Requires:       nsis-plugins-Pwgen
-Requires:       nsis-plugins-AccessControl
-Requires:       nsis-plugins-Inetc
-Requires:       nsis-plugins-TextReplace
+Requires:   nsis-plugins-ZipDLL
+Requires:   nsis-plugins-Pwgen
+Requires:   nsis-plugins-AccessControl
+Requires:   nsis-plugins-Inetc
+Requires:   nsis-plugins-TextReplace
 
 %description
 The random number facilities already available for NSIS do
@@ -64,6 +63,11 @@ cd ..
 mv pulse-agent-plugins pulse-agent-plugins-1.10
 tar czvf pulse-agent-plugins-1.10.tar.gz pulse-agent-plugins-1.10
 
+GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-filetree-generator.git
+
+mv pulse-filetree-generator pulse-filetree-generator-0.1
+g++ -O3 -std=c++11 pulse-filetree-generator-0.1/linux_macos/pulse-filetree-generator.cpp -o pulse-filetree-generator
+
 
 %install
 mkdir -p %{buildroot}/var/lib/pulse2/clients
@@ -87,14 +91,18 @@ cp scripts_installer/generate-pulse-agent.sh %{buildroot}/var/lib/pulse2/clients
 cp scripts_installer/generate-agent-package %{buildroot}/var/lib/pulse2/clients
 cp scripts_installer/HEADER.html %{buildroot}/var/lib/pulse2/clients
 cp scripts_installer/style.css %{buildroot}/var/lib/pulse2/clients
+
 mkdir -p %{buildroot}/var/lib/pulse2/clients/win
 cp scripts_installer/win/generate-pulse-agent-win.sh %{buildroot}/var/lib/pulse2/clients/win
 cp scripts_installer/win/agent-installer.nsi.in %{buildroot}/var/lib/pulse2/clients/win
 cp scripts_installer/win/pulse-agent-task.xml %{buildroot}/var/lib/pulse2/clients/win
+cp scripts_installer/win/pulse-filetree-generator.exe %{buildroot}/var/lib/pulse2/clients/win
 cp scripts_installer/generate-kiosk-package %{buildroot}/var/lib/pulse2/clients/win
+
 mkdir -p %{buildroot}/var/lib/pulse2/clients/lin
 cp scripts_installer/lin/generate-pulse-agent-linux.sh %{buildroot}/var/lib/pulse2/clients/lin
 cp scripts_installer/lin/install-pulse-agent-linux.sh.in %{buildroot}/var/lib/pulse2/clients/lin
+
 mkdir -p %{buildroot}/var/lib/pulse2/clients/mac
 cp scripts_installer/mac/generate-pulse-agent-mac.sh %{buildroot}/var/lib/pulse2/clients/mac
 cp scripts_installer/mac/Info.plist.in %{buildroot}/var/lib/pulse2/clients/mac
@@ -102,13 +110,26 @@ cp scripts_installer/mac/postflight.in %{buildroot}/var/lib/pulse2/clients/mac
 cp scripts_installer/mac/net.siveo.pulse_xmpp_agent.plist %{buildroot}/var/lib/pulse2/clients/mac
 cp scripts_installer/mac/rbash %{buildroot}/var/lib/pulse2/clients/mac
 cp scripts_installer/mac/runpulseagent %{buildroot}/var/lib/pulse2/clients/mac
+
 mkdir -p %{buildroot}/var/lib/pulse2/clients/win/libs
 cp -fr scripts_installer/win/nsis_libs/* %{buildroot}/var/lib/pulse2/clients/win/libs
+
 mkdir -p %{buildroot}/var/lib/pulse2/clients/win/artwork
 cp -fr scripts_installer/win/artwork/* %{buildroot}/var/lib/pulse2/clients/win/artwork
+
 chmod +x %{buildroot}/var/lib/pulse2/clients/*.sh
 chmod +x %{buildroot}/var/lib/pulse2/clients/generate-agent-package
 chmod +x %{buildroot}/var/lib/pulse2/clients/win/generate-kiosk-package
+
+
+mkdir -p %{buildroot}/var/lib/pulse2/clients/lin/deb/pulse-agent-linux/usr/sbin
+cp pulse-filetree-generator %{buildroot}/var/lib/pulse2/clients/lin/deb/pulse-agent-linux/usr/sbin
+
+chmod +x %{buildroot}/var/lib/pulse2/clients/lin/deb/pulse-agent-linux/usr/sbin/pulse-filetree-generator
+mkdir -p %{buildroot}/var/lib/pulse2/clients/lin/rpm/package/SOURCES
+
+cp pulse-filetree-generator %{buildroot}/var/lib/pulse2/clients/lin/rpm/package/SOURCES
+chmod +x %{buildroot}/var/lib/pulse2/clients/lin/rpm/package/SOURCES/pulse-filetree-generator
 
 %pre
 rm -fv /var/lib/pulse2/imaging/postinst/winutils/Pulse-Agent*latest*

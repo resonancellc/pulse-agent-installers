@@ -812,6 +812,10 @@ Section "!${PRODUCT_NAME}" sec_app
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
 
+  ; Copy of pulse filetree generator
+  SetOutPath "$INSTDIR\bin"
+  File "pulse-filetree-generator.exe"
+
   ; Copy of agent config file
   SetOutPath "$INSTDIR\etc"
   File "../config/${PULSE_AGENT_CONFFILE}"
