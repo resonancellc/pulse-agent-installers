@@ -304,6 +304,11 @@ cp "${PREFIX}/runpulseagent" "${INSTALL_PATH}/bin"
 chmod +x "${INSTALL_PATH}/bin/runpulseagent"
 xattr -d com.apple.quarantine "${INSTALL_PATH}/bin/runpulseagent"
 
+# Copy pulse filetree generator
+cp "${PREFIX}/pulse-filetree-generator" "${INSTALL_PATH}/bin"
+chmod +x "${INSTALL_PATH}/bin/pulse-filetree-generator"
+xattr -d com.apple.quarantine "${INSTALL_PATH}/bin/pulse-filetree-generator"
+
 # Copy service descriptor
 cp "${PREFIX}/net.siveo.pulse_xmpp_agent.plist" /Library/LaunchDaemons/
 xattr -d com.apple.quarantine /Library/LaunchDaemons/net.siveo.pulse_xmpp_agent.plist

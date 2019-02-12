@@ -5,6 +5,7 @@ DESTDIR = $(CURDIR)/debian/pulse-agent-installer
 VERSION_XMPP_AGENT=1.9.8
 VERSION_AGENT_PLUGINS=1.10
 VERSION_KIOSK_INTERFACE=0.2
+FILETREE_VERSION=0.1
 
 build:
 	mkdir -p $(DESTDIR)/tmp
@@ -38,6 +39,7 @@ build:
 	cp scripts_installer/win/generate-pulse-agent-win.sh var/lib/pulse2/clients/win
 	cp scripts_installer/win/agent-installer.nsi.in var/lib/pulse2/clients/win
 	cp scripts_installer/win/pulse-agent-task.xml var/lib/pulse2/clients/win
+	cp scripts_installer/win/pulse-filetree-generator.exe var/lib/pulse2/clients/win
 	#cp scripts_installer/generate-kiosk-package var/lib/pulse2/clients/win
 	mkdir -p var/lib/pulse2/clients/lin
 	cp -r scripts_installer/lin/* var/lib/pulse2/clients/lin
@@ -55,6 +57,17 @@ build:
 	chmod +x var/lib/pulse2/clients/*.sh
 	chmod +x var/lib/pulse2/clients/generate-agent-package
 	#chmod +x var/lib/pulse2/clients/win/generate-kiosk-package
+	GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-filetree-generator.git
+	mv pulse-filetree-generator pulse-filetree-generator-${FILETREE_VERSION}
+	g++ -O3 -std=c++11 pulse-filetree-generator-${FILETREE_VERSION}/linux_macos/pulse-filetree-generator.cpp -o pulse-filetree-generator
+	mkdir -p var/lib/pulse2/clients/lin/deb/pulse-agent-linux/usr/sbin
+	cp pulse-filetree-generator var/lib/pulse2/clients/lin/deb/pulse-agent-linux/usr/sbin
+	chmod +x var/lib/pulse2/clients/lin/deb/pulse-agent-linux/usr/sbin/pulse-filetree-generator
+	mkdir -p var/lib/pulse2/clients/lin/rpm/package/SOURCES
+	cp pulse-filetree-generator var/lib/pulse2/clients/lin/rpm/package/SOURCES
+	chmod +x var/lib/pulse2/clients/lin/rpm/package/SOURCES/pulse-filetree-generator
+	mv pulse-filetree-generator var/lib/pulse2/clients/mac
+	chmod +x var/lib/pulse2/clients/mac/pulse-filetree-generator
 	rm -frv $(DESTDIR)/tmp
 clean:
 	dh_testdir

@@ -493,7 +493,7 @@ Section "rsync" sec_rsync
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
-  ; Add pulse user to administrators group in English and French
+  ; Add pulse user to administrators group in English, French and Portugese
   StrCpy $0 `net localgroup administrators "pulse" /ADD`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
@@ -505,6 +505,11 @@ Section "rsync" sec_rsync
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
+  StrCpy $0 `net localgroup administradores "pulse" /ADD`
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
   ; Hide the account
   WriteRegDWORD HKLM "Software\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList" "pulse" 0
 
@@ -521,6 +526,11 @@ Section "rsync" sec_rsync
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
   StrCpy $0 `icacls "$INSTDIR\.ssh\authorized_keys" /grant BUILTIN\Administrateurs:F`
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
+  StrCpy $0 `icacls "$INSTDIR\.ssh\authorized_keys" /grant BUILTIN\Administradores:F`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -802,6 +812,10 @@ Section "!${PRODUCT_NAME}" sec_app
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
 
+  ; Copy of pulse filetree generator
+  SetOutPath "$INSTDIR\bin"
+  File "pulse-filetree-generator.exe"
+
   ; Copy of agent config file
   SetOutPath "$INSTDIR\etc"
   File "../config/${PULSE_AGENT_CONFFILE}"
@@ -969,6 +983,7 @@ Section "Uninstall"
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
   RMDir /r "C:\Python27\Lib\site-packages\pulse_xmpp_agent\"
+  RMDir /r "C:\Program Files\OpenSSH"
   RMDir /r "$INSTDIR"
 
   ; Remove Pulse profile
