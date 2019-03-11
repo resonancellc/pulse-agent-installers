@@ -56,6 +56,9 @@ RequestExecutionLevel admin
 !define PY_CRON_DEPS_2_FILENAME "@@PY_CRON_DEPS_2_FILENAME@@"
 !define PY_PSUTIL32_FILENAME "@@PY_PSUTIL32_FILENAME@@"
 !define PY_PSUTIL64_FILENAME "@@PY_PSUTIL64_FILENAME@@"
+!define PY_SFTP_FILENAME "@@PY_SFTP_FILENAME@@"
+!define PY_SYNCTHING_FILENAME "@@PY_SYNCTHING_FILENAME@@"
+!define PY_REQUESTS_FILENAME "@@PY_REQUESTS_FILENAME@@"
 !define PULSE_AGENT "@@PULSE_AGENT@@"
 !define PULSE_AGENT_CONFFILE "@@PULSE_AGENT_CONFFILE@@"
 !define PULSE_SCHEDULER_CONFFILE "@@PULSE_SCHEDULER_CONFFILE@@"
@@ -78,6 +81,8 @@ RequestExecutionLevel admin
 !define RDPWRAP_FOLDERNAME "@@RDPWRAP_FOLDERNAME@@"
 !define VNC_AGENT32_FILENAME "@@VNC_AGENT32_FILENAME@@"
 !define VNC_AGENT64_FILENAME "@@VNC_AGENT64_FILENAME@@"
+!define SYNCTHING32_FILENAME "@@SYNCTHING32_FILENAME@@"
+!define SYNCTHING64_FILENAME "@@SYNCTHING64_FILENAME@@"
 SetCompressor lzma
 
 ; Modern UI installer stuff
@@ -224,6 +229,9 @@ Section "Python Modules" sec_pymod
   @@FULL_OR_DL_PY_CRON_DEPS_2@@
   @@FULL_OR_DL_PY_PSUTIL32@@
   @@FULL_OR_DL_PY_PSUTIL64@@
+  @@FULL_OR_DL_PY_SFTP@@
+  @@FULL_OR_DL_PY_SYNCTHING@@
+  @@FULL_OR_DL_PY_REQUESTS@@
   File "${DOWNLOADS_DIR}/usr/bin/${LIBCURL_FILENAME}"
   ${LogString} "Python modules Installation...."
   ${LogString} "------------------------------------------------------"
@@ -356,6 +364,30 @@ Section "Python Modules" sec_pymod
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
 
+  ; Install of Python sftp module
+  @@INSTALL_FULL_OR_DL_PY_SFTP@@
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
+  ${LogString} "-------------------"
+
+  ; Install of Python syncthing module
+  @@INSTALL_FULL_OR_DL_PY_SYNCTHING@@
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
+  ${LogString} "-------------------"
+
+  ; Install of Python requests module
+  @@INSTALL_FULL_OR_DL_PY_REQUESTS@@
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
+  ${LogString} "-------------------"
+
   Delete $INSTDIR\tmp\${PY_WIN3232_FILENAME}
   Delete $INSTDIR\tmp\${PY_WIN3264_FILENAME}
   Delete $INSTDIR\tmp\${PY_NETIFACES_FILENAME}
@@ -375,6 +407,9 @@ Section "Python Modules" sec_pymod
   Delete $INSTDIR\tmp\${PY_CRON_DEPS_2_FILENAME}
   Delete $INSTDIR\tmp\${PY_PSUTIL32_FILENAME}
   Delete $INSTDIR\tmp\${PY_PSUTIL64_FILENAME}
+  Delete $INSTDIR\tmp\${PY_SFTP_FILENAME}
+  Delete $INSTDIR\tmp\${PY_SYNCTHING_FILENAME}
+  Delete $INSTDIR\tmp\${PY_REQUESTS_FILENAME}
   Delete $INSTDIR\tmp\${LIBCURL_FILENAME}
 SectionEnd
 
@@ -785,6 +820,8 @@ Section "!${PRODUCT_NAME}" sec_app
   SetOutPath "$INSTDIR\tmp"
   File "../${PULSE_AGENT}"
   File "../${PULSE_AGENT_PLUGINS}"
+  @@FULL_OR_DL_SYNCTHING32@@
+  @@FULL_OR_DL_SYNCTHING64@@
   ${LogString} "Pulse Agent Installation...."
   ${LogString} "------------------------------------------------------"
 
@@ -815,6 +852,27 @@ Section "!${PRODUCT_NAME}" sec_app
   ; Copy of pulse filetree generator
   SetOutPath "$INSTDIR\bin"
   File "pulse-filetree-generator.exe"
+
+  ; Copy syncthing exe to pulse\bin folder
+  Var /GLOBAL SYNCTHING_FILENAME
+  ${If} ${RunningX64}
+    StrCpy $SYNCTHING_FILENAME "${SYNCTHING64_FILENAME}"
+  ${Else}
+    StrCpy $SYNCTHING_FILENAME "${SYNCTHING32_FILENAME}"
+  ${EndIf}
+  ZipDLL::extractfile "$INSTDIR\tmp\${SYNCTHING_FILENAME}" "$INSTDIR\tmp\" syncthing.exe
+
+  ; Setup of Windows firewall to allow Syncthing
+  ${If} ${IsWinXP}
+    StrCpy $0 `netsh firewall add portopening TCP 22000 "Syncthing for Pulse"`
+  ${Else}
+    StrCpy $0 `netsh advfirewall firewall add rule name="Syncthing for Pulse" dir=in action=allow protocol=TCP localport=22000`
+  ${EndIf}
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
+  ${LogString} "-------------------"
 
   ; Copy of agent config file
   SetOutPath "$INSTDIR\etc"
@@ -898,6 +956,8 @@ Section "!${PRODUCT_NAME}" sec_app
   Delete $INSTDIR\tmp\${PULSE_AGENT}
   Delete $INSTDIR\tmp\${PULSE_AGENT_TASK_XML}
   Delete $INSTDIR\tmp\${PULSE_AGENT_PLUGINS}
+  Delete $INSTDIR\tmp\${SYNCTHING32_FILENAME}
+  Delete $INSTDIR\tmp\${SYNCTHING64_FILENAME}
 
   ${If} ${RunningX64}
     RMDir /r "$PROGRAMFILES\Pulse"
@@ -968,6 +1028,11 @@ Section "Uninstall"
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
   StrCpy $0 `netsh.exe advfirewall firewall delete rule name="SSH for Pulse"`
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
+  StrCpy $0 `netsh.exe advfirewall firewall delete rule name="Syncthing for Pulse"`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
