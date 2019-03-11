@@ -855,12 +855,15 @@ Section "!${PRODUCT_NAME}" sec_app
 
   ; Copy syncthing exe to pulse\bin folder
   Var /GLOBAL SYNCTHING_FILENAME
+  Var /GLOBAL SYNCTHING_FOLDERNAME
   ${If} ${RunningX64}
     StrCpy $SYNCTHING_FILENAME "${SYNCTHING64_FILENAME}"
   ${Else}
     StrCpy $SYNCTHING_FILENAME "${SYNCTHING32_FILENAME}"
   ${EndIf}
-  ZipDLL::extractfile "$INSTDIR\tmp\${SYNCTHING_FILENAME}" "$INSTDIR\tmp\" syncthing.exe
+  StrCpy $SYNCTHING_FOLDERNAME "$SYNCTHING_FILENAME" -4
+  ZipDLL::extractall "$INSTDIR\tmp\$SYNCTHING_FILENAME" "$INSTDIR\tmp\"
+  CopyFiles /SILENT "$INSTDIR\tmp\$SYNCTHING_FOLDERNAME\syncthing.exe" "$INSTDIR\bin\"
 
   ; Setup of Windows firewall to allow Syncthing
   ${If} ${IsWinXP}
