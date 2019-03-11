@@ -31,6 +31,7 @@
 # https://github.com/Homebrew/brew/archive/1.5.12.tar.gz
 # https://github.com/fusioninventory/fusioninventory-agent/releases/download/2.4/FusionInventory-Agent-2.4-1.pkg.tar.gz
 # https://github.com/stweil/OSXvnc/releases/download/V5_2_1/OSXvnc-5.2.1.dmg
+#   https://github.com/syncthing/syncthing/releases/download/v1.1.0/syncthing-macos-amd64-v1.1.0.tar.gz
 #	In /var/lib/pulse2/clients/mac/downloads/python_modules/:
 #	https://pypi.python.org/packages/a7/4c/8e0771a59fd6e55aac993a7cc1b6a0db993f299514c464ae6a1ecf83b31d/netifaces-0.10.5.tar.gz
 #	https://pypi.python.org/packages/7c/69/c2ce7e91c89dc073eb1aa74c0621c3eefbffe8216b3f9af9d3885265c01c/configparser-3.5.0.tar.gz
@@ -45,6 +46,9 @@
 # https://pypi.python.org/packages/58/2a/17d003f2a9a0188cf9365d63b3351c6522b7d83996b70270c65c789e35b9/croniter-0.3.16.tar.gz
 # https://pypi.python.org/packages/e2/e1/600326635f97fee89bf8426fef14c5c29f4849c79f68fd79f433d8c1bd96/psutil-5.4.3.tar.gz
 # https://pypi.python.org/packages/28/df/755dab9f83c37031aea1cd9915673b5633665c575d649e812657df95b944/plyvel-1.0.1.tar.gz
+#   https://files.pythonhosted.org/packages/36/60/45f30390a38b1f92e0a8cf4de178cd7c2bc3f874c85430e40ccf99df8fe7/pysftp-0.2.9.tar.gz
+#   https://files.pythonhosted.org/packages/ef/4e/9f04fc58040cbf05984d7ca9393ff2dbc8b6909b163a768fc28786eacf06/syncthing-2.3.1.tar.gz
+#   https://files.pythonhosted.org/packages/7d/e3/20f3d364d6c8e5d2353c72a67778eb189176f08e873c9900e10c0287b84b/requests-2.21.0-py2.py3-none-any.whl
 
 # To be defined for minimal install
 BASE_URL="https://agents.siveo.net" # Overridden if --base-url is defined
@@ -83,6 +87,12 @@ PY_PSUTIL_MODULE="psutil"
 PY_PSUTIL_VERSION="5.4.3"
 PY_PLYVEL_MODULE="plyvel"
 PY_PLYVEL_VERSION="1.0.1"
+PY_SFTP_MODULE="pysftp"
+PY_SFTP_VERSION="0.2.9"
+PY_SYNCTHING_MODULE="syncthing"
+PY_SYNCTHING_VERSION="2.3.1"
+PY_REQUESTS_MODULE="requests"
+PY_REQUESTS_VERSION="2.21.0"
 PULSE_AGENT_NAME="pulse-xmpp-agent"
 PULSE_AGENT_MODULE="pulse_xmpp_agent"
 SSH_PUB_KEY="/root/.ssh/id_rsa.pub"
@@ -93,6 +103,8 @@ VNC_SERVER_NAME="OSXvnc"
 VNC_SERVER_VERSION="5.2.1"
 VNC_SERVER_MOUNTED="VineServer"
 VNC_SERVER_APP="Vine Server.app"
+SYNCTHING_NAME="syncthing"
+SYNCTHING_VERSION="1.1.0"
 
 
 # Display usage
@@ -153,6 +165,9 @@ compute_parameters() {
 	PY_CRON_DEPS_2_FILENAME="${PY_CRON_DEPS_2_MODULE}-${PY_CRON_DEPS_2_VERSION}-py2.py3-none-any.whl"
 	PY_PSUTIL_FILENAME="${PY_PSUTIL_MODULE}-${PY_PSUTIL_VERSION}.tar.gz"
 	PY_PLYVEL_FILENAME="${PY_PLYVEL_MODULE}-${PY_PLYVEL_VERSION}.tar.gz"
+	PY_SFTP_FILENAME="${PY_SFTP_MODULE}-${PY_SFTP_VERSION}.tar.gz"
+	PY_SYNCTHING_FILENAME="${PY_SYNCTHING_MODULE}-${PY_SYNCTHING_VERSION}.tar.gz"
+	PY_REQUESTS_FILENAME="${PY_REQUESTS_MODULE}-${PY_REQUESTS_VERSION}-py2.py3-none-any.whl"
 	PULSE_AGENT_FILENAME="${PULSE_AGENT_NAME}-${AGENT_VERSION}.tar.gz"
 	PULSE_AGENT_CONFFILE_FILENAME="agentconf.ini"
 	PULSE_SCHEDULER_CONFFILE_FILENAME="manage_scheduler.ini"
@@ -161,6 +176,7 @@ compute_parameters() {
 	FUSION_INVENTORY_AGENT_PKG="${FUSION_INVENTORY_AGENT_NAME}-${FUSION_INVENTORY_AGENT_VERSION}.pkg"
 	FUSION_INVENTORY_AGENT_ARCHIVE="${FUSION_INVENTORY_AGENT_PKG}.tar.gz"
 	VNC_SERVER_FILENAME="${VNC_SERVER_NAME}-${VNC_SERVER_VERSION}.dmg"
+    SYNCTHING_FILENAME="${SYNCTHING_NAME}-macos-amd64-v${SYNCTHING_VERSION}.tar.gz"
 	V_MAJOR=`echo ${AGENT_VERSION} | cut -d. -f1`
 	V_MINOR=`echo ${AGENT_VERSION} | cut -d. -f2`
 	BUILD_DATE=$(date +'%Y-%m-%dT%H:%M:%SZ')
@@ -239,6 +255,7 @@ update_postflight_script_mini() {
 		-e "s/@@VNC_SERVER_FILENAME@@/${VNC_SERVER_FILENAME}/" \
 		-e "s/@@VNC_SERVER_MOUNTED@@/${VNC_SERVER_MOUNTED}/" \
 		-e "s/@@VNC_SERVER_APP@@/${VNC_SERVER_APP}/" \
+		-e "s/@@SYNCTHING_FILENAME@@/${SYNCTHING_FILENAME}/" \
 		-e "s/@@INVENTORY_TAG@@/${INVENTORY_TAG}/" \
 		-e "s/@@HOMEBREW_FILENAME@@/${HOMEBREW_FILENAME}/" \
 		-e "s/@@PYTHON_FILENAME@@/${PYTHON_FILENAME}/" \
@@ -255,6 +272,9 @@ update_postflight_script_mini() {
 		-e "s/@@PY_CRON_DEPS_2_FILENAME@@/${PY_CRON_DEPS_2_FILENAME}/" \
 		-e "s/@@PY_PSUTIL_FILENAME@@/${PY_PSUTIL_FILENAME}/" \
 		-e "s/@@PY_PLYVEL_FILENAME@@/${PY_PLYVEL_FILENAME}/" \
+		-e "s/@@PY_SFTP_FILENAME@@/${PY_SFTP_FILENAME}/" \
+		-e "s/@@PY_SYNCTHING_FILENAME@@/${PY_SYNCTHING_FILENAME}/" \
+		-e "s/@@PY_REQUESTS_FILENAME@@/${PY_REQUESTS_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_FILENAME@@/${PULSE_AGENT_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_PLUGINS_FILENAME@@/${PULSE_AGENT_PLUGINS_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_CONFFILE_FILENAME@@/${PULSE_AGENT_CONFFILE_FILENAME}/" \
