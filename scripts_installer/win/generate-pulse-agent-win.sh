@@ -445,7 +445,7 @@ update_nsi_script_full() {
 		-e "s/@@FULL_OR_DL_PY_PSUTIL64@@/$(sed_escape ${FULL_PY_PSUTIL64})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_PSUTIL64@@/$(sed_escape ${INSTALL_FULL_PY_PSUTIL64})/" \
 		-e "s/@@PY_SFTP_FILENAME@@/${PY_SFTP_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_STFP@@/$(sed_escape ${FULL_PY_SFTP})/" \
+		-e "s/@@FULL_OR_DL_PY_SFTP@@/$(sed_escape ${FULL_PY_SFTP})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_SFTP@@/$(sed_escape ${INSTALL_FULL_PY_SFTP})/" \
 		-e "s/@@PY_SYNCTHING_FILENAME@@/${PY_SYNCTHING_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_SYNCTHING@@/$(sed_escape ${FULL_PY_SYNCTHING})/" \
@@ -616,7 +616,7 @@ update_nsi_script_dl() {
 		-e "s/@@FULL_OR_DL_PY_PSUTIL64@@/$(sed_escape ${DL_PY_PSUTIL64})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_PSUTIL64@@/$(sed_escape ${INSTALL_DL_PY_PSUTIL64})/" \
 		-e "s/@@PY_SFTP_FILENAME@@/${PY_SFTP_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_STFP@@/$(sed_escape ${DL_PY_SFTP})/" \
+		-e "s/@@FULL_OR_DL_PY_SFTP@@/$(sed_escape ${DL_PY_SFTP})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_SFTP@@/$(sed_escape ${INSTALL_DL_PY_SFTP})/" \
 		-e "s/@@PY_SYNCTHING_FILENAME@@/${PY_SYNCTHING_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_SYNCTHING@@/$(sed_escape ${DL_PY_SYNCTHING})/" \
