@@ -2,12 +2,12 @@
 
 %define branch  BRANCH
 
-%define VERSION_XMPP_AGENT 1.9.8
-%define VERSION_AGENT_PLUGINS 1.10
+%define VERSION_XMPP_AGENT 2.0.0
+%define VERSION_AGENT_PLUGINS 1.11
 
 Summary:	Files to create pulse windows installer
 Name:		pulse-agent-installers
-Version:	1.9.8
+Version:	2.0.0
 Release:	%{rel}%{?dist}
 Source0:    pulse-agent-installers-%version.tar.gz
 License:	MIT
@@ -60,8 +60,8 @@ cd pulse-agent-plugins
 git checkout %branch
 cd ..
 
-mv pulse-agent-plugins pulse-agent-plugins-1.10
-tar czvf pulse-agent-plugins-1.10.tar.gz pulse-agent-plugins-1.10
+mv pulse-agent-plugins pulse-agent-plugins-1.11
+tar czvf pulse-agent-plugins-1.11.tar.gz pulse-agent-plugins-1.11
 
 GIT_SSL_NO_VERIFY=true git clone https://github.com/pulse-project/pulse-filetree-generator.git
 
@@ -80,7 +80,7 @@ cp -frv %{buildroot}/tmp/pulse-xmpp-agent-%version/pulse_xmpp_agent/* %{buildroo
 rm -fr %{buildroot}/tmp
 
 # We create pulse-agent-plugins tarball
-mv pulse-agent-plugins-1.10.tar.gz %{buildroot}/var/lib/pulse2/clients
+mv pulse-agent-plugins-1.11.tar.gz %{buildroot}/var/lib/pulse2/clients
 
 mkdir -p %{buildroot}/etc/mmc/plugins/
 mkdir -p %{buildroot}/var/lib/pulse2/clients/config/
