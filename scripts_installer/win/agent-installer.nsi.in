@@ -78,6 +78,8 @@ RequestExecutionLevel admin
 !define RDPWRAP_FOLDERNAME "@@RDPWRAP_FOLDERNAME@@"
 !define VNC_AGENT32_FILENAME "@@VNC_AGENT32_FILENAME@@"
 !define VNC_AGENT64_FILENAME "@@VNC_AGENT64_FILENAME@@"
+!define RFB_PORT "@@RFB_PORT@@"
+
 SetCompressor lzma
 
 ; Modern UI installer stuff
@@ -722,6 +724,9 @@ Section "VNC Setup" sec_vnc
   StrCpy $0 `$0 SET_BLOCKREMOTEINPUT=1 VALUE_OF_BLOCKREMOTEINPUT=0`
   ; Don't do anything when terminating VNC session
   StrCpy $0 `$0 SET_DISCONNECTACTION=1 VALUE_OF_DISCONNECTACTION=0`
+  ; Set the server listening port
+  StrCpy $0 `$0 SET_RFBPORT=1 VALUE_OF_RFBPORT=${RFB_PORT}`
+
 
   ${LogString} "Running $0"
   nsExec::ExecToLog $0

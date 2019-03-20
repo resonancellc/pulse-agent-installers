@@ -118,12 +118,14 @@ RDPWRAP_VERSION="1.6.1"
 DOWNLOAD_FOLDER="downloads"
 PULSE_AGENT_PLUGINS_NAME="pulse-agent-plugins"
 PULSE_AGENT_PLUGINS_VERSION="1.10"
+VNC_PORT="5900"
 
 
 # Display usage
 display_usage() {
 	echo -e "\nUsage:\n$0 [--inventory-tag=<Tag added to the inventory>]\n"
 	echo -e "\t [--minimal [--base-url=<URL for downloading agent and dependencies from>]]\n"
+        echo -e "\t [--vnc-port=<Default port 5900>]\n"
 }
 
 check_arguments() {
@@ -139,6 +141,10 @@ check_arguments() {
         ;;
       --base-url*)
         TEST_URL="${i#*=}"
+        shift
+        ;;
+      --vnc-port*)
+       [ ! -z ${i} ] && VNC_PORT="${i#*=}"
         shift
         ;;
 			*)
@@ -442,6 +448,7 @@ update_nsi_script_full() {
                 -e "s/@@PULSE_AGENT_PLUGINS_NAME@@/${PULSE_AGENT_PLUGINS_NAME}/" \
 		-e "s/@@RSYNC_FILENAME@@/rsync.zip/" \
 		-e "s/@@GENERATED_SIZE@@/FULL/" \
+                -e "s/@@RFB_PORT@@/${VNC_PORT}/" \
 		agent-installer.nsi.in \
 		> agent-installer.nsi
 	colored_echo green "### INFO Updating NSIS script.. Done"
@@ -592,6 +599,7 @@ update_nsi_script_dl() {
                 -e "s/@@PULSE_AGENT_PLUGINS_NAME@@/${PULSE_AGENT_PLUGINS_NAME}/" \
 		-e "s/@@RSYNC_FILENAME@@/rsync.zip/" \
 		-e "s/@@GENERATED_SIZE@@/MINIMAL/" \
+                -e "s/@@RFB_PORT@@/${VNC_PORT}/" \
 		agent-installer.nsi.in \
 		> agent-installer.nsi
 	colored_echo green "### INFO Updating NSIS script.. Done"
