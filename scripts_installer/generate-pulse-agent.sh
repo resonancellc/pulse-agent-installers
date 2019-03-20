@@ -52,6 +52,7 @@ display_usage() {
 	echo -e "\t [--chat-domain=<XMPP domain>] \n"
   echo -e "\t [--inventory-tag=<Tag added to the inventory>] \n"
   echo -e "\t [--minimal [--base-url=<URL for downloading agent and dependencies from>]] \n"
+  echo -e "\t [--vnc-port=<Default port 5900>]\n"
 }
 
 check_arguments() {
@@ -103,6 +104,10 @@ check_arguments() {
         ;;
       --base-url*)
         TEST_URL="${i#*=}"
+        shift
+        ;;
+      --vnc-port*)
+        VNC_PORT="${i#*=}"
         shift
         ;;
 			*)
@@ -164,26 +169,37 @@ compute_settings() {
 
   colored_echo blue " - XMPP server password: '${XMPP_SERVER_PASSWORD}'"
 
-	colored_echo blue " - XMPP MUC server: '${XMPP_MUC_SERVER}'"
+  colored_echo blue " - XMPP MUC server: '${XMPP_MUC_SERVER}'"
 
   colored_echo blue " - XMPP server MUC password: '${XMPP_SERVER_MUCPASSWORD}'"
 
-	colored_echo blue " - XMPP chat domain: '${CHAT_DOMAIN}'"
+  colored_echo blue " - XMPP chat domain: '${CHAT_DOMAIN}'"
 
-	if [ -z "${INVENTORY_TAG}" ]; then
-		colored_echo blue " - Inventory TAG: None"
-	else
-		colored_echo blue " - Inventory TAG: '${INVENTORY_TAG}'"
+  if [ -z "${INVENTORY_TAG}" ]; then
+        colored_echo blue " - Inventory TAG: None"
+        INVENTORY_TAG_OPTIONS=""
+  else
+        colored_echo blue " - Inventory TAG: ${INVENTORY_TAG}"
+        INVENTORY_TAG_OPTIONS="--inventory-tag=${INVENTORY_TAG}"
+  fi
+  
+  if [[ ${MINIMAL} -eq 1 ]]; then
+  	GENERATED_SIZE="--minimal"
+  	colored_echo blue " - Agent generated: minimal"
+  else
+  	colored_echo blue " - Agent generated: full"
   fi
 
-	if [[ ${MINIMAL} -eq 1 ]]; then
-		GENERATED_SIZE="--minimal"
-    colored_echo blue " - Agent generated: minimal"
-	else
-		colored_echo blue " - Agent generated: full"
+  if [ -z ${VNC_PORT} ]; then
+  	colored_echo blue " - VNC server listening port: 5900"
+  	VNC_PORT_OPTIONS=""
+  else
+  	colored_echo blue " - VNC server listening port: ${VNC_PORT}"
+  	VNC_PORT_OPTIONS="--vnc-port=${VNC_PORT}"
+ 
   fi
 
-	colored_echo blue " - Base URL: '${BASE_URL}'"
+colored_echo blue " - Base URL: '${BASE_URL}'"
 }
 
 update_config_file() {
@@ -211,34 +227,42 @@ check_previous_conf() {
 		exit 0
 	fi
 	# Check if inventory tag, agent size and base url are defined
-	if [ -z "${INVENTORY_TAG}" ]; then
-		colored_echo blue " - Inventory TAG: None"
-	else
-		colored_echo blue " - Inventory TAG: '${INVENTORY_TAG}'"
-  fi
+
+        if [ -z "${INVENTORY_TAG}" ]; then
+                colored_echo blue " - Inventory TAG: None"
+                INVENTORY_TAG_OPTIONS=""
+        else
+                colored_echo blue " - Inventory TAG: ${INVENTORY_TAG}"
+                INVENTORY_TAG_OPTIONS="--inventory-tag=${INVENTORY_TAG}"
+	fi
+       	if [ -z ${VNC_PORT} ]; then
+       	        colored_echo blue " - VNC server listening port: 5900"
+       	        VNC_PORT_OPTIONS=""
+       	else
+       	        colored_echo blue " - VNC server listening port: ${VNC_PORT}"
+       	        VNC_PORT_OPTIONS="--vnc-port=${VNC_PORT}"
+       	fi
+
+
 	if [[ ${MINIMAL} -eq 1 ]]; then
 		OPTIONS_MINIMAL="--minimal --base-url=${BASE_URL}"
-    colored_echo blue " - Agent generated: minimal"
+    		colored_echo blue " - Agent generated: minimal"
 	else
 		colored_echo blue " - Agent generated: full"
-  fi
+	fi
 }
 
 generate_agent_win() {
-  # Generate Pulse Agent for Windows
-  colored_echo blue "Generating Pulse Agent for Windows..."
-	if [ -n "${INVENTORY_TAG}" ]; then
-		COMMAND="./win/generate-pulse-agent-win.sh --inventory-tag=${INVENTORY_TAG} ${OPTIONS_MINIMAL}"
-	else
-		COMMAND="./win/generate-pulse-agent-win.sh ${OPTIONS_MINIMAL}"
-	fi
+	# Generate Pulse Agent for Windows
+	colored_echo blue "Generating Pulse Agent for Windows..."
+	COMMAND="./win/generate-pulse-agent-win.sh ${INVENTORY_TAG_OPTIONS} ${VNC_PORT_OPTIONS} ${OPTIONS_MINIMAL}"
 	echo "Running "${COMMAND}
 	${COMMAND}
 }
 
 generate_agent_lin() {
-  # Generate Pulse Agent for Linux
-  colored_echo blue "Generating Pulse Agent for Linux..."
+	# Generate Pulse Agent for Linux
+	colored_echo blue "Generating Pulse Agent for Linux..."
 	if [ -n "${INVENTORY_TAG}" ]; then
 		COMMAND="./lin/generate-pulse-agent-linux.sh --inventory-tag=${INVENTORY_TAG} ${OPTIONS_MINIMAL}"
 	else
@@ -249,8 +273,8 @@ generate_agent_lin() {
 }
 
 generate_agent_mac() {
-  # Generate Pulse Agent for MacOS
-  colored_echo blue "Generating Pulse Agent for MacOS..."
+	# Generate Pulse Agent for MacOS
+ 	 colored_echo blue "Generating Pulse Agent for MacOS..."
 	if [ -n "${INVENTORY_TAG}" ]; then
 		COMMAND="./mac/generate-pulse-agent-mac.sh --inventory-tag=${INVENTORY_TAG} ${OPTIONS_MINIMAL}"
 	else
