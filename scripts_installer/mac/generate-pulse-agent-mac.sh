@@ -49,6 +49,10 @@
 #   https://files.pythonhosted.org/packages/36/60/45f30390a38b1f92e0a8cf4de178cd7c2bc3f874c85430e40ccf99df8fe7/pysftp-0.2.9.tar.gz
 #   https://files.pythonhosted.org/packages/ef/4e/9f04fc58040cbf05984d7ca9393ff2dbc8b6909b163a768fc28786eacf06/syncthing-2.3.1.tar.gz
 #   https://files.pythonhosted.org/packages/7d/e3/20f3d364d6c8e5d2353c72a67778eb189176f08e873c9900e10c0287b84b/requests-2.21.0-py2.py3-none-any.whl
+#   https://files.pythonhosted.org/packages/14/2c/cd551d81dbe15200be1cf41cd03869a46fe7226e7450af7a6545bfc474c9/idna-2.8-py2.py3-none-any.whl
+#   https://files.pythonhosted.org/packages/62/00/ee1d7de624db8ba7090d1226aebefab96a2c71cd5cfa7629d6ad3f61b79e/urllib3-1.24.1-py2.py3-none-any.whl
+#   https://files.pythonhosted.org/packages/60/75/f692a584e85b7eaba0e03827b3d51f45f571c2e793dd731e598828d380aa/certifi-2019.3.9-py2.py3-none-any.whl
+#   https://files.pythonhosted.org/packages/bc/a9/01ffebfb562e4274b6487b4bb1ddec7ca55ec7510b22e4c51f14098443b8/chardet-3.0.4-py2.py3-none-any.whl
 
 # To be defined for minimal install
 BASE_URL="https://agents.siveo.net" # Overridden if --base-url is defined
@@ -93,6 +97,14 @@ PY_SYNCTHING_MODULE="syncthing"
 PY_SYNCTHING_VERSION="2.3.1"
 PY_REQUESTS_MODULE="requests"
 PY_REQUESTS_VERSION="2.21.0"
+PY_REQUESTS_DEPS_1_MODULE="idna"
+PY_REQUESTS_DEPS_1_VERSION="2.8"
+PY_REQUESTS_DEPS_2_MODULE="urllib3"
+PY_REQUESTS_DEPS_2_VERSION="1.24.1"
+PY_REQUESTS_DEPS_3_MODULE="certifi"
+PY_REQUESTS_DEPS_3_VERSION="2019.3.9"
+PY_REQUESTS_DEPS_4_MODULE="chardet"
+PY_REQUESTS_DEPS_4_VERSION="3.0.4"
 PULSE_AGENT_NAME="pulse-xmpp-agent"
 PULSE_AGENT_MODULE="pulse_xmpp_agent"
 SSH_PUB_KEY="/root/.ssh/id_rsa.pub"
@@ -168,6 +180,10 @@ compute_parameters() {
 	PY_SFTP_FILENAME="${PY_SFTP_MODULE}-${PY_SFTP_VERSION}.tar.gz"
 	PY_SYNCTHING_FILENAME="${PY_SYNCTHING_MODULE}-${PY_SYNCTHING_VERSION}.tar.gz"
 	PY_REQUESTS_FILENAME="${PY_REQUESTS_MODULE}-${PY_REQUESTS_VERSION}-py2.py3-none-any.whl"
+	PY_REQUESTS_DEPS_1_FILENAME="${PY_REQUESTS_DEPS_1_MODULE}-${PY_REQUESTS_DEPS_1_VERSION}-py2.py3-none-any.whl"
+	PY_REQUESTS_DEPS_2_FILENAME="${PY_REQUESTS_DEPS_2_MODULE}-${PY_REQUESTS_DEPS_2_VERSION}-py2.py3-none-any.whl"
+	PY_REQUESTS_DEPS_3_FILENAME="${PY_REQUESTS_DEPS_3_MODULE}-${PY_REQUESTS_DEPS_3_VERSION}-py2.py3-none-any.whl"
+	PY_REQUESTS_DEPS_4_FILENAME="${PY_REQUESTS_DEPS_4_MODULE}-${PY_REQUESTS_DEPS_4_VERSION}-py2.py3-none-any.whl"
 	PULSE_AGENT_FILENAME="${PULSE_AGENT_NAME}-${AGENT_VERSION}.tar.gz"
 	PULSE_AGENT_CONFFILE_FILENAME="agentconf.ini"
 	PULSE_SCHEDULER_CONFFILE_FILENAME="manage_scheduler.ini"
@@ -275,6 +291,10 @@ update_postflight_script_mini() {
 		-e "s/@@PY_SFTP_FILENAME@@/${PY_SFTP_FILENAME}/" \
 		-e "s/@@PY_SYNCTHING_FILENAME@@/${PY_SYNCTHING_FILENAME}/" \
 		-e "s/@@PY_REQUESTS_FILENAME@@/${PY_REQUESTS_FILENAME}/" \
+		-e "s/@@PY_REQUESTS_DEPS_1_FILENAME@@/${PY_REQUESTS_DEPS_1_FILENAME}/" \
+		-e "s/@@PY_REQUESTS_DEPS_2_FILENAME@@/${PY_REQUESTS_DEPS_2_FILENAME}/" \
+		-e "s/@@PY_REQUESTS_DEPS_3_FILENAME@@/${PY_REQUESTS_DEPS_3_FILENAME}/" \
+		-e "s/@@PY_REQUESTS_DEPS_4_FILENAME@@/${PY_REQUESTS_DEPS_4_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_FILENAME@@/${PULSE_AGENT_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_PLUGINS_FILENAME@@/${PULSE_AGENT_PLUGINS_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_CONFFILE_FILENAME@@/${PULSE_AGENT_CONFFILE_FILENAME}/" \
