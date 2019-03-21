@@ -184,15 +184,15 @@ compute_settings() {
   fi
   
   if [[ ${MINIMAL} -eq 1 ]]; then
-  	GENERATED_SIZE="--minimal"
-  	colored_echo blue " - Agent generated: minimal"
+        GENERATED_SIZE="--minimal"
+        colored_echo blue " - Agent generated: minimal"
   else
-  	colored_echo blue " - Agent generated: full"
+        colored_echo blue " - Agent generated: full"
   fi
 
   if [ -z ${VNC_PORT} ]; then
-  	colored_echo blue " - VNC server listening port: 5900"
-  	VNC_PORT_OPTIONS=""
+        colored_echo blue " - VNC server listening port: 5900"
+        VNC_PORT_OPTIONS=""
   else
   	colored_echo blue " - VNC server listening port: ${VNC_PORT}"
   	VNC_PORT_OPTIONS="--vnc-port=${VNC_PORT}"
@@ -229,27 +229,28 @@ check_previous_conf() {
 	# Check if inventory tag, agent size and base url are defined
 
         if [ -z "${INVENTORY_TAG}" ]; then
-                colored_echo blue " - Inventory TAG: None"
-                INVENTORY_TAG_OPTIONS=""
+            colored_echo blue " - Inventory TAG: None"
+            INVENTORY_TAG_OPTIONS=""
         else
-                colored_echo blue " - Inventory TAG: ${INVENTORY_TAG}"
-                INVENTORY_TAG_OPTIONS="--inventory-tag=${INVENTORY_TAG}"
-	fi
-       	if [ -z ${VNC_PORT} ]; then
-       	        colored_echo blue " - VNC server listening port: 5900"
-       	        VNC_PORT_OPTIONS=""
+            colored_echo blue " - Inventory TAG: ${INVENTORY_TAG}"
+            INVENTORY_TAG_OPTIONS="--inventory-tag=${INVENTORY_TAG}"
+        fi
+
+        if [ -z ${VNC_PORT} ]; then
+            colored_echo blue " - VNC server listening port: 5900"
+            VNC_PORT_OPTIONS=""
        	else
-       	        colored_echo blue " - VNC server listening port: ${VNC_PORT}"
-       	        VNC_PORT_OPTIONS="--vnc-port=${VNC_PORT}"
+            colored_echo blue " - VNC server listening port: ${VNC_PORT}"
+            VNC_PORT_OPTIONS="--vnc-port=${VNC_PORT}"
        	fi
 
 
-	if [[ ${MINIMAL} -eq 1 ]]; then
-		OPTIONS_MINIMAL="--minimal --base-url=${BASE_URL}"
-    		colored_echo blue " - Agent generated: minimal"
-	else
-		colored_echo blue " - Agent generated: full"
-	fi
+        if [[ ${MINIMAL} -eq 1 ]]; then
+            OPTIONS_MINIMAL="--minimal --base-url=${BASE_URL}"
+            colored_echo blue " - Agent generated: minimal"
+        else
+            colored_echo blue " - Agent generated: full"
+        fi
 }
 
 generate_agent_win() {
@@ -261,7 +262,7 @@ generate_agent_win() {
 }
 
 generate_agent_lin() {
-	# Generate Pulse Agent for Linux
+    # Generate Pulse Agent for Linux
 	colored_echo blue "Generating Pulse Agent for Linux..."
 	if [ -n "${INVENTORY_TAG}" ]; then
 		COMMAND="./lin/generate-pulse-agent-linux.sh --inventory-tag=${INVENTORY_TAG} ${OPTIONS_MINIMAL}"
@@ -273,15 +274,15 @@ generate_agent_lin() {
 }
 
 generate_agent_mac() {
-	# Generate Pulse Agent for MacOS
- 	 colored_echo blue "Generating Pulse Agent for MacOS..."
-	if [ -n "${INVENTORY_TAG}" ]; then
-		COMMAND="./mac/generate-pulse-agent-mac.sh --inventory-tag=${INVENTORY_TAG} ${OPTIONS_MINIMAL}"
-	else
-		COMMAND="./mac/generate-pulse-agent-mac.sh ${OPTIONS_MINIMAL}"
-	fi
-	echo "Running "${COMMAND}
-	${COMMAND}
+    # Generate Pulse Agent for MacOS
+    colored_echo blue "Generating Pulse Agent for MacOS..."
+    if [ -n "${INVENTORY_TAG}" ]; then
+        COMMAND="./mac/generate-pulse-agent-mac.sh --inventory-tag=${INVENTORY_TAG} ${OPTIONS_MINIMAL}"
+    else
+        COMMAND="./mac/generate-pulse-agent-mac.sh ${OPTIONS_MINIMAL}"
+    fi
+    echo "Running "${COMMAND}
+    ${COMMAND}
 }
 
 # And finally we run the functions
