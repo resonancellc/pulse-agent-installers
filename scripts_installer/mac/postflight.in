@@ -28,6 +28,10 @@ MODULES_LIST_FILENAMES="@@PY_NETIFACES_FILENAME@@
                         @@PY_PLYVEL_FILENAME@@
                         @@PY_SFTP_FILENAME@@
                         @@PY_SYNCTHING_FILENAME@@
+                        @@PY_CRON_DEPS_4_FILENAME@@
+                        @@PY_CRON_DEPS_3_FILENAME@@
+                        @@PY_CRON_DEPS_2_FILENAME@@
+                        @@PY_CRON_DEPS_1_FILENAME@@
                         @@PY_REQUESTS_FILENAME@@"
 PULSE_AGENT_FILENAME="@@PULSE_AGENT_FILENAME@@"
 PULSE_AGENT_PLUGINS_FILENAME="@@PULSE_AGENT_PLUGINS_FILENAME@@"
@@ -227,7 +231,7 @@ for MODULE_FILENAME in ${MODULES_LIST_FILENAMES}; do
       export LDFLAGS=-L/usr/local/opt/openssl/lib
       export CPPFLAGS=-I/usr/local/opt/openssl/include
       /usr/local/bin/pip2 install --upgrade --no-deps --install-option="--with-openssl" --install-option="--openssl-dir=/usr/local/opt/openssl" @@PY_CURL_FILENAME@@
-    elif [[ "${MODULE_FILENAME}" == "@@PY_CRON_DEPS_2_FILENAME@@" || "${MODULE_FILENAME}" == "@@PY_CRON_DEPS_1_FILENAME@@" ]]; then
+    elif [[ "${MODULE_FILENAME}" == "@@PY_CRON_DEPS_2_FILENAME@@" || "${MODULE_FILENAME}" == "@@PY_CRON_DEPS_1_FILENAME@@" || "${MODULE_FILENAME}" == "@@PY_REQUESTS_DEPS_4_FILENAME@@" || "${MODULE_FILENAME}" == "@@PY_REQUESTS_DEPS_3_FILENAME@@" || "${MODULE_FILENAME}" == "@@PY_REQUESTS_DEPS_2_FILENAME@@" || "${MODULE_FILENAME}" == "@@PY_REQUESTS_DEPS_1_FILENAME@@" ]]; then
       /usr/local/bin/pip2 install --upgrade --no-deps --ignore-installed --no-index --find-links="." ${MODULE_FILENAME}
     else
       /usr/local/bin/pip2 install --upgrade --no-deps --no-index --find-links="." ${MODULE_FILENAME}
