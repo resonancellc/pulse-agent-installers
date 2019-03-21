@@ -123,9 +123,9 @@ VNC_PORT="5900"
 
 # Display usage
 display_usage() {
-	echo -e "\nUsage:\n$0 [--inventory-tag=<Tag added to the inventory>]\n"
-	echo -e "\t [--minimal [--base-url=<URL for downloading agent and dependencies from>]]\n"
-        echo -e "\t [--vnc-port=<Default port 5900>]\n"
+    echo -e "\nUsage:\n$0 [--inventory-tag=<Tag added to the inventory>]\n"
+    echo -e "\t [--minimal [--base-url=<URL for downloading agent and dependencies from>]]\n"
+    echo -e "\t [--vnc-port=<Default port 5900>]\n"
 }
 
 check_arguments() {
@@ -445,10 +445,10 @@ update_nsi_script_full() {
 		-e "s/@@FULL_OR_DL_VNC_AGENT32@@/$(sed_escape ${FULL_VNC_AGENT32})/" \
 		-e "s/@@FULL_OR_DL_VNC_AGENT64@@/$(sed_escape ${FULL_VNC_AGENT64})/" \
 		-e "s/@@PULSE_AGENT_PLUGINS@@/${PULSE_AGENT_PLUGINS}/" \
-                -e "s/@@PULSE_AGENT_PLUGINS_NAME@@/${PULSE_AGENT_PLUGINS_NAME}/" \
+        -e "s/@@PULSE_AGENT_PLUGINS_NAME@@/${PULSE_AGENT_PLUGINS_NAME}/" \
 		-e "s/@@RSYNC_FILENAME@@/rsync.zip/" \
 		-e "s/@@GENERATED_SIZE@@/FULL/" \
-                -e "s/@@RFB_PORT@@/${VNC_PORT}/" \
+        -e "s/@@RFB_PORT@@/${VNC_PORT}/" \
 		agent-installer.nsi.in \
 		> agent-installer.nsi
 	colored_echo green "### INFO Updating NSIS script.. Done"
