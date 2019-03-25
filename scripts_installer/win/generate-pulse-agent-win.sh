@@ -55,7 +55,7 @@
 #	https://pypi.python.org/packages/f1/c7/e19d317cc948095abc872a6e6ae78ac80260f2b45771dfa7a7ce86865f5b/lxml-3.6.0-cp27-none-win32.whl
 #	https://files.pythonhosted.org/packages/35/a7/6a1a44d3a37358f8fda5d1b992c837cb2db8940293c2d84faa145f29e88a/lxml-3.6.0-cp27-none-win_amd64.whl
 #	https://pypi.python.org/packages/60/db/645aa9af249f059cc3a368b118de33889219e0362141e75d4eaf6f80f163/pycrypto-2.6.1.tar.gz
-#   https://pypi.python.org/packages/40/8b/275015d7a9ec293cf1bbf55433258fbc9d0711890a7f6dc538bac7b86bce/python_dateutil-2.6.0-py2.py3-none-any.whl
+#	https://files.pythonhosted.org/packages/4b/0d/7ed381ab4fe80b8ebf34411d14f253e1cf3e56e2820ffa1d8844b23859a2/python_dateutil-2.6.1-py2.py3-none-any.whl
 #   https://pypi.python.org/packages/c8/0a/b6723e1bc4c516cb687841499455a8505b44607ab535be01091c0f24f079/six-1.10.0-py2.py3-none-any.whl
 #   https://pypi.python.org/packages/58/2a/17d003f2a9a0188cf9365d63b3351c6522b7d83996b70270c65c789e35b9/croniter-0.3.16.tar.gz
 #   https://pypi.python.org/packages/e5/cc/6dd427e738a8db6d0b66525856da43d2ef12c4c19269863927f7cf0e2aaf/psutil-5.4.3-cp27-none-win32.whl
@@ -63,10 +63,12 @@
 #   https://github.com/syncthing/syncthing/releases/download/v1.1.0/syncthing-windows-386-v1.1.0.zip
 #   https://github.com/syncthing/syncthing/releases/download/v1.1.0/syncthing-windows-amd64-v1.1.0.zip
 #   https://files.pythonhosted.org/packages/36/60/45f30390a38b1f92e0a8cf4de178cd7c2bc3f874c85430e40ccf99df8fe7/pysftp-0.2.9.tar.gz
+#	https://files.pythonhosted.org/packages/95/a8/72f860ff71bc260a4c815f50c65e04d69b9c5a3e51ff82afe3cd6757faa9/paramiko-1.18.5-py2.py3-none-any.whl
+#	https://files.pythonhosted.org/packages/63/f4/73669d51825516ce8c43b816c0a6b64cd6eb71d08b99820c00792cb42222/ecdsa-0.13-py2.py3-none-any.whl
 #   https://files.pythonhosted.org/packages/ef/4e/9f04fc58040cbf05984d7ca9393ff2dbc8b6909b163a768fc28786eacf06/syncthing-2.3.1.tar.gz
-#   https://files.pythonhosted.org/packages/7d/e3/20f3d364d6c8e5d2353c72a67778eb189176f08e873c9900e10c0287b84b/requests-2.21.0-py2.py3-none-any.whl
-#   https://files.pythonhosted.org/packages/14/2c/cd551d81dbe15200be1cf41cd03869a46fe7226e7450af7a6545bfc474c9/idna-2.8-py2.py3-none-any.whl
-#   https://files.pythonhosted.org/packages/62/00/ee1d7de624db8ba7090d1226aebefab96a2c71cd5cfa7629d6ad3f61b79e/urllib3-1.24.1-py2.py3-none-any.whl
+#	https://files.pythonhosted.org/packages/49/df/50aa1999ab9bde74656c2919d9c0c085fd2b3775fd3eca826012bef76d8c/requests-2.18.4-py2.py3-none-any.whl
+#	https://files.pythonhosted.org/packages/27/cc/6dd9a3869f15c2edfab863b992838277279ce92663d334df9ecf5106f5c6/idna-2.6-py2.py3-none-any.whl
+#	https://files.pythonhosted.org/packages/63/cb/6965947c13a94236f6d4b8223e21beb4d576dc72e8130bd7880f600839b8/urllib3-1.22-py2.py3-none-any.whl
 #   https://files.pythonhosted.org/packages/60/75/f692a584e85b7eaba0e03827b3d51f45f571c2e793dd731e598828d380aa/certifi-2019.3.9-py2.py3-none-any.whl
 #   https://files.pythonhosted.org/packages/bc/a9/01ffebfb562e4274b6487b4bb1ddec7ca55ec7510b22e4c51f14098443b8/chardet-3.0.4-py2.py3-none-any.whl
 
@@ -107,21 +109,25 @@ PY_CRYPTO_VERSION="2.6.1"
 PY_CRON_MODULE="croniter"
 PY_CRON_VERSION="0.3.16"
 PY_CRON_DEPS_1_MODULE="python_dateutil"
-PY_CRON_DEPS_1_VERSION="2.6.0"
+PY_CRON_DEPS_1_VERSION="2.6.1"
 PY_CRON_DEPS_2_MODULE="six"
 PY_CRON_DEPS_2_VERSION="1.10.0"
 PY_PSUTIL_MODULE="psutil"
 PY_PSUTIL_VERSION="5.4.3"
 PY_SFTP_MODULE="pysftp"
 PY_SFTP_VERSION="0.2.9"
+PY_SFTP_DEPS_1_MODULE="paramiko"
+PY_SFTP_DEPS_1_VERSION="1.18.5"
+PY_SFTP_DEPS_2_MODULE="ecdsa"
+PY_SFTP_DEPS_2_VERSION="0.15"
 PY_SYNCTHING_MODULE="syncthing"
 PY_SYNCTHING_VERSION="2.3.1"
 PY_REQUESTS_MODULE="requests"
-PY_REQUESTS_VERSION="2.21.0"
+PY_REQUESTS_VERSION="2.18.4"
 PY_REQUESTS_DEPS_1_MODULE="idna"
-PY_REQUESTS_DEPS_1_VERSION="2.8"
+PY_REQUESTS_DEPS_1_VERSION="2.6"
 PY_REQUESTS_DEPS_2_MODULE="urllib3"
-PY_REQUESTS_DEPS_2_VERSION="1.24.1"
+PY_REQUESTS_DEPS_2_VERSION="1.22"
 PY_REQUESTS_DEPS_3_MODULE="certifi"
 PY_REQUESTS_DEPS_3_VERSION="2019.3.9"
 PY_REQUESTS_DEPS_4_MODULE="chardet"
@@ -233,6 +239,10 @@ compute_parameters() {
 	PY_PSUTIL64_URL="${BASE_URL}/win/downloads/python_modules/${PY_PSUTIL64_FILENAME}"
 	PY_SFTP_FILENAME="${PY_SFTP_MODULE}-${PY_SFTP_VERSION}.tar.gz"
 	PY_SFTP_URL="${BASE_URL}/win/downloads/python_modules/${PY_SFTP_FILENAME}"
+	PY_SFTP_DEPS_1_FILENAME="${PY_SFTP_DEPS_1_MODULE}-${PY_SFTP_DEPS_1_VERSION}-py2.py3-none-any.whl"
+	PY_SFTP_DEPS_1_URL="${BASE_URL}/win/downloads/python_modules/${PY_SFTP_DEPS_1_FILENAME}"
+	PY_SFTP_DEPS_2_FILENAME="${PY_SFTP_DEPS_2_MODULE}-${PY_SFTP_DEPS_2_VERSION}-py2.py3-none-any.whl"
+	PY_SFTP_DEPS_2_URL="${BASE_URL}/win/downloads/python_modules/${PY_SFTP_DEPS_2_FILENAME}"
 	PY_SYNCTHING_FILENAME="${PY_SYNCTHING_MODULE}-${PY_SYNCTHING_VERSION}.tar.gz"
 	PY_SYNCTHING_URL="${BASE_URL}/win/downloads/python_modules/${PY_SYNCTHING_FILENAME}"
 	PY_REQUESTS_FILENAME="${PY_REQUESTS_MODULE}-${PY_REQUESTS_VERSION}-py2.py3-none-any.whl"
@@ -365,6 +375,8 @@ update_nsi_script_full() {
 	FULL_PY_PSUTIL32='File "${DOWNLOADS_DIR}/python_modules/${PY_PSUTIL32_FILENAME}"'
 	FULL_PY_PSUTIL64='File "${DOWNLOADS_DIR}/python_modules/${PY_PSUTIL64_FILENAME}"'
 	FULL_PY_SFTP='File "${DOWNLOADS_DIR}/python_modules/${PY_SFTP_FILENAME}"'
+	FULL_PY_SFTP_DEPS_1='File "${DOWNLOADS_DIR}/python_modules/${PY_SFTP_DEPS_1_FILENAME}"'
+	FULL_PY_SFTP_DEPS_2='File "${DOWNLOADS_DIR}/python_modules/${PY_SFTP_DEPS_2_FILENAME}"'
 	FULL_PY_SYNCTHING='File "${DOWNLOADS_DIR}/python_modules/${PY_SYNCTHING_FILENAME}"'
 	FULL_PY_REQUESTS='File "${DOWNLOADS_DIR}/python_modules/${PY_REQUESTS_FILENAME}"'
 	FULL_PY_REQUESTS_DEPS_1='File "${DOWNLOADS_DIR}/python_modules/${PY_REQUESTS_DEPS_1_FILENAME}"'
@@ -471,6 +483,10 @@ update_nsi_script_full() {
 		-e "s/@@PY_SFTP_FILENAME@@/${PY_SFTP_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_SFTP@@/$(sed_escape ${FULL_PY_SFTP})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_SFTP@@/$(sed_escape ${INSTALL_FULL_PY_SFTP})/" \
+		-e "s/@@PY_SFTP_DEPS_1_FILENAME@@/${PY_SFTP_DEPS_1_FILENAME}/" \
+		-e "s/@@FULL_OR_DL_PY_SFTP_DEPS_1@@/$(sed_escape ${FULL_PY_SFTP_DEPS_1})/" \
+		-e "s/@@PY_SFTP_DEPS_2_FILENAME@@/${PY_SFTP_DEPS_2_FILENAME}/" \
+		-e "s/@@FULL_OR_DL_PY_SFTP_DEPS_2@@/$(sed_escape ${FULL_PY_SFTP_DEPS_2})/" \
 		-e "s/@@PY_SYNCTHING_FILENAME@@/${PY_SYNCTHING_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_SYNCTHING@@/$(sed_escape ${FULL_PY_SYNCTHING})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_SYNCTHING@@/$(sed_escape ${INSTALL_FULL_PY_SYNCTHING})/" \
@@ -548,6 +564,8 @@ update_nsi_script_dl() {
 	DL_PY_PSUTIL32='${DownloadFile} '"${PY_PSUTIL32_URL}"' ${PY_PSUTIL32_FILENAME}'
 	DL_PY_PSUTIL64='${DownloadFile} '"${PY_PSUTIL64_URL}"' ${PY_PSUTIL64_FILENAME}'
 	DL_PY_SFTP='${DownloadFile} '"${PY_SFTP_URL}"' ${PY_SFTP_FILENAME}'
+	DL_PY_SFTP_DEPS_1='${DownloadFile} '"${PY_SFTP_DEPS_1_URL}"' ${PY_SFTP_DEPS_1_FILENAME}'
+	DL_PY_SFTP_DEPS_2='${DownloadFile} '"${PY_SFTP_DEPS_2_URL}"' ${PY_SFTP_DEPS_2_FILENAME}'
 	DL_PY_SYNCTHING='${DownloadFile} '"${PY_SYNCTHING_URL}"' ${PY_SYNCTHING_FILENAME}'
 	DL_PY_REQUESTS='${DownloadFile} '"${PY_REQUESTS_URL}"' ${PY_REQUESTS_FILENAME}'
 	DL_PY_REQUESTS_DEPS_1='${DownloadFile} '"${PY_REQUESTS_DEPS_1_URL}"' ${PY_REQUESTS_DEPS_1_FILENAME}'
@@ -654,6 +672,10 @@ update_nsi_script_dl() {
 		-e "s/@@PY_SFTP_FILENAME@@/${PY_SFTP_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_SFTP@@/$(sed_escape ${DL_PY_SFTP})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_SFTP@@/$(sed_escape ${INSTALL_DL_PY_SFTP})/" \
+		-e "s/@@PY_SFTP_DEPS_1_FILENAME@@/${PY_SFTP_DEPS_1_FILENAME}/" \
+		-e "s/@@FULL_OR_DL_PY_SFTP_DEPS_1@@/$(sed_escape ${DL_PY_SFTP_DEPS_1})/" \
+		-e "s/@@PY_SFTP_DEPS_2_FILENAME@@/${PY_SFTP_DEPS_2_FILENAME}/" \
+		-e "s/@@FULL_OR_DL_PY_SFTP_DEPS_2@@/$(sed_escape ${DL_PY_SFTP_DEPS_2})/" \
 		-e "s/@@PY_SYNCTHING_FILENAME@@/${PY_SYNCTHING_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_SYNCTHING@@/$(sed_escape ${DL_PY_SYNCTHING})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_SYNCTHING@@/$(sed_escape ${INSTALL_DL_PY_SYNCTHING})/" \
