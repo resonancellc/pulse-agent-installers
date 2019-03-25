@@ -41,16 +41,18 @@
 #	https://pypi.python.org/packages/77/d9/d272b38e6e25d2686e22f6058820298dadead69340b1c57ff84c87ef81f0/pycurl-7.43.0.1.tar.gz
 #	https://pypi.python.org/packages/f1/c7/e19d317cc948095abc872a6e6ae78ac80260f2b45771dfa7a7ce86865f5b/lxml-3.6.0.tar.gz
 #	https://pypi.python.org/packages/60/db/645aa9af249f059cc3a368b118de33889219e0362141e75d4eaf6f80f163/pycrypto-2.6.1.tar.gz
-# https://pypi.python.org/packages/40/8b/275015d7a9ec293cf1bbf55433258fbc9d0711890a7f6dc538bac7b86bce/python_dateutil-2.6.0-py2.py3-none-any.whl
+#	https://files.pythonhosted.org/packages/4b/0d/7ed381ab4fe80b8ebf34411d14f253e1cf3e56e2820ffa1d8844b23859a2/python_dateutil-2.6.1-py2.py3-none-any.whl
 # https://pypi.python.org/packages/c8/0a/b6723e1bc4c516cb687841499455a8505b44607ab535be01091c0f24f079/six-1.10.0-py2.py3-none-any.whl
 # https://pypi.python.org/packages/58/2a/17d003f2a9a0188cf9365d63b3351c6522b7d83996b70270c65c789e35b9/croniter-0.3.16.tar.gz
 # https://pypi.python.org/packages/e2/e1/600326635f97fee89bf8426fef14c5c29f4849c79f68fd79f433d8c1bd96/psutil-5.4.3.tar.gz
 # https://pypi.python.org/packages/28/df/755dab9f83c37031aea1cd9915673b5633665c575d649e812657df95b944/plyvel-1.0.1.tar.gz
 #   https://files.pythonhosted.org/packages/36/60/45f30390a38b1f92e0a8cf4de178cd7c2bc3f874c85430e40ccf99df8fe7/pysftp-0.2.9.tar.gz
+#	https://files.pythonhosted.org/packages/95/a8/72f860ff71bc260a4c815f50c65e04d69b9c5a3e51ff82afe3cd6757faa9/paramiko-1.18.5-py2.py3-none-any.whl
+#	https://files.pythonhosted.org/packages/63/f4/73669d51825516ce8c43b816c0a6b64cd6eb71d08b99820c00792cb42222/ecdsa-0.13-py2.py3-none-any.whl
 #   https://files.pythonhosted.org/packages/ef/4e/9f04fc58040cbf05984d7ca9393ff2dbc8b6909b163a768fc28786eacf06/syncthing-2.3.1.tar.gz
-#   https://files.pythonhosted.org/packages/7d/e3/20f3d364d6c8e5d2353c72a67778eb189176f08e873c9900e10c0287b84b/requests-2.21.0-py2.py3-none-any.whl
-#   https://files.pythonhosted.org/packages/14/2c/cd551d81dbe15200be1cf41cd03869a46fe7226e7450af7a6545bfc474c9/idna-2.8-py2.py3-none-any.whl
-#   https://files.pythonhosted.org/packages/62/00/ee1d7de624db8ba7090d1226aebefab96a2c71cd5cfa7629d6ad3f61b79e/urllib3-1.24.1-py2.py3-none-any.whl
+#	https://files.pythonhosted.org/packages/49/df/50aa1999ab9bde74656c2919d9c0c085fd2b3775fd3eca826012bef76d8c/requests-2.18.4-py2.py3-none-any.whl
+#	https://files.pythonhosted.org/packages/27/cc/6dd9a3869f15c2edfab863b992838277279ce92663d334df9ecf5106f5c6/idna-2.6-py2.py3-none-any.whl
+#	https://files.pythonhosted.org/packages/63/cb/6965947c13a94236f6d4b8223e21beb4d576dc72e8130bd7880f600839b8/urllib3-1.22-py2.py3-none-any.whl
 #   https://files.pythonhosted.org/packages/60/75/f692a584e85b7eaba0e03827b3d51f45f571c2e793dd731e598828d380aa/certifi-2019.3.9-py2.py3-none-any.whl
 #   https://files.pythonhosted.org/packages/bc/a9/01ffebfb562e4274b6487b4bb1ddec7ca55ec7510b22e4c51f14098443b8/chardet-3.0.4-py2.py3-none-any.whl
 
@@ -84,7 +86,7 @@ PY_CRYPTO_VERSION="2.6.1"
 PY_CRON_MODULE="croniter"
 PY_CRON_VERSION="0.3.16"
 PY_CRON_DEPS_1_MODULE="python_dateutil"
-PY_CRON_DEPS_1_VERSION="2.6.0"
+PY_CRON_DEPS_1_VERSION="2.6.1"
 PY_CRON_DEPS_2_MODULE="six"
 PY_CRON_DEPS_2_VERSION="1.10.0"
 PY_PSUTIL_MODULE="psutil"
@@ -93,14 +95,18 @@ PY_PLYVEL_MODULE="plyvel"
 PY_PLYVEL_VERSION="1.0.1"
 PY_SFTP_MODULE="pysftp"
 PY_SFTP_VERSION="0.2.9"
+PY_SFTP_DEPS_1_MODULE="paramiko"
+PY_SFTP_DEPS_1_VERSION="1.18.5"
+PY_SFTP_DEPS_2_MODULE="ecdsa"
+PY_SFTP_DEPS_2_VERSION="0.15"
 PY_SYNCTHING_MODULE="syncthing"
 PY_SYNCTHING_VERSION="2.3.1"
 PY_REQUESTS_MODULE="requests"
-PY_REQUESTS_VERSION="2.21.0"
+PY_REQUESTS_VERSION="2.18.4"
 PY_REQUESTS_DEPS_1_MODULE="idna"
-PY_REQUESTS_DEPS_1_VERSION="2.8"
+PY_REQUESTS_DEPS_1_VERSION="2.6"
 PY_REQUESTS_DEPS_2_MODULE="urllib3"
-PY_REQUESTS_DEPS_2_VERSION="1.24.1"
+PY_REQUESTS_DEPS_2_VERSION="1.22"
 PY_REQUESTS_DEPS_3_MODULE="certifi"
 PY_REQUESTS_DEPS_3_VERSION="2019.3.9"
 PY_REQUESTS_DEPS_4_MODULE="chardet"
@@ -178,6 +184,8 @@ compute_parameters() {
 	PY_PSUTIL_FILENAME="${PY_PSUTIL_MODULE}-${PY_PSUTIL_VERSION}.tar.gz"
 	PY_PLYVEL_FILENAME="${PY_PLYVEL_MODULE}-${PY_PLYVEL_VERSION}.tar.gz"
 	PY_SFTP_FILENAME="${PY_SFTP_MODULE}-${PY_SFTP_VERSION}.tar.gz"
+	PY_SFTP_DEPS_1_FILENAME="${PY_SFTP_DEPS_1_MODULE}-${PY_SFTP_DEPS_1_VERSION}-py2.py3-none-any.whl"
+	PY_SFTP_DEPS_2_FILENAME="${PY_SFTP_DEPS_2_MODULE}-${PY_SFTP_DEPS_2_VERSION}-py2.py3-none-any.whl"
 	PY_SYNCTHING_FILENAME="${PY_SYNCTHING_MODULE}-${PY_SYNCTHING_VERSION}.tar.gz"
 	PY_REQUESTS_FILENAME="${PY_REQUESTS_MODULE}-${PY_REQUESTS_VERSION}-py2.py3-none-any.whl"
 	PY_REQUESTS_DEPS_1_FILENAME="${PY_REQUESTS_DEPS_1_MODULE}-${PY_REQUESTS_DEPS_1_VERSION}-py2.py3-none-any.whl"
@@ -289,6 +297,8 @@ update_postflight_script_mini() {
 		-e "s/@@PY_PSUTIL_FILENAME@@/${PY_PSUTIL_FILENAME}/" \
 		-e "s/@@PY_PLYVEL_FILENAME@@/${PY_PLYVEL_FILENAME}/" \
 		-e "s/@@PY_SFTP_FILENAME@@/${PY_SFTP_FILENAME}/" \
+		-e "s/@@PY_SFTP_DEPS_1_FILENAME@@/${PY_SFTP_DEPS_1_FILENAME}/" \
+		-e "s/@@PY_SFTP_DEPS_2_FILENAME@@/${PY_SFTP_DEPS_2_FILENAME}/" \
 		-e "s/@@PY_SYNCTHING_FILENAME@@/${PY_SYNCTHING_FILENAME}/" \
 		-e "s/@@PY_REQUESTS_FILENAME@@/${PY_REQUESTS_FILENAME}/" \
 		-e "s/@@PY_REQUESTS_DEPS_1_FILENAME@@/${PY_REQUESTS_DEPS_1_FILENAME}/" \
