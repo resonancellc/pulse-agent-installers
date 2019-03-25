@@ -882,6 +882,7 @@ Section "!${PRODUCT_NAME}" sec_app
   StrCpy $SYNCTHING_FOLDERNAME "$SYNCTHING_FILENAME" -4
   ZipDLL::extractall "$INSTDIR\tmp\$SYNCTHING_FILENAME" "$INSTDIR\tmp\"
   CopyFiles /SILENT "$INSTDIR\tmp\$SYNCTHING_FOLDERNAME\syncthing.exe" "$INSTDIR\bin\"
+  RMDir /r "$INSTDIR\tmp\$SYNCTHING_FOLDERNAME"
 
   ; Setup of Windows firewall to allow Syncthing
   ${If} ${IsWinXP}
