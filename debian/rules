@@ -2,8 +2,8 @@
 
 DESTDIR = $(CURDIR)/debian/pulse-agent-installer
 
-VERSION_XMPP_AGENT=1.9.8
-VERSION_AGENT_PLUGINS=1.10
+VERSION_XMPP_AGENT=1.9.9
+VERSION_AGENT_PLUGINS=1.11
 VERSION_KIOSK_INTERFACE=0.2
 FILETREE_VERSION=0.1
 
@@ -27,6 +27,7 @@ build:
 	tar xzvf var/lib/pulse2/clients/pulse-xmpp-agent-${VERSION_XMPP_AGENT}.tar.gz -C $(DESTDIR)/tmp
 	mkdir -p var/lib/pulse2/xmpp_baseremoteagent
 	cp -frv $(DESTDIR)/tmp/pulse-xmpp-agent-${VERSION_XMPP_AGENT}/pulse_xmpp_agent/* var/lib/pulse2/xmpp_baseremoteagent/
+	rm -fv var/lib/pulse2/xmpp_baseremoteagent/managedbkiosk.py
 	mkdir -p etc/mmc/plugins/
 	mkdir -p var/lib/pulse2/clients/config/
 	cp $(DESTDIR)/tmp/pulse-xmpp-agent-${VERSION_XMPP_AGENT}/pulse_xmpp_agent/config/agentconf.ini.in var/lib/pulse2/clients/config/
