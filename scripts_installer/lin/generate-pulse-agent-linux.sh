@@ -48,24 +48,24 @@ display_usage() {
 
 check_arguments() {
 	for i in "$@"; do
-		case $i in
-	  --inventory-tag=*)
-		INVENTORY_TAG="${i#*=}"
-		shift
-		;;
-      --minimal*)
-        MINIMAL=1
-        shift
-        ;;
-      --base-url*)
-        TEST_URL="${i#*=}"
-        shift
-        ;;
+        case $i in
+            --inventory-tag=*)
+        		INVENTORY_TAG="${i#*=}"
+        		shift
+        		;;
+            --minimal*)
+                MINIMAL=1
+                shift
+                ;;
+            --base-url*)
+                TEST_URL="${i#*=}"
+                shift
+                ;;
 			*)
-		# unknown option
-		display_usage
-		exit 0
-			;;
+        		# unknown option
+        		display_usage
+        		exit 1
+                ;;
 		esac
 	done
 
@@ -83,13 +83,9 @@ check_arguments() {
 	fi
 }
 
-display_usage() {
-	echo -e "\nUsage:\n$0 \n"
-}
-
 colored_echo() {
-  local color=$1;
-  if ! [[ $color =~ '^[0-9]$' ]] ; then
+    local color=$1;
+    if ! [[ $color =~ '^[0-9]$' ]] ; then
 		case $(echo $color | tr '[:upper:]' '[:lower:]') in
 			black) color=0 ;;
 			red) color=1 ;;
@@ -100,15 +96,15 @@ colored_echo() {
 			cyan) color=6 ;;
 			white|*) color=7 ;; # white or invalid color
 		esac
-  fi
-  tput setaf $color;
-  echo "${@:2}";
-  tput sgr0;
+    fi
+    tput setaf $color;
+    echo "${@:2}";
+    tput sgr0;
 }
 
 exit_code() {
-  return=$?
-  if [ $return -ne 0 ];then coloredEcho red "### DEBUG Exit code" $return; fi
+    return=$?
+    if [ $return -ne 0 ];then coloredEcho red "### DEBUG Exit code" $return; fi
 }
 
 sed_escape() {
@@ -177,14 +173,14 @@ build_deb() {
         if [ -d "debian/9" ]; then
             cp -fv *.deb debian/9
             pushd debian/9
-               dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
+                dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
             popd
         fi
 
         if [ -d "ubuntu/16.04" ]; then
             cp -fv *.deb ubuntu/16.04
             pushd ubuntu/16.04
-               dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
+                dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
             popd
         fi
 
