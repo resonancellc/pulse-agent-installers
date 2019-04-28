@@ -12,6 +12,7 @@ FUSION_INVENTORY_AGENT_ARCHIVE="@@FUSION_INVENTORY_AGENT_ARCHIVE@@"
 VNC_SERVER_FILENAME="@@VNC_SERVER_FILENAME@@"
 VNC_SERVER_MOUNTED="@@VNC_SERVER_MOUNTED@@"
 VNC_SERVER_APP="@@VNC_SERVER_APP@@"
+SYNCTHING_FILENAME="@@SYNCTHING_FILENAME@@"
 MODULES_LIST_FILENAMES="@@PY_NETIFACES_FILENAME@@
                         @@PY_CONFIGPARSER_FILENAME@@
                         @@PY_UTILS_FILENAME@@
@@ -24,7 +25,16 @@ MODULES_LIST_FILENAMES="@@PY_NETIFACES_FILENAME@@
                         @@PY_CRON_DEPS_1_FILENAME@@
                         @@PY_CRON_FILENAME@@
                         @@PY_PSUTIL_FILENAME@@
-                        @@PY_PLYVEL_FILENAME@@"
+                        @@PY_PLYVEL_FILENAME@@
+                        @@PY_SFTP_FILENAME@@
+                        @@PY_SFTP_DEPS_2_FILENAME@@
+                        @@PY_SFTP_DEPS_1_FILENAME@@
+                        @@PY_SYNCTHING_FILENAME@@
+                        @@PY_CRON_DEPS_4_FILENAME@@
+                        @@PY_CRON_DEPS_3_FILENAME@@
+                        @@PY_CRON_DEPS_2_FILENAME@@
+                        @@PY_CRON_DEPS_1_FILENAME@@
+                        @@PY_REQUESTS_FILENAME@@"
 PULSE_AGENT_FILENAME="@@PULSE_AGENT_FILENAME@@"
 PULSE_AGENT_PLUGINS_FILENAME="@@PULSE_AGENT_PLUGINS_FILENAME@@"
 PULSE_AGENT_CONFFILE_FILENAME="@@PULSE_AGENT_CONFFILE_FILENAME@@"
@@ -223,7 +233,7 @@ for MODULE_FILENAME in ${MODULES_LIST_FILENAMES}; do
       export LDFLAGS=-L/usr/local/opt/openssl/lib
       export CPPFLAGS=-I/usr/local/opt/openssl/include
       /usr/local/bin/pip2 install --upgrade --no-deps --install-option="--with-openssl" --install-option="--openssl-dir=/usr/local/opt/openssl" @@PY_CURL_FILENAME@@
-    elif [[ "${MODULE_FILENAME}" == "@@PY_CRON_DEPS_2_FILENAME@@" || "${MODULE_FILENAME}" == "@@PY_CRON_DEPS_1_FILENAME@@" ]]; then
+    elif [[ "${MODULE_FILENAME}" == "@@PY_CRON_DEPS_2_FILENAME@@" || "${MODULE_FILENAME}" == "@@PY_CRON_DEPS_1_FILENAME@@" || "${MODULE_FILENAME}" == "@@PY_SFTP_DEPS_2_FILENAME@@" || "${MODULE_FILENAME}" == "@@PY_SFTP_DEPS_1_FILENAME@@" || "${MODULE_FILENAME}" == "@@PY_REQUESTS_DEPS_4_FILENAME@@" || "${MODULE_FILENAME}" == "@@PY_REQUESTS_DEPS_3_FILENAME@@" || "${MODULE_FILENAME}" == "@@PY_REQUESTS_DEPS_2_FILENAME@@" || "${MODULE_FILENAME}" == "@@PY_REQUESTS_DEPS_1_FILENAME@@" ]]; then
       /usr/local/bin/pip2 install --upgrade --no-deps --ignore-installed --no-index --find-links="." ${MODULE_FILENAME}
     else
       /usr/local/bin/pip2 install --upgrade --no-deps --no-index --find-links="." ${MODULE_FILENAME}
@@ -308,6 +318,24 @@ xattr -d com.apple.quarantine "${INSTALL_PATH}/bin/runpulseagent"
 cp "${PREFIX}/pulse-filetree-generator" "${INSTALL_PATH}/bin"
 chmod +x "${INSTALL_PATH}/bin/pulse-filetree-generator"
 xattr -d com.apple.quarantine "${INSTALL_PATH}/bin/pulse-filetree-generator"
+
+# Download, extract and copy syncthing
+curl -O ${BASE_URL}/mac/downloads/${SYNCTHING_FILENAME}
+if [[ -f ${SYNCTHING_FILENAME} ]];then
+  tar xzf ${SYNCTHING_FILENAME}
+  cp "${SYNCTHING_FILENAME%.*}/syncthing" "${INSTALL_PATH}/bin"
+  chmod +x "${INSTALL_PATH}/bin/syncthing"
+  xattr -d com.apple.quarantine "${INSTALL_PATH}/bin/syncthing"
+else
+  echo "ERROR: downloaded package ${SYNCTHING_FILENAME} not found"
+  exit 1
+fi
+if [ -e ${SYNCTHING_FILENAME} ];then
+  rm -rf ${SYNCTHING_FILENAME}
+fi
+if [ -e ${SYNCTHING_FILENAME%.*} ];then
+  rm -rf ${SYNCTHING_FILENAME%.*}
+fi
 
 # Copy service descriptor
 cp "${PREFIX}/net.siveo.pulse_xmpp_agent.plist" /Library/LaunchDaemons/
