@@ -1,4 +1,4 @@
-%define   rel   14
+%define   rel   15
 
 %define branch  BRANCH
 
@@ -130,6 +130,10 @@ mkdir -p %{buildroot}/var/lib/pulse2/clients/lin/rpm/package/SOURCES
 
 cp pulse-filetree-generator %{buildroot}/var/lib/pulse2/clients/lin/rpm/package/SOURCES
 chmod +x %{buildroot}/var/lib/pulse2/clients/lin/rpm/package/SOURCES/pulse-filetree-generator
+
+cp  pulse-filetree-generator %{buildroot}/var/lib/pulse2/clients/mac
+chmod +x %{buildroot}/var/lib/pulse2/clients/mac/pulse-filetree-generator
+
 
 %pre
 rm -fv /var/lib/pulse2/imaging/postinst/winutils/Pulse-Agent*latest*
