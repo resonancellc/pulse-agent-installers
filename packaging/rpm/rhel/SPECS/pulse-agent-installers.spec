@@ -1,4 +1,4 @@
-%define   rel   15
+%define   rel   16
 
 %define branch  BRANCH
 
@@ -89,6 +89,7 @@ cp pulse-xmpp-agent-%version/pulse_xmpp_agent/config/agentconf.ini.in %{buildroo
 cp pulse-xmpp-agent-%version/pulse_xmpp_agent/config/manage_scheduler.ini %{buildroot}/var/lib/pulse2/clients/config/
 cp scripts_installer/generate-pulse-agent.sh %{buildroot}/var/lib/pulse2/clients
 cp scripts_installer/generate-agent-package %{buildroot}/var/lib/pulse2/clients
+cp scripts_installer/generate-agent-deps-package %{buildroot}/var/lib/pulse2/clients
 cp scripts_installer/HEADER.html %{buildroot}/var/lib/pulse2/clients
 cp scripts_installer/style.css %{buildroot}/var/lib/pulse2/clients
 
@@ -119,6 +120,7 @@ cp -fr scripts_installer/win/artwork/* %{buildroot}/var/lib/pulse2/clients/win/a
 
 chmod +x %{buildroot}/var/lib/pulse2/clients/*.sh
 chmod +x %{buildroot}/var/lib/pulse2/clients/generate-agent-package
+chmod +x %{buildroot}/var/lib/pulse2/clients/generate-agent-deps-package
 chmod +x %{buildroot}/var/lib/pulse2/clients/win/generate-kiosk-package
 
 

@@ -30,6 +30,8 @@ RequestExecutionLevel admin
 !define PRODUCT_DIR_REGKEY "Software\${PRODUCT_PUBLISHER}\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
+!define AGENT_DEPS_NAME "${PRODUCT_NAME} dependencies"
+!define PRODUCT_DEPS_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${AGENT_DEPS_NAME}"
 
 ; Variables replaced by the script calling the nsi
 !define DOWNLOADS_DIR "@@DOWNLOADS_DIR@@"
@@ -957,6 +959,9 @@ Section "!${PRODUCT_NAME}" sec_app
       WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "InstallLocation" "$INSTDIR"
       WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoModify" 1
       WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoRepair" 1
+      WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_DEPS_UNINST_KEY}" "DisplayName" "${AGENT_DEPS_NAME}"
+      WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_DEPS_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
+      WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_DEPS_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
   ${Else}
       SetRegView 32
       WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "${PRODUCT_NAME}"
@@ -967,6 +972,9 @@ Section "!${PRODUCT_NAME}" sec_app
       WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "InstallLocation" "$INSTDIR"
       WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoModify" 1
       WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoRepair" 1
+      WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_DEPS_UNINST_KEY}" "DisplayName" "${AGENT_DEPS_NAME}"
+      WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_DEPS_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
+      WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_DEPS_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
   ${EndIf}
 
   ; Write the version installed in registry
@@ -1097,6 +1105,7 @@ Section "Uninstall"
   ${LogString} "Return code was: $1"
 
   DeleteRegKey HKLM "${PRODUCT_UNINST_KEY}"
+  DeleteRegKey HKLM "${PRODUCT_DEPS_UNINST_KEY}"
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
 
 SectionEnd
