@@ -42,7 +42,7 @@
 
 # Check if called with uuid to be used
 if [[ $1 =~ ^\{?[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\}?$ ]]; then
-    PACKAGE_UUID = $1
+    PACKAGE_UUID=$1
 else
     echo "ERROR: $0 must be called with a UUID as parameter"
     exit 1
