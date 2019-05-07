@@ -1,7 +1,10 @@
+
+
 pulse-agent-installers 2.0.0
 ============================
  * pulse-xmpp-agent 2.0.0
  * pulse-agent-plugins 1.11
+ * Generate Pulse Agent dependencies package
 
 pulse-agent-installers 1.9.8
 ============================
