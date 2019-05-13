@@ -26,7 +26,7 @@ RequestExecutionLevel admin
 !define PRODUCT_NAME "Pulse Agent"
 !define PRODUCT_PUBLISHER "SIVEO"
 !define PRODUCT_WEB_SITE "http://www.siveo.net"
-!define PRODUCT_VERSION "@@PRODUCT_VERSION@@"
+!define PRODUCT_VERSION "1.9.8"
 !define PRODUCT_DIR_REGKEY "Software\${PRODUCT_PUBLISHER}\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
@@ -35,54 +35,54 @@ RequestExecutionLevel admin
 !define PROGRAMDATA "C:\ProgramData"
 
 ; Variables replaced by the script calling the nsi
-!define DOWNLOADS_DIR "@@DOWNLOADS_DIR@@"
-!define PYTHON32_FILENAME "@@PYTHON32_FILENAME@@"
-!define PYTHON64_FILENAME "@@PYTHON64_FILENAME@@"
-!define PY_VCPYTHON27 "@@PY_VCPYTHON27@@"
-!define LIBCURL_FILENAME "@@LIBCURL_FILENAME@@"
-!define PY_WIN3232_FILENAME "@@PY_WIN3232_FILENAME@@"
-!define PY_WIN3264_FILENAME "@@PY_WIN3264_FILENAME@@"
-!define PY_NETIFACES_FILENAME "@@PY_NETIFACES_FILENAME@@"
-!define PY_COMTYPES_FILENAME "@@PY_COMTYPES_FILENAME@@"
-!define PY_CONFIGPARSER_FILENAME "@@PY_CONFIGPARSER_FILENAME@@"
-!define PY_UTILS_FILENAME "@@PY_UTILS_FILENAME@@"
-!define PY_SLEEKXMPP_FILENAME "@@PY_SLEEKXMPP_FILENAME@@"
-!define PY_WMI_FILENAME "@@PY_WMI_FILENAME@@"
-!define PY_ZIPFILE_FILENAME "@@PY_ZIPFILE_FILENAME@@"
-!define PY_CURL32_FILENAME "@@PY_CURL32_FILENAME@@"
-!define PY_CURL64_FILENAME "@@PY_CURL64_FILENAME@@"
-!define PY_LXML32_FILENAME "@@PY_LXML32_FILENAME@@"
-!define PY_LXML64_FILENAME "@@PY_LXML64_FILENAME@@"
-!define PY_CRYPTO_FILENAME "@@PY_CRYPTO_FILENAME@@"
-!define PY_CRON_FILENAME "@@PY_CRON_FILENAME@@"
-!define PY_CRON_DEPS_1_FILENAME "@@PY_CRON_DEPS_1_FILENAME@@"
-!define PY_CRON_DEPS_2_FILENAME "@@PY_CRON_DEPS_2_FILENAME@@"
-!define PY_PSUTIL32_FILENAME "@@PY_PSUTIL32_FILENAME@@"
-!define PY_PSUTIL64_FILENAME "@@PY_PSUTIL64_FILENAME@@"
-!define PULSE_AGENT "@@PULSE_AGENT@@"
-!define PULSE_AGENT_CONFFILE "@@PULSE_AGENT_CONFFILE@@"
-!define PULSE_SCHEDULER_CONFFILE "@@PULSE_SCHEDULER_CONFFILE@@"
-!define PULSE_INVENTORY_CONFFILE "@@PULSE_INVENTORY_CONFFILE@@"
-!define PULSE_AGENT_NAME "@@PULSE_AGENT_NAME@@"
-!define PULSE_AGENT_MODULE "@@PULSE_AGENT_MODULE@@"
-!define PULSE_AGENT_TASK_XML "@@PULSE_AGENT_TASK_XML@@"
-!define OPENSSH_NAME "@@OPENSSH_NAME@@"
-!define OPENSSH32_FILENAME "@@OPENSSH32_FILENAME@@"
-!define OPENSSH64_FILENAME "@@OPENSSH64_FILENAME@@"
-!define LAUNCHER_SSH_KEY "@@LAUNCHER_SSH_KEY@@"
-!define FUSION_INVENTORY_AGENT32_FILENAME "@@FUSION_INVENTORY_AGENT32_FILENAME@@"
-!define FUSION_INVENTORY_AGENT64_FILENAME "@@FUSION_INVENTORY_AGENT64_FILENAME@@"
-!define INVENTORY_TAG "@@INVENTORY_TAG@@"
-!define PULSE_AGENT_PLUGINS "@@PULSE_AGENT_PLUGINS@@"
-!define PULSE_AGENT_PLUGINS_NAME "@@PULSE_AGENT_PLUGINS_NAME@@"
-!define RSYNC_FILENAME "@@RSYNC_FILENAME@@"
-!define GENERATED_SIZE "@@GENERATED_SIZE@@"
-!define RDPWRAP_FILENAME "@@RDPWRAP_FILENAME@@"
-!define RDPWRAP_FOLDERNAME "@@RDPWRAP_FOLDERNAME@@"
-!define VNC_AGENT32_FILENAME "@@VNC_AGENT32_FILENAME@@"
-!define VNC_AGENT64_FILENAME "@@VNC_AGENT64_FILENAME@@"
-!define RFB_PORT "@@RFB_PORT@@"
-!define CREATE_PROFILE_NAME "@@CREATE_PROFILE_NAME@@"
+!define DOWNLOADS_DIR "downloads"
+!define PYTHON32_FILENAME "python-2.7.9.msi"
+!define PYTHON64_FILENAME "python-2.7.9.amd64.msi"
+!define PY_VCPYTHON27 "VCForPython27.msi"
+!define LIBCURL_FILENAME "cygcurl-4.dll"
+!define PY_WIN3232_FILENAME "pypiwin32-219-cp27-none-win32.whl"
+!define PY_WIN3264_FILENAME "pypiwin32-219-cp27-none-win_amd64.whl"
+!define PY_NETIFACES_FILENAME "netifaces-0.10.5.tar.gz"
+!define PY_COMTYPES_FILENAME "comtypes-1.1.3-2.zip"
+!define PY_CONFIGPARSER_FILENAME "configparser-3.5.0.tar.gz"
+!define PY_UTILS_FILENAME "utils-0.9.0.tar.gz"
+!define PY_SLEEKXMPP_FILENAME "sleekxmpp-1.3.1.tar.gz"
+!define PY_WMI_FILENAME "WMI-1.4.9.zip"
+!define PY_ZIPFILE_FILENAME "zipfile2-0.0.12-py2.py3-none-any.whl"
+!define PY_CURL32_FILENAME "pycurl-7.43.0-cp27-none-win32.whl"
+!define PY_CURL64_FILENAME "pycurl-7.43.0-cp27-none-win_amd64.whl"
+!define PY_LXML32_FILENAME "lxml-3.6.0-cp27-none-win32.whl"
+!define PY_LXML64_FILENAME "lxml-3.6.0-cp27-none-win_amd64.whl"
+!define PY_CRYPTO_FILENAME "pycrypto-2.6.1.tar.gz"
+!define PY_CRON_FILENAME "croniter-0.3.16.tar.gz"
+!define PY_CRON_DEPS_1_FILENAME "python_dateutil-2.6.0-py2.py3-none-any.whl"
+!define PY_CRON_DEPS_2_FILENAME "six-1.10.0-py2.py3-none-any.whl"
+!define PY_PSUTIL32_FILENAME "psutil-5.4.3-cp27-none-win32.whl"
+!define PY_PSUTIL64_FILENAME "psutil-5.4.3-cp27-none-win_amd64.whl"
+!define PULSE_AGENT "pulse-xmpp-agent-1.9.8.tar.gz"
+!define PULSE_AGENT_CONFFILE "agentconf.ini"
+!define PULSE_SCHEDULER_CONFFILE "manage_scheduler.ini"
+!define PULSE_INVENTORY_CONFFILE "inventory.ini"
+!define PULSE_AGENT_NAME "pulse-xmpp-agent"
+!define PULSE_AGENT_MODULE "pulse_xmpp_agent"
+!define PULSE_AGENT_TASK_XML "pulse-agent-task.xml"
+!define OPENSSH_NAME "OpenSSH"
+!define OPENSSH32_FILENAME "OpenSSH-Win32.zip"
+!define OPENSSH64_FILENAME "OpenSSH-Win64.zip"
+!define LAUNCHER_SSH_KEY "/root/.ssh/id_rsa.pub"
+!define FUSION_INVENTORY_AGENT32_FILENAME "fusioninventory-agent_windows-x86_2.4.2.exe"
+!define FUSION_INVENTORY_AGENT64_FILENAME "fusioninventory-agent_windows-x64_2.4.2.exe"
+!define INVENTORY_TAG ""
+!define PULSE_AGENT_PLUGINS "pulse-agent-plugins-1.10.tar.gz"
+!define PULSE_AGENT_PLUGINS_NAME "pulse-agent-plugins"
+!define RSYNC_FILENAME "rsync.zip"
+!define GENERATED_SIZE "FULL"
+!define RDPWRAP_FILENAME "RDPWrap-v1.6.1.zip"
+!define RDPWRAP_FOLDERNAME "RDPWrap-v1.6.1"
+!define VNC_AGENT32_FILENAME "tightvnc-2.8.8-gpl-setup-32bit.msi"
+!define VNC_AGENT64_FILENAME "tightvnc-2.8.8-gpl-setup-64bit.msi"
+!define RFB_PORT "5900"
+!define CREATE_PROFILE_NAME "create-profile.ps1"
 
 SetCompressor lzma
 
@@ -150,9 +150,9 @@ SectionEnd
 ; Python installation
 Section "Python" sec_py
   SetOutPath "$INSTDIR\tmp"
-  @@FULL_OR_DL_PYTHON32_FILENAME@@
-  @@FULL_OR_DL_PYTHON64_FILENAME@@
-  @@FULL_OR_DL_PY_VCPYTHON27@@
+  File "${DOWNLOADS_DIR}/${PYTHON32_FILENAME}"
+  File "${DOWNLOADS_DIR}/${PYTHON64_FILENAME}"
+  File "${DOWNLOADS_DIR}/${PY_VCPYTHON27}"
   ${LogString} "Python Installation...."
   ${LogString} "------------------------------------------------------"
 
@@ -211,34 +211,34 @@ SectionEnd
 ; Installation of Python modules needed by Pulse Agent
 Section "Python Modules" sec_pymod
   SetOutPath "$INSTDIR\tmp"
-  @@FULL_OR_DL_PY_WIN3232@@
-  @@FULL_OR_DL_PY_WIN3264@@
-  @@FULL_OR_DL_PY_NETIFACES@@
-  @@FULL_OR_DL_PY_COMTYPES@@
-  @@FULL_OR_DL_PY_CONFIGPARSER@@
-  @@FULL_OR_DL_PY_UTILS@@
-  @@FULL_OR_DL_PY_SLEEKXMPP@@
-  @@FULL_OR_DL_PY_WMI@@
-  @@FULL_OR_DL_PY_ZIPFILE@@
-  @@FULL_OR_DL_PY_CURL32@@
-  @@FULL_OR_DL_PY_CURL64@@
-  @@FULL_OR_DL_PY_LXML32@@
-  @@FULL_OR_DL_PY_LXML64@@
-  @@FULL_OR_DL_PY_CRYPTO@@
-  @@FULL_OR_DL_PY_CRON@@
-  @@FULL_OR_DL_PY_CRON_DEPS_1@@
-  @@FULL_OR_DL_PY_CRON_DEPS_2@@
-  @@FULL_OR_DL_PY_PSUTIL32@@
-  @@FULL_OR_DL_PY_PSUTIL64@@
+  File "${DOWNLOADS_DIR}/python_modules/${PY_WIN3232_FILENAME}"
+  File "${DOWNLOADS_DIR}/python_modules/${PY_WIN3264_FILENAME}"
+  File "${DOWNLOADS_DIR}/python_modules/${PY_NETIFACES_FILENAME}"
+  File "${DOWNLOADS_DIR}/python_modules/${PY_COMTYPES_FILENAME}"
+  File "${DOWNLOADS_DIR}/python_modules/${PY_CONFIGPARSER_FILENAME}"
+  File "${DOWNLOADS_DIR}/python_modules/${PY_UTILS_FILENAME}"
+  File "${DOWNLOADS_DIR}/python_modules/${PY_SLEEKXMPP_FILENAME}"
+  File "${DOWNLOADS_DIR}/python_modules/${PY_WMI_FILENAME}"
+  File "${DOWNLOADS_DIR}/python_modules/${PY_ZIPFILE_FILENAME}"
+  File "${DOWNLOADS_DIR}/python_modules/${PY_CURL32_FILENAME}"
+  File "${DOWNLOADS_DIR}/python_modules/${PY_CURL64_FILENAME}"
+  File "${DOWNLOADS_DIR}/python_modules/${PY_LXML32_FILENAME}"
+  File "${DOWNLOADS_DIR}/python_modules/${PY_LXML64_FILENAME}"
+  File "${DOWNLOADS_DIR}/python_modules/${PY_CRYPTO_FILENAME}"
+  File "${DOWNLOADS_DIR}/python_modules/${PY_CRON_FILENAME}"
+  File "${DOWNLOADS_DIR}/python_modules/${PY_CRON_DEPS_1_FILENAME}"
+  File "${DOWNLOADS_DIR}/python_modules/${PY_CRON_DEPS_2_FILENAME}"
+  File "${DOWNLOADS_DIR}/python_modules/${PY_PSUTIL32_FILENAME}"
+  File "${DOWNLOADS_DIR}/python_modules/${PY_PSUTIL64_FILENAME}"
   File "${DOWNLOADS_DIR}/usr/bin/${LIBCURL_FILENAME}"
   ${LogString} "Python modules Installation...."
   ${LogString} "------------------------------------------------------"
 
   ; Install of Python module for Windows Extensions (pywin32)
   ${If} ${RunningX64}
-    @@INSTALL_FULL_OR_DL_PY_WIN3264@@
+    StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WIN3264_FILENAME}`
   ${Else}
-    @@INSTALL_FULL_OR_DL_PY_WIN3232@@
+    StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WIN3232_FILENAME}`
   ${EndIf}
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
@@ -247,7 +247,7 @@ Section "Python Modules" sec_pymod
   ${LogString} "-------------------"
 
   ; Install of Python netifaces module
-  @@INSTALL_FULL_OR_DL_PY_NETIFACES@@
+  StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_NETIFACES_FILENAME}`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -255,7 +255,7 @@ Section "Python Modules" sec_pymod
   ${LogString} "-------------------"
 
   ; Install of Python comtypes module
-  @@INSTALL_FULL_OR_DL_PY_COMTYPES@@
+  StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_COMTYPES_FILENAME}`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -263,7 +263,7 @@ Section "Python Modules" sec_pymod
   ${LogString} "-------------------"
 
   ; Install of Python configparser module
-  @@INSTALL_FULL_OR_DL_PY_CONFIGPARSER@@
+  StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --pre --no-index --find-links="$INSTDIR\tmp" ${PY_CONFIGPARSER_FILENAME}`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -271,7 +271,7 @@ Section "Python Modules" sec_pymod
   ${LogString} "-------------------"
 
   ; Install of Python utils module
-  @@INSTALL_FULL_OR_DL_PY_UTILS@@
+  StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_UTILS_FILENAME}`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -279,7 +279,7 @@ Section "Python Modules" sec_pymod
   ${LogString} "-------------------"
 
   ; Install of Python sleekxmpp module
-  @@INSTALL_FULL_OR_DL_PY_SLEEKXMPP@@
+  StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_SLEEKXMPP_FILENAME}`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -287,7 +287,7 @@ Section "Python Modules" sec_pymod
   ${LogString} "-------------------"
 
   ; Install of Python wmi module
-  @@INSTALL_FULL_OR_DL_PY_WMI@@
+  StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WMI_FILENAME}`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -295,7 +295,7 @@ Section "Python Modules" sec_pymod
   ${LogString} "-------------------"
 
   ; Install of Python zipfile module
-  @@INSTALL_FULL_OR_DL_PY_ZIPFILE@@
+  StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_ZIPFILE_FILENAME}`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -312,9 +312,9 @@ Section "Python Modules" sec_pymod
 
   ; Install of Python curl module (pycurl)
   ${If} ${RunningX64}
-    @@INSTALL_FULL_OR_DL_PY_CURL64@@
+    StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CURL64_FILENAME}`
   ${Else}
-    @@INSTALL_FULL_OR_DL_PY_CURL32@@
+    StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CURL32_FILENAME}`
   ${EndIf}
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
@@ -324,9 +324,9 @@ Section "Python Modules" sec_pymod
 
   ; Install of Python lxml module
   ${If} ${RunningX64}
-    @@INSTALL_FULL_OR_DL_PY_LXML64@@
+    StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_LXML64_FILENAME}`
   ${Else}
-    @@INSTALL_FULL_OR_DL_PY_LXML32@@
+    StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_LXML32_FILENAME}`
   ${EndIf}
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
@@ -335,7 +335,7 @@ Section "Python Modules" sec_pymod
   ${LogString} "-------------------"
 
   ; Install of Python crypto module
-  @@INSTALL_FULL_OR_DL_PY_CRYPTO@@
+  StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CRYPTO_FILENAME}`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -343,7 +343,7 @@ Section "Python Modules" sec_pymod
   ${LogString} "-------------------"
 
   ; Install of Python croniter module
-  @@INSTALL_FULL_OR_DL_PY_CRON@@
+  StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CRON_FILENAME}`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -352,9 +352,9 @@ Section "Python Modules" sec_pymod
 
   ; Install of Python psutil module
   ${If} ${RunningX64}
-    @@INSTALL_FULL_OR_DL_PY_PSUTIL64@@
+    StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_PSUTIL64_FILENAME}`
   ${Else}
-    @@INSTALL_FULL_OR_DL_PY_PSUTIL32@@
+    StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_PSUTIL32_FILENAME}`
   ${EndIf}
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
@@ -387,8 +387,8 @@ SectionEnd
 ; OpenSSH installation
 Section "OpenSSH" sec_openssh
   SetOutPath "$INSTDIR\tmp"
-  @@FULL_OR_DL_OPENSSH32@@
-  @@FULL_OR_DL_OPENSSH64@@
+  File "${DOWNLOADS_DIR}/${OPENSSH32_FILENAME}"
+  File "${DOWNLOADS_DIR}/${OPENSSH64_FILENAME}"
   File "${DOWNLOADS_DIR}/${RSYNC_FILENAME}"
 
   ; Remove previous Pulse profile 
@@ -414,7 +414,7 @@ Section "OpenSSH" sec_openssh
   nsExec::ExecToLog $0
 
   ; Create pulse user profile
-  @@FULL_OR_DL_CREATE_PROFILE@@
+  File "${DOWNLOADS_DIR}/${CREATE_PROFILE_NAME}"
   ${LogString} "-------------------"
   ${LogString} "Create pulse profile"
   ${PowerShellExecLog} "cd $\"${SSH_DATA}$\" ; import-module .\${CREATE_PROFILE_NAME}; New-Profile -Account pulse"
@@ -630,7 +630,7 @@ SectionEnd
 ; Setup of RDP & Firewall
 Section "RDP Setup" sec_rdp
   SetOutPath "$INSTDIR\tmp"
-  @@FULL_OR_DL_RDPWRAP@@
+  File "${DOWNLOADS_DIR}/${RDPWRAP_FILENAME}"
   ${LogString} "RDP setup for remote control of machine via Pulse...."
   ${LogString} "------------------------------------------------------"
 
@@ -691,8 +691,8 @@ SectionEnd
 
 Section "VNC Setup" sec_vnc
   SetOutPath "$INSTDIR\tmp"
-  @@FULL_OR_DL_VNC_AGENT32@@
-  @@FULL_OR_DL_VNC_AGENT64@@
+  File "${DOWNLOADS_DIR}/${VNC_AGENT32_FILENAME}"
+  File "${DOWNLOADS_DIR}/${VNC_AGENT64_FILENAME}"
   ${LogString} "VNC setup for remote control of machine via Pulse...."
   ${LogString} "------------------------------------------------------"
 
@@ -765,8 +765,8 @@ SectionEnd
 ; Setup of Fusion Inventory agent
 Section "Fusion Inventory agent" sec_fusinv
   SetOutPath "$INSTDIR\tmp"
-  @@FULL_OR_DL_FUSION_INVENTORY_AGENT32@@
-  @@FULL_OR_DL_FUSION_INVENTORY_AGENT64@@
+  File "${DOWNLOADS_DIR}/${FUSION_INVENTORY_AGENT32_FILENAME}"
+  File "${DOWNLOADS_DIR}/${FUSION_INVENTORY_AGENT64_FILENAME}"
   ${LogString} "Fusion Inventory agent setup...."
   ${LogString} "------------------------------------------------------"
 

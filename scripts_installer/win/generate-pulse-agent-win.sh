@@ -55,22 +55,11 @@
 #	https://pypi.python.org/packages/f1/c7/e19d317cc948095abc872a6e6ae78ac80260f2b45771dfa7a7ce86865f5b/lxml-3.6.0-cp27-none-win32.whl
 #	https://files.pythonhosted.org/packages/35/a7/6a1a44d3a37358f8fda5d1b992c837cb2db8940293c2d84faa145f29e88a/lxml-3.6.0-cp27-none-win_amd64.whl
 #	https://pypi.python.org/packages/60/db/645aa9af249f059cc3a368b118de33889219e0362141e75d4eaf6f80f163/pycrypto-2.6.1.tar.gz
-#	https://files.pythonhosted.org/packages/4b/0d/7ed381ab4fe80b8ebf34411d14f253e1cf3e56e2820ffa1d8844b23859a2/python_dateutil-2.6.1-py2.py3-none-any.whl
+#   https://pypi.python.org/packages/40/8b/275015d7a9ec293cf1bbf55433258fbc9d0711890a7f6dc538bac7b86bce/python_dateutil-2.6.0-py2.py3-none-any.whl
 #   https://pypi.python.org/packages/c8/0a/b6723e1bc4c516cb687841499455a8505b44607ab535be01091c0f24f079/six-1.10.0-py2.py3-none-any.whl
 #   https://pypi.python.org/packages/58/2a/17d003f2a9a0188cf9365d63b3351c6522b7d83996b70270c65c789e35b9/croniter-0.3.16.tar.gz
 #   https://pypi.python.org/packages/e5/cc/6dd427e738a8db6d0b66525856da43d2ef12c4c19269863927f7cf0e2aaf/psutil-5.4.3-cp27-none-win32.whl
 #   https://files.pythonhosted.org/packages/b9/e4/6867765edcab8d12a52c84c9b0af492ecb99f8cc565ad552341bcf73ebd9/psutil-5.4.3-cp27-none-win_amd64.whl
-#   https://github.com/syncthing/syncthing/releases/download/v1.1.0/syncthing-windows-386-v1.1.0.zip
-#   https://github.com/syncthing/syncthing/releases/download/v1.1.0/syncthing-windows-amd64-v1.1.0.zip
-#   https://files.pythonhosted.org/packages/36/60/45f30390a38b1f92e0a8cf4de178cd7c2bc3f874c85430e40ccf99df8fe7/pysftp-0.2.9.tar.gz
-#	https://files.pythonhosted.org/packages/95/a8/72f860ff71bc260a4c815f50c65e04d69b9c5a3e51ff82afe3cd6757faa9/paramiko-1.18.5-py2.py3-none-any.whl
-#	https://files.pythonhosted.org/packages/63/f4/73669d51825516ce8c43b816c0a6b64cd6eb71d08b99820c00792cb42222/ecdsa-0.13-py2.py3-none-any.whl
-#   https://files.pythonhosted.org/packages/ef/4e/9f04fc58040cbf05984d7ca9393ff2dbc8b6909b163a768fc28786eacf06/syncthing-2.3.1.tar.gz
-#	https://files.pythonhosted.org/packages/49/df/50aa1999ab9bde74656c2919d9c0c085fd2b3775fd3eca826012bef76d8c/requests-2.18.4-py2.py3-none-any.whl
-#	https://files.pythonhosted.org/packages/27/cc/6dd9a3869f15c2edfab863b992838277279ce92663d334df9ecf5106f5c6/idna-2.6-py2.py3-none-any.whl
-#	https://files.pythonhosted.org/packages/63/cb/6965947c13a94236f6d4b8223e21beb4d576dc72e8130bd7880f600839b8/urllib3-1.22-py2.py3-none-any.whl
-#   https://files.pythonhosted.org/packages/60/75/f692a584e85b7eaba0e03827b3d51f45f571c2e793dd731e598828d380aa/certifi-2019.3.9-py2.py3-none-any.whl
-#   https://files.pythonhosted.org/packages/bc/a9/01ffebfb562e4274b6487b4bb1ddec7ca55ec7510b22e4c51f14098443b8/chardet-3.0.4-py2.py3-none-any.whl
 
 # To be defined for minimal install
 BASE_URL="https://agents.siveo.net" # Overridden if --base-url is defined
@@ -79,7 +68,7 @@ BASE_URL="https://agents.siveo.net" # Overridden if --base-url is defined
 cd "`dirname $0`"
 
 # To be defined
-AGENT_VERSION="2.0.0"
+AGENT_VERSION="1.9.8"
 PYTHON_VERSION="2.7.9"
 PY_WIN32_MODULE="pypiwin32"
 PY_WIN32_VERSION="219"
@@ -109,29 +98,11 @@ PY_CRYPTO_VERSION="2.6.1"
 PY_CRON_MODULE="croniter"
 PY_CRON_VERSION="0.3.16"
 PY_CRON_DEPS_1_MODULE="python_dateutil"
-PY_CRON_DEPS_1_VERSION="2.6.1"
+PY_CRON_DEPS_1_VERSION="2.6.0"
 PY_CRON_DEPS_2_MODULE="six"
 PY_CRON_DEPS_2_VERSION="1.10.0"
 PY_PSUTIL_MODULE="psutil"
 PY_PSUTIL_VERSION="5.4.3"
-PY_SFTP_MODULE="pysftp"
-PY_SFTP_VERSION="0.2.9"
-PY_SFTP_DEPS_1_MODULE="paramiko"
-PY_SFTP_DEPS_1_VERSION="1.18.5"
-PY_SFTP_DEPS_2_MODULE="ecdsa"
-PY_SFTP_DEPS_2_VERSION="0.13"
-PY_SYNCTHING_MODULE="syncthing"
-PY_SYNCTHING_VERSION="2.3.1"
-PY_REQUESTS_MODULE="requests"
-PY_REQUESTS_VERSION="2.18.4"
-PY_REQUESTS_DEPS_1_MODULE="idna"
-PY_REQUESTS_DEPS_1_VERSION="2.6"
-PY_REQUESTS_DEPS_2_MODULE="urllib3"
-PY_REQUESTS_DEPS_2_VERSION="1.22"
-PY_REQUESTS_DEPS_3_MODULE="certifi"
-PY_REQUESTS_DEPS_3_VERSION="2019.3.9"
-PY_REQUESTS_DEPS_4_MODULE="chardet"
-PY_REQUESTS_DEPS_4_VERSION="3.0.4"
 PULSE_AGENT_NAME="pulse-xmpp-agent"
 PULSE_AGENT_MODULE="pulse_xmpp_agent"
 RSYNC_NAME="cwRsync"
@@ -146,11 +117,9 @@ RDPWRAP_NAME="RDPWrap"
 RDPWRAP_VERSION="1.6.1"
 DOWNLOAD_FOLDER="downloads"
 PULSE_AGENT_PLUGINS_NAME="pulse-agent-plugins"
+PULSE_AGENT_PLUGINS_VERSION="1.10"
 VNC_PORT="5900"
-PULSE_AGENT_PLUGINS_VERSION="1.11"
-SYNCTHING_NAME="syncthing"
-SYNCTHING_VERSION="1.1.0"
-
+CREATE_PROFILE_NAME="create-profile.ps1"
 
 # Display usage
 display_usage() {
@@ -243,24 +212,6 @@ compute_parameters() {
 	PY_PSUTIL64_FILENAME="${PY_PSUTIL_MODULE}-${PY_PSUTIL_VERSION}-cp27-none-win_amd64.whl"
 	PY_PSUTIL32_URL="${BASE_URL}/win/downloads/python_modules/${PY_PSUTIL32_FILENAME}"
 	PY_PSUTIL64_URL="${BASE_URL}/win/downloads/python_modules/${PY_PSUTIL64_FILENAME}"
-	PY_SFTP_FILENAME="${PY_SFTP_MODULE}-${PY_SFTP_VERSION}.tar.gz"
-	PY_SFTP_URL="${BASE_URL}/win/downloads/python_modules/${PY_SFTP_FILENAME}"
-	PY_SFTP_DEPS_1_FILENAME="${PY_SFTP_DEPS_1_MODULE}-${PY_SFTP_DEPS_1_VERSION}-py2.py3-none-any.whl"
-	PY_SFTP_DEPS_1_URL="${BASE_URL}/win/downloads/python_modules/${PY_SFTP_DEPS_1_FILENAME}"
-	PY_SFTP_DEPS_2_FILENAME="${PY_SFTP_DEPS_2_MODULE}-${PY_SFTP_DEPS_2_VERSION}-py2.py3-none-any.whl"
-	PY_SFTP_DEPS_2_URL="${BASE_URL}/win/downloads/python_modules/${PY_SFTP_DEPS_2_FILENAME}"
-	PY_SYNCTHING_FILENAME="${PY_SYNCTHING_MODULE}-${PY_SYNCTHING_VERSION}.tar.gz"
-	PY_SYNCTHING_URL="${BASE_URL}/win/downloads/python_modules/${PY_SYNCTHING_FILENAME}"
-	PY_REQUESTS_FILENAME="${PY_REQUESTS_MODULE}-${PY_REQUESTS_VERSION}-py2.py3-none-any.whl"
-	PY_REQUESTS_URL="${BASE_URL}/win/downloads/python_modules/${PY_REQUESTS_FILENAME}"
-	PY_REQUESTS_DEPS_1_FILENAME="${PY_REQUESTS_DEPS_1_MODULE}-${PY_REQUESTS_DEPS_1_VERSION}-py2.py3-none-any.whl"
-	PY_REQUESTS_DEPS_1_URL="${BASE_URL}/win/downloads/python_modules/${PY_REQUESTS_DEPS_1_FILENAME}"
-	PY_REQUESTS_DEPS_2_FILENAME="${PY_REQUESTS_DEPS_2_MODULE}-${PY_REQUESTS_DEPS_2_VERSION}-py2.py3-none-any.whl"
-	PY_REQUESTS_DEPS_2_URL="${BASE_URL}/win/downloads/python_modules/${PY_REQUESTS_DEPS_2_FILENAME}"
-	PY_REQUESTS_DEPS_3_FILENAME="${PY_REQUESTS_DEPS_3_MODULE}-${PY_REQUESTS_DEPS_3_VERSION}-py2.py3-none-any.whl"
-	PY_REQUESTS_DEPS_3_URL="${BASE_URL}/win/downloads/python_modules/${PY_REQUESTS_DEPS_3_FILENAME}"
-	PY_REQUESTS_DEPS_4_FILENAME="${PY_REQUESTS_DEPS_4_MODULE}-${PY_REQUESTS_DEPS_4_VERSION}-py2.py3-none-any.whl"
-	PY_REQUESTS_DEPS_4_URL="${BASE_URL}/win/downloads/python_modules/${PY_REQUESTS_DEPS_4_FILENAME}"
 	PULSE_AGENT_FILENAME="${PULSE_AGENT_NAME}-${AGENT_VERSION}.tar.gz"
 	PULSE_AGENT_CONFFILE_FILENAME="agentconf.ini"
 	PULSE_SCHEDULER_CONFFILE_FILENAME="manage_scheduler.ini"
@@ -284,10 +235,7 @@ compute_parameters() {
 	VNC_AGENT64_FILENAME="${VNC_AGENT_NAME}-${VNC_AGENT_VERSION}-gpl-setup-64bit.msi"
 	VNC_AGENT32_URL="${BASE_URL}/win/downloads/${VNC_AGENT32_FILENAME}"
 	VNC_AGENT64_URL="${BASE_URL}/win/downloads/${VNC_AGENT64_FILENAME}"
-    SYNCTHING32_FILENAME="${SYNCTHING_NAME}-windows-386-v${SYNCTHING_VERSION}.zip"
-    SYNCTHING32_URL="${BASE_URL}/win/downloads/${SYNCTHING32_FILENAME}"
-    SYNCTHING64_FILENAME="${SYNCTHING_NAME}-windows-amd64-v${SYNCTHING_VERSION}.zip"
-    SYNCTHING64_URL="${BASE_URL}/win/downloads/${SYNCTHING64_FILENAME}"
+	CREATE_PROFILE_URL="${BASE_URL}/win/downloads/${CREATE_PROFILE_NAME}"
 }
 
 display_usage() {
@@ -380,15 +328,6 @@ update_nsi_script_full() {
 	FULL_PY_CRON_DEPS_2='File "${DOWNLOADS_DIR}/python_modules/${PY_CRON_DEPS_2_FILENAME}"'
 	FULL_PY_PSUTIL32='File "${DOWNLOADS_DIR}/python_modules/${PY_PSUTIL32_FILENAME}"'
 	FULL_PY_PSUTIL64='File "${DOWNLOADS_DIR}/python_modules/${PY_PSUTIL64_FILENAME}"'
-	FULL_PY_SFTP='File "${DOWNLOADS_DIR}/python_modules/${PY_SFTP_FILENAME}"'
-	FULL_PY_SFTP_DEPS_1='File "${DOWNLOADS_DIR}/python_modules/${PY_SFTP_DEPS_1_FILENAME}"'
-	FULL_PY_SFTP_DEPS_2='File "${DOWNLOADS_DIR}/python_modules/${PY_SFTP_DEPS_2_FILENAME}"'
-	FULL_PY_SYNCTHING='File "${DOWNLOADS_DIR}/python_modules/${PY_SYNCTHING_FILENAME}"'
-	FULL_PY_REQUESTS='File "${DOWNLOADS_DIR}/python_modules/${PY_REQUESTS_FILENAME}"'
-	FULL_PY_REQUESTS_DEPS_1='File "${DOWNLOADS_DIR}/python_modules/${PY_REQUESTS_DEPS_1_FILENAME}"'
-	FULL_PY_REQUESTS_DEPS_2='File "${DOWNLOADS_DIR}/python_modules/${PY_REQUESTS_DEPS_2_FILENAME}"'
-	FULL_PY_REQUESTS_DEPS_3='File "${DOWNLOADS_DIR}/python_modules/${PY_REQUESTS_DEPS_3_FILENAME}"'
-	FULL_PY_REQUESTS_DEPS_4='File "${DOWNLOADS_DIR}/python_modules/${PY_REQUESTS_DEPS_4_FILENAME}"'
 	FULL_OPENSSH32='File "${DOWNLOADS_DIR}/${OPENSSH32_FILENAME}"'
 	FULL_OPENSSH64='File "${DOWNLOADS_DIR}/${OPENSSH64_FILENAME}"'
 	FULL_FUSION_INVENTORY_AGENT32='File "${DOWNLOADS_DIR}/${FUSION_INVENTORY_AGENT32_FILENAME}"'
@@ -396,8 +335,7 @@ update_nsi_script_full() {
 	FULL_RDPWRAP='File "${DOWNLOADS_DIR}/${RDPWRAP_FILENAME}"'
 	FULL_VNC_AGENT32='File "${DOWNLOADS_DIR}/${VNC_AGENT32_FILENAME}"'
 	FULL_VNC_AGENT64='File "${DOWNLOADS_DIR}/${VNC_AGENT64_FILENAME}"'
-	FULL_SYNCTHING32='File "${DOWNLOADS_DIR}/${SYNCTHING32_FILENAME}"'
-	FULL_SYNCTHING64='File "${DOWNLOADS_DIR}/${SYNCTHING64_FILENAME}"'
+	FULL_CREATE_PROFILE='File "${DOWNLOADS_DIR}/${CREATE_PROFILE_NAME}"'
 	INSTALL_FULL_PY_WIN3232='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WIN3232_FILENAME}`'
 	INSTALL_FULL_PY_WIN3264='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WIN3264_FILENAME}`'
 	INSTALL_FULL_PY_NETIFACES='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_NETIFACES_FILENAME}`'
@@ -415,9 +353,6 @@ update_nsi_script_full() {
 	INSTALL_FULL_PY_CRON='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CRON_FILENAME}`'
 	INSTALL_FULL_PY_PSUTIL32='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_PSUTIL32_FILENAME}`'
 	INSTALL_FULL_PY_PSUTIL64='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_PSUTIL64_FILENAME}`'
-	INSTALL_FULL_PY_SFTP='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_SFTP_FILENAME}`'
-	INSTALL_FULL_PY_SYNCTHING='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_SYNCTHING_FILENAME}`'
-	INSTALL_FULL_PY_REQUESTS='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_REQUESTS_FILENAME}`'
 
 	sed -e "s/@@PRODUCT_VERSION@@/${AGENT_VERSION}/" \
 		-e "s/@@DOWNLOADS_DIR@@/${DOWNLOAD_FOLDER}/" \
@@ -486,27 +421,6 @@ update_nsi_script_full() {
 		-e "s/@@PY_PSUTIL64_FILENAME@@/${PY_PSUTIL64_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_PSUTIL64@@/$(sed_escape ${FULL_PY_PSUTIL64})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_PSUTIL64@@/$(sed_escape ${INSTALL_FULL_PY_PSUTIL64})/" \
-		-e "s/@@PY_SFTP_FILENAME@@/${PY_SFTP_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_SFTP@@/$(sed_escape ${FULL_PY_SFTP})/" \
-		-e "s/@@INSTALL_FULL_OR_DL_PY_SFTP@@/$(sed_escape ${INSTALL_FULL_PY_SFTP})/" \
-		-e "s/@@PY_SFTP_DEPS_1_FILENAME@@/${PY_SFTP_DEPS_1_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_SFTP_DEPS_1@@/$(sed_escape ${FULL_PY_SFTP_DEPS_1})/" \
-		-e "s/@@PY_SFTP_DEPS_2_FILENAME@@/${PY_SFTP_DEPS_2_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_SFTP_DEPS_2@@/$(sed_escape ${FULL_PY_SFTP_DEPS_2})/" \
-		-e "s/@@PY_SYNCTHING_FILENAME@@/${PY_SYNCTHING_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_SYNCTHING@@/$(sed_escape ${FULL_PY_SYNCTHING})/" \
-		-e "s/@@INSTALL_FULL_OR_DL_PY_SYNCTHING@@/$(sed_escape ${INSTALL_FULL_PY_SYNCTHING})/" \
-		-e "s/@@PY_REQUESTS_FILENAME@@/${PY_REQUESTS_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_REQUESTS@@/$(sed_escape ${FULL_PY_REQUESTS})/" \
-		-e "s/@@INSTALL_FULL_OR_DL_PY_REQUESTS@@/$(sed_escape ${INSTALL_FULL_PY_REQUESTS})/" \
-		-e "s/@@PY_REQUESTS_DEPS_1_FILENAME@@/${PY_REQUESTS_DEPS_1_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_REQUESTS_DEPS_1@@/$(sed_escape ${FULL_PY_REQUESTS_DEPS_1})/" \
-		-e "s/@@PY_REQUESTS_DEPS_2_FILENAME@@/${PY_REQUESTS_DEPS_2_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_REQUESTS_DEPS_2@@/$(sed_escape ${FULL_PY_REQUESTS_DEPS_2})/" \
-		-e "s/@@PY_REQUESTS_DEPS_3_FILENAME@@/${PY_REQUESTS_DEPS_3_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_REQUESTS_DEPS_3@@/$(sed_escape ${FULL_PY_REQUESTS_DEPS_3})/" \
-		-e "s/@@PY_REQUESTS_DEPS_4_FILENAME@@/${PY_REQUESTS_DEPS_4_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_REQUESTS_DEPS_4@@/$(sed_escape ${FULL_PY_REQUESTS_DEPS_4})/" \
 		-e "s/@@PULSE_AGENT@@/${PULSE_AGENT_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_CONFFILE@@/${PULSE_AGENT_CONFFILE_FILENAME}/" \
 		-e "s/@@PULSE_SCHEDULER_CONFFILE@@/${PULSE_SCHEDULER_CONFFILE_FILENAME}/" \
@@ -532,15 +446,13 @@ update_nsi_script_full() {
 		-e "s/@@VNC_AGENT64_FILENAME@@/${VNC_AGENT64_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_VNC_AGENT32@@/$(sed_escape ${FULL_VNC_AGENT32})/" \
 		-e "s/@@FULL_OR_DL_VNC_AGENT64@@/$(sed_escape ${FULL_VNC_AGENT64})/" \
-		-e "s/@@SYNCTHING32_FILENAME@@/${SYNCTHING32_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_SYNCTHING32@@/$(sed_escape ${FULL_SYNCTHING32})/" \
-		-e "s/@@SYNCTHING64_FILENAME@@/${SYNCTHING64_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_SYNCTHING64@@/$(sed_escape ${FULL_SYNCTHING64})/" \
 		-e "s/@@PULSE_AGENT_PLUGINS@@/${PULSE_AGENT_PLUGINS}/" \
-        -e "s/@@PULSE_AGENT_PLUGINS_NAME@@/${PULSE_AGENT_PLUGINS_NAME}/" \
+        	-e "s/@@PULSE_AGENT_PLUGINS_NAME@@/${PULSE_AGENT_PLUGINS_NAME}/" \
 		-e "s/@@RSYNC_FILENAME@@/rsync.zip/" \
 		-e "s/@@GENERATED_SIZE@@/FULL/" \
-        -e "s/@@RFB_PORT@@/${VNC_PORT}/" \
+        	-e "s/@@RFB_PORT@@/${VNC_PORT}/" \
+        	-e "s/@@FULL_OR_DL_CREATE_PROFILE@@/$(sed_escape ${FULL_CREATE_PROFILE})/" \
+        	-e "s/@@CREATE_PROFILE_NAME@@/${CREATE_PROFILE_NAME}/" \
 		agent-installer.nsi.in \
 		> agent-installer.nsi
 	colored_echo green "### INFO Updating NSIS script.. Done"
@@ -570,15 +482,6 @@ update_nsi_script_dl() {
 	DL_PY_CRON_DEPS_2='${DownloadFile} '"${PY_CRON_DEPS_2_URL}"' ${PY_CRON_DEPS_2_FILENAME}'
 	DL_PY_PSUTIL32='${DownloadFile} '"${PY_PSUTIL32_URL}"' ${PY_PSUTIL32_FILENAME}'
 	DL_PY_PSUTIL64='${DownloadFile} '"${PY_PSUTIL64_URL}"' ${PY_PSUTIL64_FILENAME}'
-	DL_PY_SFTP='${DownloadFile} '"${PY_SFTP_URL}"' ${PY_SFTP_FILENAME}'
-	DL_PY_SFTP_DEPS_1='${DownloadFile} '"${PY_SFTP_DEPS_1_URL}"' ${PY_SFTP_DEPS_1_FILENAME}'
-	DL_PY_SFTP_DEPS_2='${DownloadFile} '"${PY_SFTP_DEPS_2_URL}"' ${PY_SFTP_DEPS_2_FILENAME}'
-	DL_PY_SYNCTHING='${DownloadFile} '"${PY_SYNCTHING_URL}"' ${PY_SYNCTHING_FILENAME}'
-	DL_PY_REQUESTS='${DownloadFile} '"${PY_REQUESTS_URL}"' ${PY_REQUESTS_FILENAME}'
-	DL_PY_REQUESTS_DEPS_1='${DownloadFile} '"${PY_REQUESTS_DEPS_1_URL}"' ${PY_REQUESTS_DEPS_1_FILENAME}'
-	DL_PY_REQUESTS_DEPS_2='${DownloadFile} '"${PY_REQUESTS_DEPS_2_URL}"' ${PY_REQUESTS_DEPS_2_FILENAME}'
-	DL_PY_REQUESTS_DEPS_3='${DownloadFile} '"${PY_REQUESTS_DEPS_3_URL}"' ${PY_REQUESTS_DEPS_3_FILENAME}'
-	DL_PY_REQUESTS_DEPS_4='${DownloadFile} '"${PY_REQUESTS_DEPS_4_URL}"' ${PY_REQUESTS_DEPS_4_FILENAME}'
 	DL_OPENSSH32='${DownloadFile} '"${OPENSSH32_URL}"' ${OPENSSH32_FILENAME}'
 	DL_OPENSSH64='${DownloadFile} '"${OPENSSH64_URL}"' ${OPENSSH64_FILENAME}'
 	DL_FUSION_INVENTORY_AGENT32='${DownloadFile} '"${FUSION_INVENTORY_AGENT32_URL}"' ${FUSION_INVENTORY_AGENT32_FILENAME}'
@@ -586,8 +489,7 @@ update_nsi_script_dl() {
 	DL_RDPWRAP='${DownloadFile} '"$RDPWRAP_URL"' ${RDPWRAP_FILENAME}'
 	DL_VNC_AGENT32='${DownloadFile} '"$VNC_AGENT32_URL"' ${VNC_AGENT32_FILENAME}'
 	DL_VNC_AGENT64='${DownloadFile} '"$VNC_AGENT64_URL"' ${VNC_AGENT64_FILENAME}'
-	DL_SYNCTHING32='${DownloadFile} '"$SYNCTHING32_URL"' ${SYNCTHING32_FILENAME}'
-	DL_SYNCTHING64='${DownloadFile} '"$SYNCTHING64_URL"' ${SYNCTHING64_FILENAME}'
+	DL_CREATE_PROFILE='${DownloadFile} '"$CREATE_PROFILE_URL"' ${CREATE_PROFILE_NAME}'
 	INSTALL_DL_PY_WIN3232='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WIN3232_FILENAME}`'
 	INSTALL_DL_PY_WIN3264='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_WIN3264_FILENAME}`'
 	INSTALL_DL_PY_NETIFACES='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_NETIFACES_FILENAME}`'
@@ -605,9 +507,6 @@ update_nsi_script_dl() {
 	INSTALL_DL_PY_CRON='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_CRON_FILENAME}`'
 	INSTALL_DL_PY_PSUTIL32='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_PSUTIL32_FILENAME}`'
 	INSTALL_DL_PY_PSUTIL64='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_PSUTIL64_FILENAME}`'
-	INSTALL_DL_PY_SFTP='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_SFTP_FILENAME}`'
-	INSTALL_DL_PY_SYNCTHING='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_SYNCTHING_FILENAME}`'
-	INSTALL_DL_PY_REQUESTS='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_REQUESTS_FILENAME}`'
 
 	sed -e "s/@@PRODUCT_VERSION@@/${AGENT_VERSION}/" \
 		-e "s/@@DOWNLOADS_DIR@@/${DOWNLOAD_FOLDER}/" \
@@ -676,27 +575,6 @@ update_nsi_script_dl() {
 		-e "s/@@PY_PSUTIL64_FILENAME@@/${PY_PSUTIL64_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_PSUTIL64@@/$(sed_escape ${DL_PY_PSUTIL64})/" \
 		-e "s/@@INSTALL_FULL_OR_DL_PY_PSUTIL64@@/$(sed_escape ${INSTALL_DL_PY_PSUTIL64})/" \
-		-e "s/@@PY_SFTP_FILENAME@@/${PY_SFTP_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_SFTP@@/$(sed_escape ${DL_PY_SFTP})/" \
-		-e "s/@@INSTALL_FULL_OR_DL_PY_SFTP@@/$(sed_escape ${INSTALL_DL_PY_SFTP})/" \
-		-e "s/@@PY_SFTP_DEPS_1_FILENAME@@/${PY_SFTP_DEPS_1_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_SFTP_DEPS_1@@/$(sed_escape ${DL_PY_SFTP_DEPS_1})/" \
-		-e "s/@@PY_SFTP_DEPS_2_FILENAME@@/${PY_SFTP_DEPS_2_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_SFTP_DEPS_2@@/$(sed_escape ${DL_PY_SFTP_DEPS_2})/" \
-		-e "s/@@PY_SYNCTHING_FILENAME@@/${PY_SYNCTHING_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_SYNCTHING@@/$(sed_escape ${DL_PY_SYNCTHING})/" \
-		-e "s/@@INSTALL_FULL_OR_DL_PY_SYNCTHING@@/$(sed_escape ${INSTALL_DL_PY_SYNCTHING})/" \
-		-e "s/@@PY_REQUESTS_FILENAME@@/${PY_REQUESTS_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_REQUESTS@@/$(sed_escape ${DL_PY_REQUESTS})/" \
-		-e "s/@@INSTALL_FULL_OR_DL_PY_REQUESTS@@/$(sed_escape ${INSTALL_DL_PY_REQUESTS})/" \
-		-e "s/@@PY_REQUESTS_DEPS_1_FILENAME@@/${PY_REQUESTS_DEPS_1_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_REQUESTS_DEPS_1@@/$(sed_escape ${DL_PY_REQUESTS_DEPS_1})/" \
-		-e "s/@@PY_REQUESTS_DEPS_2_FILENAME@@/${PY_REQUESTS_DEPS_2_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_REQUESTS_DEPS_2@@/$(sed_escape ${DL_PY_REQUESTS_DEPS_2})/" \
-		-e "s/@@PY_REQUESTS_DEPS_3_FILENAME@@/${PY_REQUESTS_DEPS_3_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_REQUESTS_DEPS_3@@/$(sed_escape ${DL_PY_REQUESTS_DEPS_3})/" \
-		-e "s/@@PY_REQUESTS_DEPS_4_FILENAME@@/${PY_REQUESTS_DEPS_4_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_PY_REQUESTS_DEPS_4@@/$(sed_escape ${DL_PY_REQUESTS_DEPS_4})/" \
 		-e "s/@@PULSE_AGENT@@/${PULSE_AGENT_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_CONFFILE@@/${PULSE_AGENT_CONFFILE_FILENAME}/" \
 		-e "s/@@PULSE_SCHEDULER_CONFFILE@@/${PULSE_SCHEDULER_CONFFILE_FILENAME}/" \
@@ -722,15 +600,13 @@ update_nsi_script_dl() {
 		-e "s/@@VNC_AGENT64_FILENAME@@/${VNC_AGENT64_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_VNC_AGENT32@@/$(sed_escape ${DL_VNC_AGENT32})/" \
 		-e "s/@@FULL_OR_DL_VNC_AGENT64@@/$(sed_escape ${DL_VNC_AGENT64})/" \
-		-e "s/@@SYNCTHING32_FILENAME@@/${SYNCTHING32_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_SYNCTHING32@@/$(sed_escape ${DL_SYNCTHING32})/" \
-		-e "s/@@SYNCTHING64_FILENAME@@/${SYNCTHING64_FILENAME}/" \
-		-e "s/@@FULL_OR_DL_SYNCTHING64@@/$(sed_escape ${DL_SYNCTHING64})/" \
 		-e "s/@@PULSE_AGENT_PLUGINS@@/${PULSE_AGENT_PLUGINS}/" \
-        -e "s/@@PULSE_AGENT_PLUGINS_NAME@@/${PULSE_AGENT_PLUGINS_NAME}/" \
+                -e "s/@@PULSE_AGENT_PLUGINS_NAME@@/${PULSE_AGENT_PLUGINS_NAME}/" \
 		-e "s/@@RSYNC_FILENAME@@/rsync.zip/" \
 		-e "s/@@GENERATED_SIZE@@/MINIMAL/" \
                 -e "s/@@RFB_PORT@@/${VNC_PORT}/" \
+        	-e "s/@@FULL_OR_DL_CREATE_PROFILE@@/$(sed_escape ${DL_CREATE_PROFILE})/" \
+        	-e "s/@@CREATE_PROFILE_NAME@@/${CREATE_PROFILE_NAME}/" \
 		agent-installer.nsi.in \
 		> agent-installer.nsi
 	colored_echo green "### INFO Updating NSIS script.. Done"
@@ -772,3 +648,4 @@ else
 	update_nsi_script_full
 fi
 generate_agent_installer
+
