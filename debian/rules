@@ -71,7 +71,10 @@ build:
 	chmod +x var/lib/pulse2/clients/lin/rpm/package/SOURCES/pulse-filetree-generator
 	mv pulse-filetree-generator var/lib/pulse2/clients/mac
 	chmod +x var/lib/pulse2/clients/mac/pulse-filetree-generator
+	mkdir var/lib/pulse2/clients/win/downloads/
+	cp scripts_installer/win/create-profile.ps1 var/lib/pulse2/clients/win/downloads/
 	rm -frv $(DESTDIR)/tmp
+
 clean:
 	dh_testdir
 	dh_testroot
