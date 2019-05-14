@@ -137,7 +137,7 @@ cp  pulse-filetree-generator %{buildroot}/var/lib/pulse2/clients/mac
 chmod +x %{buildroot}/var/lib/pulse2/clients/mac/pulse-filetree-generator
 
 mkdir -p %{buildroot}/var/lib/pulse2/clients/win/downloads/
-cp scripts_installer/win/create-profile.ps1 %{buildroot}/var/lib/pulse2/clients/win/downloads/ 
+cp scripts_installer/win/create-profile.ps1 %{buildroot}/var/lib/pulse2/clients/win/
 
 %pre
 rm -fv /var/lib/pulse2/imaging/postinst/winutils/Pulse-Agent*latest*
