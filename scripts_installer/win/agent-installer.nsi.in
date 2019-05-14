@@ -614,9 +614,8 @@ Section "OpenSSH" sec_openssh
   ${LogString} "Return code was: $1"
   ; Hide the account
   WriteRegDWORD HKLM "Software\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList" "pulse" 0
-
-  ${PowerShellExecLog} "cd $\"$SSH_PATH$\" ; .\FixHostFilePermissions.ps1 -Confirm:$$false"
-  LogString} "Running $0"
+  ${PowerShellExecLog} "cd $\"${INSTDIR}\tmp\" ; import-module .\${CREATE_PROFILE_NAME}; New-Profile -Account pulse
+  ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
