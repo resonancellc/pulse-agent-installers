@@ -47,7 +47,7 @@ logger.addHandler(handler)
 class PulseAgentService(SMWinservice):
     _svc_name_ = "pulseagent"
     _svc_display_name_ = "Pulse agent"
-    _svc_description_ = "Agent d'administration de poste de travail"
+    _svc_description_ = "Workstation management agent"
     isrunning = False
     isdebug = False
 
