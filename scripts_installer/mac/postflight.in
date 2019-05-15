@@ -126,29 +126,29 @@ if [[ ! -f /bin/rbash ]]; then
 fi
 
 # Create pulse user account
-if id pulse 2>/dev/null; then
+if id pulseuser 2>/dev/null; then
   echo "WARN: pulse user already exists on the system"
 else
   USER_PASSWORD=$(openssl rand -base64 24)
-  dscl . -create /Users/pulse UserShell /usr/local/bin/rbash
-  dscl . -passwd /Users/pulse ${USER_PASSWORD}
+  dscl . -create /Users/pulseuser UserShell /usr/local/bin/rbash
+  dscl . -passwd /Users/pulseuser ${USER_PASSWORD}
   if [[ ${?} -eq 0 ]]; then
     echo "INFO: pulse user account created"
   else
     echo "ERROR: Something went wrong while creating pulse user account"
   fi
   MAX_USERID=$(dscl . -list /Users UniqueID | sort -nr -k 2 | head -1 | awk '{print $2}')
-  dscl . -create /Users/pulse UniqueID $(expr ${MAX_USERID} + 1)
-  dscl . -create /Users/pulse PrimaryGroupID 20
+  dscl . -create /Users/pulseuser UniqueID $(expr ${MAX_USERID} + 1)
+  dscl . -create /Users/pulseuser PrimaryGroupID 20
 fi
 
 # Hide the account
-dscl . -create /Users/pulse IsHidden 1
-dscl . -delete "/SharePoints/Pulse's Public Folder"
+dscl . -create /Users/pulseuser IsHidden 1
+dscl . -delete "/SharePoints/Pulseuser's Public Folder"
 
 # Create pulse homedir
-dscl . -create /Users/pulse NFSHomeDirectory /var/lib/pulse2
-createhomedir -c -u pulse 2>&1
+dscl . -create /Users/pulseuser NFSHomeDirectory /var/lib/pulse2
+createhomedir -c -u pulseuser 2>&1
 
 # Allow remote login
 systemsetup -setremotelogin on
@@ -158,10 +158,10 @@ dseditgroup com.apple.access_ssh
 if [[ ${?} -ne 0 ]]; then
   dseditgroup -o create -q com.apple.access_ssh
 fi
-dseditgroup -o edit -a pulse -t user com.apple.access_ssh
+dseditgroup -o edit -a pulseuser -t user com.apple.access_ssh
 
 # Allow pulse user to sudo rsync without password for backuppc
-echo "pulse ALL = NOPASSWD:/usr/bin/rsync" > /private/etc/sudoers.d/pulse
+echo "pulseuser ALL = NOPASSWD:/usr/bin/rsync" > /private/etc/sudoers.d/pulse
 
 ### SSH Key
 
@@ -177,7 +177,7 @@ if [[ -e ${SSH_PUB_KEY} ]]; then
     mkdir -p /var/lib/pulse2/.ssh/
   fi
   cat ${SSH_PUB_KEY} > /var/lib/pulse2/.ssh/authorized_keys
-  chown -R pulse: /var/lib/pulse2
+  chown -R pulseuser: /var/lib/pulse2
   chmod -R 700 /var/lib/pulse2
   chmod 600 /var/lib/pulse2/.ssh/authorized_keys
 fi
