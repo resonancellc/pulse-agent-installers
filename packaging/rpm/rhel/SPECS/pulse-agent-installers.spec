@@ -139,7 +139,6 @@ chmod +x %{buildroot}/var/lib/pulse2/clients/mac/pulse-filetree-generator
 mkdir -p %{buildroot}/var/lib/pulse2/clients/win/downloads/
 cp scripts_installer/win/create-profile.ps1 %{buildroot}/var/lib/pulse2/clients/win/
 
-cp scripts_installer/win/SMWinservice.py %{buildroot}/var/lib/pulse2/clients/win/
 cp scripts_installer/win/pulse-service.py %{buildroot}/var/lib/pulse2/clients/win/
 
 
