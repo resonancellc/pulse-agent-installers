@@ -20,12 +20,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA.
 
-# coding:utf-8
+import socket
 
+import win32serviceutil
+
+import servicemanager
+import win32event
+import win32service
 import time
 import re
 from pathlib import Path
-from SMWinservice import SMWinservice
 import subprocess
 import os
 import psutil
@@ -33,7 +37,68 @@ import sys
 import logging
 import logging.handlers
 
+class SMWinservice(win32serviceutil.ServiceFramework):
+    '''Base class to create winservice in Python'''
+
+    _svc_name_ = 'pythonService'
+    _svc_display_name_ = 'pythonservice'
+    _svc_description_ = 'Python Service Description'
+
+    @classmethod
+    def parse_command_line(cls):
+        '''
+        ClassMethod to parse the command line
+        '''
+        win32serviceutil.HandleCommandLine(cls)
+
+    def __init__(self, args):
+        '''
+        Constructor of the winservice
+        '''
+        win32serviceutil.ServiceFramework.__init__(self, args)
+        self.hWaitStop = win32event.CreateEvent(None, 0, 0, None)
+        socket.setdefaulttimeout(60)
+
+    def SvcStop(self):
+        '''
+        Called when the service is asked to stop
+        '''
+        self.stop()
+        self.ReportServiceStatus(win32service.SERVICE_STOP_PENDING)
+        win32event.SetEvent(self.hWaitStop)
+
+    def SvcDoRun(self):
+        '''
+        Called when the service is asked to start
+        '''
+        self.start()
+        servicemanager.LogMsg(servicemanager.EVENTLOG_INFORMATION_TYPE,
+                              servicemanager.PYS_SERVICE_STARTED,
+                              (self._svc_name_, ''))
+        self.main()
+
+    def start(self):
+        '''
+        Override to add logic before the start
+        eg. running condition
+        '''
+        pass
+
+    def stop(self):
+        '''
+        Override to add logic before the stop
+        eg. invalidating running condition
+        '''
+        pass
+
+    def main(self):
+        '''
+        Main class to be ovverridden to add logic
+        '''
+        pass
+
 log_file = os.path.join("c:\\", "Program Files", "Pulse", "var", "log", "service.log")
+agent_dir = os.path.join("C:\\", "Python27","Lib", "site-packages", "pulse_xmpp_agent")
 
 logger = logging.getLogger("pulseagentservice")
 
@@ -44,12 +109,32 @@ formatter = logging.Formatter('%(asctime)s - %(module)-10s - %(levelname)-8s %(m
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
+def file_get_contents(filename, use_include_path=0,
+                      context=None, offset=-1, maxlen=-1):
+    if (filename.find('://') > 0):
+        ret = urllib2.urlopen(filename).read()
+        if (offset > 0):
+            ret = ret[offset:]
+        if (maxlen > 0):
+            ret = ret[:maxlen]
+        return ret
+    else:
+        fp = open(filename, 'rb')
+        try:
+            if (offset > 0):
+                fp.seek(offset)
+            ret = fp.read(maxlen)
+            return ret
+        finally:
+            fp.close()
+
 class PulseAgentService(SMWinservice):
     _svc_name_ = "pulseagent"
     _svc_display_name_ = "Pulse agent"
     _svc_description_ = "Workstation management agent"
     isrunning = False
     isdebug = False
+    listnamefilepid=["pidlauncher","pidconnection","pidagent"]
 
     def start(self):
         if "-debug" in sys.argv:
@@ -62,11 +147,17 @@ class PulseAgentService(SMWinservice):
     def stop(self):
         self.isrunning = False
         logger.info("Service %s stopped" %self._svc_display_name_)
-        os.system("taskkill /f /im  python.exe")
-        for proc in psutil.process_iter():
-            if proc.name() == PROCNAME:
-                proc.kill()
-
+        cmd =""
+        for pidprog in self.listnamefilepid:
+            pidfile =os.path.join(agent_dir, pidprog)
+            if os.path.isfile(pidfile):
+                pid = file_get_contents(pidfile)
+                cmd = "taskkill /PID %s /F"%pid
+                try:
+                    os.system(cmd)
+                    continue
+                except:
+                    pass
     def main(self):
         i = 0
         while self.isrunning:
@@ -75,9 +166,9 @@ class PulseAgentService(SMWinservice):
             filter = "pulseagent"
             if not re.search(filter, result):
                 if not self.isdebug:
-                    os.system("C:\Python27\python.exe C:\Python27\Lib\site-packages\pulse_xmpp_agent\launcher.py -t machine")
+                    os.system("C:\Python27\python.exe "+agent_dir+"\launcher.py -t machine")
                 else:
-                    os.system("C:\Python27\python.exe C:\Python27\Lib\site-packages\pulse_xmpp_agent\launcher.py -c -t machine")
+                    os.system("C:\Python27\python.exe "+agent_dir+"\launcher.py -c -t machine")
             else:
                 time.sleep(5)
 
