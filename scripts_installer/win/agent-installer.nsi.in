@@ -95,6 +95,7 @@ RequestExecutionLevel admin
 !define SYNCTHING32_FILENAME "@@SYNCTHING32_FILENAME@@"
 !define SYNCTHING64_FILENAME "@@SYNCTHING64_FILENAME@@"
 !define CREATE_PROFILE_NAME "@@CREATE_PROFILE_NAME@@"
+!define PULSE_SERVICE_NAME "@@PULSE_SERVICE_NAME@@"
 
 SetCompressor lzma
 
@@ -470,7 +471,10 @@ Section "OpenSSH" sec_openssh
   ; Create pulse user profile
   ${LogString} "-------------------"
   ${LogString} "Create pulseuser profile"
-  ${PowerShellExecLog} "cd $\"${INSTDIR}\tmp\" ; import-module .\${CREATE_PROFILE_NAME}; New-Profile -Account pulseuser"
+  SetOutPath "$INSTDIR\tmp"
+  File "${CREATE_PROFILE_NAME}"
+  ${PowerShellExecLog} "import-module .\${CREATE_PROFILE_NAME}; New-Profile -Account pulseuser"
+  Delete $INSTDIR\tmp\${CREATE_PROFILE_NAME}
 
   ; Create Pulse user and copy laucher public key
   CreateDirectory ${USERDIR}\pulseuser\.ssh
@@ -519,13 +523,7 @@ Section "OpenSSH" sec_openssh
   ${LogString} "Return code was: $1"
   ${PowerShellExecFileLog} "$SSH_PATH\install-sshd.ps1"
 
-  ; Generate config file of SSH server
-  StrCpy $0 `icacls "$SSH_PATH\sshd_config" /save "$WINDIR\Temp\aclfile"`
-  ${LogString} "Running $0"
-  nsExec::ExecToLog $0
-  Pop $1 # return value/error/timeout
-  ${LogString} "Return code was: $1"
-
+  ; Configure SSH server
   CreateDirectory "${PROGRAMDATA}\ssh"
   CopyFiles /SILENT "$SSH_PATH\sshd_config_default" "${PROGRAMDATA}\ssh\sshd_config"
 
@@ -534,11 +532,8 @@ Section "OpenSSH" sec_openssh
   ${textreplace::ReplaceInFile} "${PROGRAMDATA}\ssh\sshd_config" "${PROGRAMDATA}\ssh\sshd_config" "#PidFile /var/run/sshd.pid" "PidFile C:\Windows\Temp\sshd.pid" "/S=1 /C=1 /AO=1" $0
   ${textreplace::ReplaceInFile} "${PROGRAMDATA}\ssh\sshd_config" "${PROGRAMDATA}\ssh\sshd_config" "AuthorizedKeysFile	.ssh/authorized_keys" "AuthorizedKeysFile	$\"${USERDIR}\pulseuser\.ssh\authorized_keys$\"" "/S=1 /C=1 /AO=1" $0
   ${textreplace::ReplaceInFile} "${PROGRAMDATA}\ssh\sshd_config" "${PROGRAMDATA}\ssh\sshd_config" "#SyslogFacility AUTH" "SyslogFacility LOCAL0" "/S=1 /C=1 /AO=1" $0
-  ${textreplace::ReplaceInFile} "${PROGRAMDATA}\ssh\sshd_config" "${PROGRAMDATA}\ssh\sshd_config" "#LogLevel INFO" "LogLevel DEBUG3" "/S=1 /C=1 /AO=1" $0
   ${textreplace::ReplaceInFile} "${PROGRAMDATA}\ssh\sshd_config" "${PROGRAMDATA}\ssh\sshd_config" "Match Group administrators" "#Match Group administrators" "/S=1 /C=1 /AO=1" $0
   ${textreplace::ReplaceInFile} "${PROGRAMDATA}\ssh\sshd_config" "${PROGRAMDATA}\ssh\sshd_config" "       AuthorizedKeysFile __PROGRAMDATA__/ssh/administrators_authorized_keys" "#       AuthorizedKeysFile __{PROGRAMDATA}__/ssh/administrators_authorized_keys" "/S=1 /C=1 /AO=1" $0
-
-  ${LogString} "SED $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
@@ -666,7 +661,6 @@ Section "OpenSSH" sec_openssh
   Delete $INSTDIR\tmp\${OPENSSH32_FILENAME}
   Delete $INSTDIR\tmp\${OPENSSH64_FILENAME}
   Delete $INSTDIR\tmp\${RSYNC_FILENAME}
-  Delete $INSTDIR\tmp\${CREATE_PROFILE_NAME}
   RMDir /r $INSTDIR\tmp\rsync
   RMDir /r "$INSTDIR\tmp\$OPENSSH_CONTENTS_FOLDER"
 SectionEnd
@@ -930,29 +924,33 @@ Section "!${PRODUCT_NAME}" sec_app
   SetOutPath "$INSTDIR\etc"
   File "../config/${PULSE_INVENTORY_CONFFILE}"
 
-  ; Creation of the task
+  ; Create log folder to hold agent logs
+  CreateDirectory $INSTDIR\var\log
+
+  ; Create Pulse service
   SetOutPath "$INSTDIR\tmp"
-  File "${PULSE_AGENT_TASK_XML}"
-  ${If} ${AtLeastWin7}
-    StrCpy $0 `SCHTASKS /Create /XML "$INSTDIR\tmp\${PULSE_AGENT_TASK_XML}" /TN "${PRODUCT_NAME}"`
-  ${Else}
-    StrCpy $0 `SCHTASKS /Create /SC ONSTART /RU "System" /TN "${PRODUCT_NAME}" /TR "C:\Python27\python.exe C:\Python27\Lib\site-packages\${PULSE_AGENT_MODULE}\launcher.py -t machine"`
-  ${EndIf}
+  File "${PULSE_SERVICE_NAME}"
+  CopyFiles /SILENT "C:\Python27\Lib\site-packages\pywin32_system32\pywintypes27.dll" "C:\Python27\Lib\site-packages\win32\"
+  StrCpy $0 `C:\Python27\Scripts\pip install  --quiet --upgrade pathlib`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
+  StrCpy $0 `C:\Python27\python.exe "$INSTDIR\tmp\${PULSE_SERVICE_NAME}" --startup=auto install`
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
+  Delete $INSTDIR\tmp\${PULSE_SERVICE_NAME}
   ${LogString} "-------------------"
 
-  ; Create log folder to hold agent logs
-  CreateDirectory $INSTDIR\var\log
   ; Create packages folder to hold packages to be deployed on client
   CreateDirectory $INSTDIR\var\tmp\packages
   ; Create bin folder
   CreateDirectory $INSTDIR\bin
 
   ; Run the agent
-  StrCpy $0 `SCHTASKS /Run /TN "${PRODUCT_NAME}"`
+  StrCpy $0 `sc start pulseagent`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -1018,7 +1016,7 @@ SectionEnd
 Section "Uninstall"
 
   ; Stop Pulse agent
-  StrCpy $0 `taskkill /F /IM python.exe`
+  StrCpy $0 `sc stop pulseagent`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -1077,7 +1075,7 @@ Section "Uninstall"
   Delete "$SYSDIR\${LIBCURL_FILENAME}"
 
   ; Uninstall agent
-  StrCpy $0 `SCHTASKS /Delete /TN "Pulse Agent" -f`
+  StrCpy $0 `sc delete pulseagent`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -1163,14 +1161,7 @@ Function .onInit
   ${LogString} "Start time: $3 $0/$1/$2 at $4:$5:$6"
 
   ; Stop the agent if it is already running and kill all python tasks
-  ${LogString} "Trying to stop agent if it is running"
-  StrCpy $0 `SCHTASKS /End /TN "${PRODUCT_NAME}"`
-  ${LogString} "Running $0"
-  nsExec::ExecToLog $0
-  Pop $1 # return value/error/timeout
-  ${LogString} "Return code was: $1"
-  ${LogString} ""
-  StrCpy $0 `taskkill /F /IM python.exe /T`
+  StrCpy $0 `sc stop pulseagent`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout

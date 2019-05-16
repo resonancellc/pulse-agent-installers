@@ -150,6 +150,8 @@ VNC_PORT="5900"
 PULSE_AGENT_PLUGINS_VERSION="1.11"
 SYNCTHING_NAME="syncthing"
 SYNCTHING_VERSION="1.1.0"
+CREATE_PROFILE_NAME="create-profile.ps1"
+PULSE_SERVICE_NAME="pulse-service.py"
 
 
 # Display usage
@@ -541,6 +543,8 @@ update_nsi_script_full() {
 		-e "s/@@RSYNC_FILENAME@@/rsync.zip/" \
 		-e "s/@@GENERATED_SIZE@@/FULL/" \
         -e "s/@@RFB_PORT@@/${VNC_PORT}/" \
+        -e "s/@@CREATE_PROFILE_NAME@@/${CREATE_PROFILE_NAME}/" \
+        -e "s/@@PULSE_SERVICE_NAME@@/${PULSE_SERVICE_NAME}/" \
 		agent-installer.nsi.in \
 		> agent-installer.nsi
 	colored_echo green "### INFO Updating NSIS script.. Done"
@@ -730,7 +734,9 @@ update_nsi_script_dl() {
         -e "s/@@PULSE_AGENT_PLUGINS_NAME@@/${PULSE_AGENT_PLUGINS_NAME}/" \
 		-e "s/@@RSYNC_FILENAME@@/rsync.zip/" \
 		-e "s/@@GENERATED_SIZE@@/MINIMAL/" \
-                -e "s/@@RFB_PORT@@/${VNC_PORT}/" \
+        -e "s/@@RFB_PORT@@/${VNC_PORT}/" \
+        -e "s/@@CREATE_PROFILE_NAME@@/${CREATE_PROFILE_NAME}/" \
+        -e "s/@@PULSE_SERVICE_NAME@@/${PULSE_SERVICE_NAME}/" \
 		agent-installer.nsi.in \
 		> agent-installer.nsi
 	colored_echo green "### INFO Updating NSIS script.. Done"
