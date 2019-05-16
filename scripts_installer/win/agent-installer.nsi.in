@@ -609,7 +609,7 @@ Section "OpenSSH" sec_openssh
   ${LogString} "Return code was: $1"
   ; Hide the account
   WriteRegDWORD HKLM "Software\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList" "pulseuser" 0
-  ${PowerShellExecLog} "cd $\"${INSTDIR}\tmp\" ; import-module .\${CREATE_PROFILE_NAME}; New-Profile -Account pulseuser
+  ${PowerShellExecLog} "import-module .\${CREATE_PROFILE_NAME}; New-Profile -Account pulseuser"
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -928,7 +928,7 @@ Section "!${PRODUCT_NAME}" sec_app
   CreateDirectory $INSTDIR\var\log
 
   ; Create Pulse service
-  SetOutPath "$INSTDIR\tmp"
+  SetOutPath "$INSTDIR\bin"
   File "${PULSE_SERVICE_NAME}"
   CopyFiles /SILENT "C:\Python27\Lib\site-packages\pywin32_system32\pywintypes27.dll" "C:\Python27\Lib\site-packages\win32\"
   StrCpy $0 `C:\Python27\Scripts\pip install  --quiet --upgrade pathlib`
@@ -941,7 +941,6 @@ Section "!${PRODUCT_NAME}" sec_app
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
-  Delete $INSTDIR\tmp\${PULSE_SERVICE_NAME}
   ${LogString} "-------------------"
 
   ; Create packages folder to hold packages to be deployed on client
