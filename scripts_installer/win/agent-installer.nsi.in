@@ -920,7 +920,7 @@ Section "!${PRODUCT_NAME}" sec_app
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
-  StrCpy $0 `C:\Python27\python.exe "$INSTDIR\tmp\${PULSE_SERVICE_NAME}" --startup=auto install`
+  StrCpy $0 `C:\Python27\python.exe "$INSTDIR\bin\${PULSE_SERVICE_NAME}" --startup=auto install`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
