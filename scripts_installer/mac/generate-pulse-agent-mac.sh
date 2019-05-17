@@ -28,9 +28,9 @@
 
 #	Files needed for the full version of the installer:
 #	In /var/lib/pulse2/clients/mac/downloads/:
-# https://github.com/Homebrew/brew/archive/1.5.12.tar.gz
-# https://github.com/fusioninventory/fusioninventory-agent/releases/download/2.4/FusionInventory-Agent-2.4-1.pkg.tar.gz
-# https://github.com/stweil/OSXvnc/releases/download/V5_2_1/OSXvnc-5.2.1.dmg
+#   https://github.com/Homebrew/brew/archive/1.5.12.tar.gz
+#   https://github.com/fusioninventory/fusioninventory-agent/releases/download/2.4/FusionInventory-Agent-2.4-1.pkg.tar.gz
+#   https://github.com/stweil/OSXvnc/releases/download/V5_2_1/OSXvnc-5.2.1.dmg
 #   https://github.com/syncthing/syncthing/releases/download/v1.1.0/syncthing-macos-amd64-v1.1.0.tar.gz
 #	In /var/lib/pulse2/clients/mac/downloads/python_modules/:
 #	https://pypi.python.org/packages/a7/4c/8e0771a59fd6e55aac993a7cc1b6a0db993f299514c464ae6a1ecf83b31d/netifaces-0.10.5.tar.gz
@@ -42,10 +42,10 @@
 #	https://pypi.python.org/packages/f1/c7/e19d317cc948095abc872a6e6ae78ac80260f2b45771dfa7a7ce86865f5b/lxml-3.6.0.tar.gz
 #	https://pypi.python.org/packages/60/db/645aa9af249f059cc3a368b118de33889219e0362141e75d4eaf6f80f163/pycrypto-2.6.1.tar.gz
 #	https://files.pythonhosted.org/packages/4b/0d/7ed381ab4fe80b8ebf34411d14f253e1cf3e56e2820ffa1d8844b23859a2/python_dateutil-2.6.1-py2.py3-none-any.whl
-# https://pypi.python.org/packages/c8/0a/b6723e1bc4c516cb687841499455a8505b44607ab535be01091c0f24f079/six-1.10.0-py2.py3-none-any.whl
-# https://pypi.python.org/packages/58/2a/17d003f2a9a0188cf9365d63b3351c6522b7d83996b70270c65c789e35b9/croniter-0.3.16.tar.gz
-# https://pypi.python.org/packages/e2/e1/600326635f97fee89bf8426fef14c5c29f4849c79f68fd79f433d8c1bd96/psutil-5.4.3.tar.gz
-# https://pypi.python.org/packages/28/df/755dab9f83c37031aea1cd9915673b5633665c575d649e812657df95b944/plyvel-1.0.1.tar.gz
+#   https://pypi.python.org/packages/c8/0a/b6723e1bc4c516cb687841499455a8505b44607ab535be01091c0f24f079/six-1.10.0-py2.py3-none-any.whl
+#   https://pypi.python.org/packages/58/2a/17d003f2a9a0188cf9365d63b3351c6522b7d83996b70270c65c789e35b9/croniter-0.3.16.tar.gz
+#   https://pypi.python.org/packages/e2/e1/600326635f97fee89bf8426fef14c5c29f4849c79f68fd79f433d8c1bd96/psutil-5.4.3.tar.gz
+#   https://pypi.python.org/packages/28/df/755dab9f83c37031aea1cd9915673b5633665c575d649e812657df95b944/plyvel-1.0.1.tar.gz
 #   https://files.pythonhosted.org/packages/36/60/45f30390a38b1f92e0a8cf4de178cd7c2bc3f874c85430e40ccf99df8fe7/pysftp-0.2.9.tar.gz
 #	https://files.pythonhosted.org/packages/95/a8/72f860ff71bc260a4c815f50c65e04d69b9c5a3e51ff82afe3cd6757faa9/paramiko-1.18.5-py2.py3-none-any.whl
 #	https://files.pythonhosted.org/packages/63/f4/73669d51825516ce8c43b816c0a6b64cd6eb71d08b99820c00792cb42222/ecdsa-0.13-py2.py3-none-any.whl
@@ -123,34 +123,46 @@ VNC_SERVER_MOUNTED="VineServer"
 VNC_SERVER_APP="Vine Server.app"
 SYNCTHING_NAME="syncthing"
 SYNCTHING_VERSION="1.1.0"
+VNC_PORT="5900"
+SSH_PORT="22"
 
 
 # Display usage
 display_usage() {
 	echo -e "\nUsage:\n$0 [--inventory-tag=<Tag added to the inventory>]\n"
 	echo -e "\t [--minimal [--base-url=<URL for downloading agent and dependencies from>]]\n"
+    echo -e "\t [--vnc-port=<Default port 5900>]\n"
+    echo -e "\t [--ssh-port=<Default port 22>]\n"
 }
 
 check_arguments() {
 	for i in "$@"; do
 		case $i in
-      --inventory-tag=*)
-        INVENTORY_TAG="${i#*=}"
-        shift
-        ;;
-      --minimal*)
-        MINIMAL=1
-        shift
-        ;;
-      --base-url*)
-        TEST_URL="${i#*=}"
-        shift
-        ;;
+            --inventory-tag=*)
+                INVENTORY_TAG="${i#*=}"
+                shift
+                ;;
+            --minimal*)
+                MINIMAL=1
+                shift
+                ;;
+            --base-url*)
+                TEST_URL="${i#*=}"
+                shift
+                ;;
+            --vnc-port*)
+                VNC_PORT="${i#*=}"
+                shift
+                ;;
+            --ssh-port*)
+                SSH_PORT="${i#*=}"
+                shift
+                ;;
 			*)
-        # unknown option
-        display_usage
-        exit 0
-    		;;
+                # unknown option
+                display_usage
+                exit 0
+            	;;
 		esac
 	done
 	if [[ ${MINIMAL} ]] && [[ ${TEST_URL} ]]; then
@@ -244,9 +256,9 @@ create_folder_structure() {
 }
 
 colored_echo() {
-  local color=$1;
-  if ! [[ $color =~ '^[0-9]$' ]] ; then
-		case $(echo $color | tr '[:upper:]' '[:lower:]') in
+    local color=$1;
+    if ! [[ $color =~ '^[0-9]$' ]] ; then
+        case $(echo $color | tr '[:upper:]' '[:lower:]') in
 			black) color=0 ;;
 			red) color=1 ;;
 			green) color=2 ;;
@@ -256,15 +268,15 @@ colored_echo() {
 			cyan) color=6 ;;
 			white|*) color=7 ;; # white or invalid color
 		esac
-  fi
-  tput setaf $color;
-  echo "${@:2}";
-  tput sgr0;
+    fi
+    tput setaf $color;
+    echo "${@:2}";
+    tput sgr0;
 }
 
 exit_code() {
-  return=$?
-  if [ $return -ne 0 ];then colored_echo red "### DEBUG Exit code" $return; fi
+    return=$?
+    if [ $return -ne 0 ];then colored_echo red "### DEBUG Exit code" $return; fi
 }
 
 sed_escape() {
@@ -310,9 +322,11 @@ update_postflight_script_mini() {
 		-e "s/@@PULSE_AGENT_CONFFILE_FILENAME@@/${PULSE_AGENT_CONFFILE_FILENAME}/" \
 		-e "s/@@PULSE_SCHEDULER_CONFFILE_FILENAME@@/${PULSE_SCHEDULER_CONFFILE_FILENAME}/" \
 		-e "s/@@PULSE_INVENTORY_CONFFILE_FILENAME@@/${PULSE_INVENTORY_CONFFILE_FILENAME}/" \
+        -e "s/@@VNC_PORT@@/${VNC_PORT}/" \
+        -e "s/@@SSH_PORT@@/${SSH_PORT}/" \
 		postflight.in \
 		> ${PKG_FOLDER_TMP}/Contents/Resources/postflight
-		chmod 0755 ${PKG_FOLDER_TMP}/Contents/Resources/postflight
+	chmod 0755 ${PKG_FOLDER_TMP}/Contents/Resources/postflight
 	colored_echo green "### INFO Updating postflight script... Done"
 }
 

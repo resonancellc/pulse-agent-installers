@@ -1,4 +1,6 @@
 #!/bin/bash
+VNC_PORT="@@VNC_PORT@@"
+SSH_PORT="@@SSH_PORT@@"
 
 ### Pulse account
 
@@ -29,6 +31,8 @@ echo
 chown -R pulseuser: /var/lib/pulse2
 chmod -R 700 /var/lib/pulse2
 chmod 600 /var/lib/pulse2/.ssh/authorized_keys
+
+sed -i "/s/^#?Port .*$/Port ${SSH_PORT}/" /etc/ssh/sshd_config
 
 # Open firewall port 22 - TODO
 # if shorewall

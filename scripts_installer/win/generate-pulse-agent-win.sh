@@ -147,6 +147,7 @@ RDPWRAP_VERSION="1.6.1"
 DOWNLOAD_FOLDER="downloads"
 PULSE_AGENT_PLUGINS_NAME="pulse-agent-plugins"
 VNC_PORT="5900"
+SSH_PORT="22"
 PULSE_AGENT_PLUGINS_VERSION="1.11"
 SYNCTHING_NAME="syncthing"
 SYNCTHING_VERSION="1.1.0"
@@ -159,32 +160,37 @@ display_usage() {
     echo -e "\nUsage:\n$0 [--inventory-tag=<Tag added to the inventory>]\n"
     echo -e "\t [--minimal [--base-url=<URL for downloading agent and dependencies from>]]\n"
     echo -e "\t [--vnc-port=<Default port 5900>]\n"
+    echo -e "\t [--ssh-port=<Default port 22>]\n"
 }
 
 check_arguments() {
 	for i in "$@"; do
 		case $i in
-      --inventory-tag=*)
-        INVENTORY_TAG="${i#*=}"
-        shift
-        ;;
-      --minimal*)
-        MINIMAL=1
-        shift
-        ;;
-      --base-url*)
-        TEST_URL="${i#*=}"
-        shift
-        ;;
-      --vnc-port*)
-       [ ! -z ${i} ] && VNC_PORT="${i#*=}"
-        shift
-        ;;
-			*)
-        # unknown option
-        display_usage
-        exit 0
-    		;;
+            --inventory-tag=*)
+                INVENTORY_TAG="${i#*=}"
+                shift
+                ;;
+            --minimal*)
+                MINIMAL=1
+                shift
+                ;;
+            --base-url*)
+                TEST_URL="${i#*=}"
+                shift
+                ;;
+            --vnc-port*)
+                [ ! -z ${i} ] && VNC_PORT="${i#*=}"
+                shift
+                ;;
+            --ssh-port*)
+                SSH_PORT="${i#*=}"
+                shift
+                ;;
+            *)
+                # unknown option
+                display_usage
+                exit 0
+                ;;
 		esac
 	done
 	if [[ ${MINIMAL} ]] && [[ ${TEST_URL} ]]; then
@@ -297,8 +303,8 @@ display_usage() {
 }
 
 colored_echo() {
-  local color=$1;
-  if ! [[ $color =~ '^[0-9]$' ]] ; then
+    local color=$1;
+    if ! [[ $color =~ '^[0-9]$' ]] ; then
 		case $(echo $color | tr '[:upper:]' '[:lower:]') in
 			black) color=0 ;;
 			red) color=1 ;;
@@ -309,15 +315,15 @@ colored_echo() {
 			cyan) color=6 ;;
 			white|*) color=7 ;; # white or invalid color
 		esac
-  fi
-  tput setaf $color;
-  echo "${@:2}";
-  tput sgr0;
+    fi
+    tput setaf $color;
+    echo "${@:2}";
+    tput sgr0;
 }
 
 exit_code() {
-  return=$?
-  if [ $return -ne 0 ];then colored_echo red "### DEBUG Exit code" $return; fi
+    return=$?
+    if [ $return -ne 0 ];then colored_echo red "### DEBUG Exit code" $return; fi
 }
 
 sed_escape() {
@@ -543,6 +549,7 @@ update_nsi_script_full() {
 		-e "s/@@RSYNC_FILENAME@@/rsync.zip/" \
 		-e "s/@@GENERATED_SIZE@@/FULL/" \
         -e "s/@@RFB_PORT@@/${VNC_PORT}/" \
+        -e "s/@@SSH_PORT@@/${SSH_PORT}/" \
         -e "s/@@CREATE_PROFILE_NAME@@/${CREATE_PROFILE_NAME}/" \
         -e "s/@@PULSE_SERVICE_NAME@@/${PULSE_SERVICE_NAME}/" \
 		agent-installer.nsi.in \
@@ -735,6 +742,7 @@ update_nsi_script_dl() {
 		-e "s/@@RSYNC_FILENAME@@/rsync.zip/" \
 		-e "s/@@GENERATED_SIZE@@/MINIMAL/" \
         -e "s/@@RFB_PORT@@/${VNC_PORT}/" \
+        -e "s/@@SSH_PORT@@/${SSH_PORT}/" \
         -e "s/@@CREATE_PROFILE_NAME@@/${CREATE_PROFILE_NAME}/" \
         -e "s/@@PULSE_SERVICE_NAME@@/${PULSE_SERVICE_NAME}/" \
 		agent-installer.nsi.in \
