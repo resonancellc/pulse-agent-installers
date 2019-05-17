@@ -37,7 +37,6 @@
 #   https://github.com/PowerShell/Win32-OpenSSH/releases/download/v0.0.21.0/OpenSSH-Win64.zip
 #   https://github.com/fusioninventory/fusioninventory-agent/releases/download/2.4/fusioninventory-agent_windows-x86_2.4.exe
 #   https://github.com/fusioninventory/fusioninventory-agent/releases/download/2.4/fusioninventory-agent_windows-x64_2.4.exe
-#   https://github.com/stascorp/rdpwrap/releases/download/v1.6.1/RDPWrap-v1.6.1.zip
 #   https://www.tightvnc.com/download/2.8.8/tightvnc-2.8.8-gpl-setup-32bit.msi
 #   https://www.tightvnc.com/download/2.8.8/tightvnc-2.8.8-gpl-setup-64bit.msi
 #	In /var/lib/pulse2/clients/win32/downloads/python_modules/:
@@ -142,8 +141,6 @@ FUSION_INVENTORY_AGENT_NAME="fusioninventory-agent"
 FUSION_INVENTORY_AGENT_VERSION="2.4.2"
 VNC_AGENT_NAME="tightvnc"
 VNC_AGENT_VERSION="2.8.8"
-RDPWRAP_NAME="RDPWrap"
-RDPWRAP_VERSION="1.6.1"
 DOWNLOAD_FOLDER="downloads"
 PULSE_AGENT_PLUGINS_NAME="pulse-agent-plugins"
 VNC_PORT="5900"
@@ -285,9 +282,6 @@ compute_parameters() {
 	FUSION_INVENTORY_AGENT64_FILENAME="${FUSION_INVENTORY_AGENT_NAME}_windows-x64_${FUSION_INVENTORY_AGENT_VERSION}.exe"
 	FUSION_INVENTORY_AGENT32_URL="${BASE_URL}/win/downloads/${FUSION_INVENTORY_AGENT32_FILENAME}"
 	FUSION_INVENTORY_AGENT64_URL="${BASE_URL}/win/downloads/${FUSION_INVENTORY_AGENT64_FILENAME}"
-	RDPWRAP_FILENAME="${RDPWRAP_NAME}-v${RDPWRAP_VERSION}.zip"
-	RDPWRAP_FOLDERNAME="${RDPWRAP_NAME}-v${RDPWRAP_VERSION}"
-	RDPWRAP_URL="${BASE_URL}/win/downloads/${RDPWRAP_FILENAME}"
 	VNC_AGENT32_FILENAME="${VNC_AGENT_NAME}-${VNC_AGENT_VERSION}-gpl-setup-32bit.msi"
 	VNC_AGENT64_FILENAME="${VNC_AGENT_NAME}-${VNC_AGENT_VERSION}-gpl-setup-64bit.msi"
 	VNC_AGENT32_URL="${BASE_URL}/win/downloads/${VNC_AGENT32_FILENAME}"
@@ -401,7 +395,6 @@ update_nsi_script_full() {
 	FULL_OPENSSH64='File "${DOWNLOADS_DIR}/${OPENSSH64_FILENAME}"'
 	FULL_FUSION_INVENTORY_AGENT32='File "${DOWNLOADS_DIR}/${FUSION_INVENTORY_AGENT32_FILENAME}"'
 	FULL_FUSION_INVENTORY_AGENT64='File "${DOWNLOADS_DIR}/${FUSION_INVENTORY_AGENT64_FILENAME}"'
-	FULL_RDPWRAP='File "${DOWNLOADS_DIR}/${RDPWRAP_FILENAME}"'
 	FULL_VNC_AGENT32='File "${DOWNLOADS_DIR}/${VNC_AGENT32_FILENAME}"'
 	FULL_VNC_AGENT64='File "${DOWNLOADS_DIR}/${VNC_AGENT64_FILENAME}"'
 	FULL_SYNCTHING32='File "${DOWNLOADS_DIR}/${SYNCTHING32_FILENAME}"'
@@ -533,9 +526,6 @@ update_nsi_script_full() {
 		-e "s/@@FULL_OR_DL_FUSION_INVENTORY_AGENT32@@/$(sed_escape ${FULL_FUSION_INVENTORY_AGENT32})/" \
 		-e "s/@@FULL_OR_DL_FUSION_INVENTORY_AGENT64@@/$(sed_escape ${FULL_FUSION_INVENTORY_AGENT64})/" \
 		-e "s/@@INVENTORY_TAG@@/${INVENTORY_TAG}/" \
-		-e "s/@@RDPWRAP_FILENAME@@/${RDPWRAP_FILENAME}/" \
-		-e "s/@@RDPWRAP_FOLDERNAME@@/${RDPWRAP_FOLDERNAME}/" \
-		-e "s/@@FULL_OR_DL_RDPWRAP@@/$(sed_escape ${FULL_RDPWRAP})/" \
 		-e "s/@@VNC_AGENT32_FILENAME@@/${VNC_AGENT32_FILENAME}/" \
 		-e "s/@@VNC_AGENT64_FILENAME@@/${VNC_AGENT64_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_VNC_AGENT32@@/$(sed_escape ${FULL_VNC_AGENT32})/" \
@@ -594,7 +584,6 @@ update_nsi_script_dl() {
 	DL_OPENSSH64='${DownloadFile} '"${OPENSSH64_URL}"' ${OPENSSH64_FILENAME}'
 	DL_FUSION_INVENTORY_AGENT32='${DownloadFile} '"${FUSION_INVENTORY_AGENT32_URL}"' ${FUSION_INVENTORY_AGENT32_FILENAME}'
 	DL_FUSION_INVENTORY_AGENT64='${DownloadFile} '"${FUSION_INVENTORY_AGENT64_URL}"' ${FUSION_INVENTORY_AGENT64_FILENAME}'
-	DL_RDPWRAP='${DownloadFile} '"$RDPWRAP_URL"' ${RDPWRAP_FILENAME}'
 	DL_VNC_AGENT32='${DownloadFile} '"$VNC_AGENT32_URL"' ${VNC_AGENT32_FILENAME}'
 	DL_VNC_AGENT64='${DownloadFile} '"$VNC_AGENT64_URL"' ${VNC_AGENT64_FILENAME}'
 	DL_SYNCTHING32='${DownloadFile} '"$SYNCTHING32_URL"' ${SYNCTHING32_FILENAME}'
@@ -726,9 +715,6 @@ update_nsi_script_dl() {
 		-e "s/@@FULL_OR_DL_FUSION_INVENTORY_AGENT32@@/$(sed_escape ${DL_FUSION_INVENTORY_AGENT32})/" \
 		-e "s/@@FULL_OR_DL_FUSION_INVENTORY_AGENT64@@/$(sed_escape ${DL_FUSION_INVENTORY_AGENT64})/" \
 		-e "s/@@INVENTORY_TAG@@/${INVENTORY_TAG}/" \
-		-e "s/@@RDPWRAP_FILENAME@@/${RDPWRAP_FILENAME}/" \
-		-e "s/@@RDPWRAP_FOLDERNAME@@/${RDPWRAP_FOLDERNAME}/" \
-		-e "s/@@FULL_OR_DL_RDPWRAP@@/$(sed_escape ${DL_RDPWRAP})/" \
 		-e "s/@@VNC_AGENT32_FILENAME@@/${VNC_AGENT32_FILENAME}/" \
 		-e "s/@@VNC_AGENT64_FILENAME@@/${VNC_AGENT64_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_VNC_AGENT32@@/$(sed_escape ${DL_VNC_AGENT32})/" \

@@ -88,8 +88,6 @@ RequestExecutionLevel admin
 !define PULSE_AGENT_PLUGINS_NAME "@@PULSE_AGENT_PLUGINS_NAME@@"
 !define RSYNC_FILENAME "@@RSYNC_FILENAME@@"
 !define GENERATED_SIZE "@@GENERATED_SIZE@@"
-!define RDPWRAP_FILENAME "@@RDPWRAP_FILENAME@@"
-!define RDPWRAP_FOLDERNAME "@@RDPWRAP_FOLDERNAME@@"
 !define VNC_AGENT32_FILENAME "@@VNC_AGENT32_FILENAME@@"
 !define VNC_AGENT64_FILENAME "@@VNC_AGENT64_FILENAME@@"
 !define RFB_PORT "@@RFB_PORT@@"
@@ -669,22 +667,8 @@ SectionEnd
 
 ; Setup of RDP & Firewall
 Section "RDP Setup" sec_rdp
-  SetOutPath "$INSTDIR\tmp"
-  @@FULL_OR_DL_RDPWRAP@@
   ${LogString} "RDP setup for remote control of machine via Pulse...."
   ${LogString} "------------------------------------------------------"
-
-  ; Setup of RDPWrap
-  ; Extract RDPWrap
-  CreateDirectory $INSTDIR\tmp\${RDPWRAP_FOLDERNAME}
-  ZipDLL::extractall "$INSTDIR\tmp\${RDPWRAP_FILENAME}" "$INSTDIR\tmp\${RDPWRAP_FOLDERNAME}"
-  ; Install
-  StrCpy $0 `"$INSTDIR\tmp\${RDPWRAP_FOLDERNAME}\RDPWInst.exe" -i`
-  ${LogString} "Running $0"
-  nsExec::ExecToLog $0
-  Pop $1 # return value/error/timeout
-  ${LogString} "Return code was: $1"
-  ${LogString} "-------------------"
 
   ; Setup of rdp
   WriteRegDWORD HKLM "SYSTEM\CurrentControlSet\Control\Terminal Server" "fDenyTSConnections" 0
@@ -725,8 +709,6 @@ Section "RDP Setup" sec_rdp
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
 
-  Delete $INSTDIR\tmp\${RDPWRAP_FILENAME}
-  RMDir /r $INSTDIR\tmp\${RDPWRAP_FOLDERNAME}
 SectionEnd
 
 Section "VNC Setup" sec_vnc
