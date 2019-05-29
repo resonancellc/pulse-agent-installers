@@ -924,6 +924,11 @@ Section "!${PRODUCT_NAME}" sec_app
   ; Create Pulse service
   SetOutPath "$INSTDIR\bin"
   File "${PULSE_SERVICE_NAME}"
+  StrCpy $0 `SCHTASKS /Delete /TN "${PRODUCT_NAME}" /F`
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
   CopyFiles /SILENT "C:\Python27\Lib\site-packages\pywin32_system32\pywintypes27.dll" "C:\Python27\Lib\site-packages\win32\"
   StrCpy $0 `C:\Python27\python.exe "$INSTDIR\bin\${PULSE_SERVICE_NAME}" --startup=auto install`
   ${LogString} "Running $0"
