@@ -41,18 +41,19 @@ cd "$(dirname $0)"
 
 # Display usage
 display_usage() {
-	echo -e "\nUsage:\n$0 [--conf-xmppserver=<XMPP configuration server>] \n"
-  echo -e "\t [--conf-xmppport=<XMPP configuration server port>] \n"
-	echo -e "\t [--conf-xmpppasswd=<XMPP configuration server password>] \n"
-  echo -e "\t [--conf-xmppmuchost=<XMPP configuration server MUC host>] \n"
-  echo -e "\t [--conf-xmppmucpasswd=<XMPP configuration server MUC password>] \n"
-  echo -e "\t [--xmpp-passwd=<XMPP server password>] \n"
-	echo -e "\t [--xmpp-mucserver=<XMPP MUC server>] \n"
-  echo -e "\t [--xmpp-mucpasswd=<XMPP server MUC password>] \n"
-	echo -e "\t [--chat-domain=<XMPP domain>] \n"
-  echo -e "\t [--inventory-tag=<Tag added to the inventory>] \n"
-  echo -e "\t [--minimal [--base-url=<URL for downloading agent and dependencies from>]] \n"
-  echo -e "\t [--vnc-port=<Default port 5900>]\n"
+    echo -e "\nUsage:\n$0 [--conf-xmppserver=<XMPP configuration server>] \n"
+    echo -e "\t [--conf-xmppport=<XMPP configuration server port>] \n"
+    echo -e "\t [--conf-xmpppasswd=<XMPP configuration server password>] \n"
+    echo -e "\t [--conf-xmppmuchost=<XMPP configuration server MUC host>] \n"
+    echo -e "\t [--conf-xmppmucpasswd=<XMPP configuration server MUC password>] \n"
+    echo -e "\t [--xmpp-passwd=<XMPP server password>] \n"
+    echo -e "\t [--xmpp-mucserver=<XMPP MUC server>] \n"
+    echo -e "\t [--xmpp-mucpasswd=<XMPP server MUC password>] \n"
+    echo -e "\t [--chat-domain=<XMPP domain>] \n"
+    echo -e "\t [--inventory-tag=<Tag added to the inventory>] \n"
+    echo -e "\t [--minimal [--base-url=<URL for downloading agent and dependencies from>]] \n"
+    echo -e "\t [--vnc-port=<Default port 5900>]\n"
+    echo -e "\t [--ssh-port=<Default port 22>]\n"
 }
 
 check_arguments() {
@@ -66,55 +67,59 @@ check_arguments() {
 				PUBLIC_XMPP_SERVER_PORT="${i#*=}"
 				shift
 				;;
-      --conf-xmpppasswd=*)
-        PUBLIC_XMPP_SERVER_PASSWORD="${i#*=}"
-        shift
-        ;;
-      --conf-xmppmuchost=*)
-        PUBLIC_XMPP_SERVER_MUCHOST="${i#*=}"
-        shift
-        ;;
-      --conf-xmppmucpasswd=*)
-        PUBLIC_XMPP_SERVER_MUCPASSWORD="${i#*=}"
-        shift
-        ;;
-      --xmpp-passwd=*)
-        XMPP_SERVER_PASSWORD="${i#*=}"
-        shift
-        ;;
-      --xmpp-mucserver=*)
-        XMPP_MUC_SERVER="${i#*=}"
-        shift
-        ;;
-      --xmpp-mucpasswd=*)
-        XMPP_SERVER_MUCPASSWORD="${i#*=}"
-        shift
-        ;;
-      --chat-domain=*)
-        CHAT_DOMAIN="${i#*=}"
-        shift
-        ;;
-      --inventory-tag=*)
-        INVENTORY_TAG="${i#*=}"
-        shift
-        ;;
-      --minimal*)
-        MINIMAL=1
-        shift
-        ;;
-      --base-url*)
-        TEST_URL="${i#*=}"
-        shift
-        ;;
-      --vnc-port*)
-        VNC_PORT="${i#*=}"
-        shift
-        ;;
-			*)
-        # unknown option
-        display_usage
-        exit 0
-    		;;
+            --conf-xmpppasswd=*)
+                PUBLIC_XMPP_SERVER_PASSWORD="${i#*=}"
+                shift
+                ;;
+            --conf-xmppmuchost=*)
+                PUBLIC_XMPP_SERVER_MUCHOST="${i#*=}"
+                shift
+                ;;
+            --conf-xmppmucpasswd=*)
+                PUBLIC_XMPP_SERVER_MUCPASSWORD="${i#*=}"
+                shift
+                ;;
+            --xmpp-passwd=*)
+                XMPP_SERVER_PASSWORD="${i#*=}"
+                shift
+                ;;
+            --xmpp-mucserver=*)
+                XMPP_MUC_SERVER="${i#*=}"
+                shift
+                ;;
+            --xmpp-mucpasswd=*)
+                XMPP_SERVER_MUCPASSWORD="${i#*=}"
+                shift
+                ;;
+            --chat-domain=*)
+                CHAT_DOMAIN="${i#*=}"
+                shift
+                ;;
+            --inventory-tag=*)
+                INVENTORY_TAG="${i#*=}"
+                shift
+                ;;
+            --minimal*)
+                MINIMAL=1
+                shift
+                ;;
+            --base-url*)
+                TEST_URL="${i#*=}"
+                shift
+                ;;
+            --vnc-port*)
+                VNC_PORT="${i#*=}"
+                shift
+                ;;
+            --ssh-port*)
+                SSH_PORT="${i#*=}"
+                shift
+                ;;
+            *)
+                # unknown option
+                display_usage
+                exit 0
+                ;;
 		esac
 	done
 	if [[ ${MINIMAL} ]] && [[ ${TEST_URL} ]]; then
@@ -131,16 +136,16 @@ check_arguments() {
 colored_echo() {
     local color=$1;
     if ! [[ $color =~ '^[0-9]$' ]] ; then
-       case $(echo $color | tr '[:upper:]' '[:lower:]') in
-        black) color=0 ;;
-        red) color=1 ;;
-        green) color=2 ;;
-        yellow) color=3 ;;
-        blue) color=4 ;;
-        magenta) color=5 ;;
-        cyan) color=6 ;;
-        white|*) color=7 ;; # white or invalid color
-       esac
+        case $(echo $color | tr '[:upper:]' '[:lower:]') in
+            black) color=0 ;;
+            red) color=1 ;;
+            green) color=2 ;;
+            yellow) color=3 ;;
+            blue) color=4 ;;
+            magenta) color=5 ;;
+            cyan) color=6 ;;
+            white|*) color=7 ;; # white or invalid color
+        esac
     fi
     tput setaf $color;
     echo "${@:2}";
@@ -148,71 +153,78 @@ colored_echo() {
 }
 
 compute_settings() {
-  # Compute settings for generating agent
-  colored_echo blue "Generating with the following settings:"
+    # Compute settings for generating agent
+    colored_echo blue "Generating with the following settings:"
 
-  colored_echo blue " - XMPP configuration server: '${PUBLIC_XMPP_SERVER_ADDRESS}'"
+    colored_echo blue " - XMPP configuration server: '${PUBLIC_XMPP_SERVER_ADDRESS}'"
 
-  if [ -z "${PUBLIC_XMPP_SERVER_PORT}" ]; then
-    PUBLIC_XMPP_SERVER_PORT="5222"
-  fi
-  colored_echo blue " - XMPP configuration server port: '${PUBLIC_XMPP_SERVER_PORT}'"
+    if [ -z "${PUBLIC_XMPP_SERVER_PORT}" ]; then
+        PUBLIC_XMPP_SERVER_PORT="5222"
+    fi
+    colored_echo blue " - XMPP configuration server port: '${PUBLIC_XMPP_SERVER_PORT}'"
 
-  colored_echo blue " - XMPP configuration server password: '${PUBLIC_XMPP_SERVER_PASSWORD}'"
+    colored_echo blue " - XMPP configuration server password: '${PUBLIC_XMPP_SERVER_PASSWORD}'"
 
-  if [ -z "${PUBLIC_XMPP_SERVER_MUCHOST}" ]; then
-    PUBLIC_XMPP_SERVER_MUCHOST="conference.pulse"
-  fi
-  colored_echo blue " - XMPP configuration server MUC host: '${PUBLIC_XMPP_SERVER_MUCHOST}'"
+    if [ -z "${PUBLIC_XMPP_SERVER_MUCHOST}" ]; then
+        PUBLIC_XMPP_SERVER_MUCHOST="conference.pulse"
+    fi
+    colored_echo blue " - XMPP configuration server MUC host: '${PUBLIC_XMPP_SERVER_MUCHOST}'"
 
-  colored_echo blue " - XMPP configuration server MUC password: '${PUBLIC_XMPP_SERVER_MUCPASSWORD}'"
+    colored_echo blue " - XMPP configuration server MUC password: '${PUBLIC_XMPP_SERVER_MUCPASSWORD}'"
 
-  colored_echo blue " - XMPP server password: '${XMPP_SERVER_PASSWORD}'"
+    colored_echo blue " - XMPP server password: '${XMPP_SERVER_PASSWORD}'"
 
-  colored_echo blue " - XMPP MUC server: '${XMPP_MUC_SERVER}'"
+    colored_echo blue " - XMPP MUC server: '${XMPP_MUC_SERVER}'"
 
-  colored_echo blue " - XMPP server MUC password: '${XMPP_SERVER_MUCPASSWORD}'"
+    colored_echo blue " - XMPP server MUC password: '${XMPP_SERVER_MUCPASSWORD}'"
 
-  colored_echo blue " - XMPP chat domain: '${CHAT_DOMAIN}'"
+    colored_echo blue " - XMPP chat domain: '${CHAT_DOMAIN}'"
 
-  if [ -z "${INVENTORY_TAG}" ]; then
+    if [ -z "${INVENTORY_TAG}" ]; then
         colored_echo blue " - Inventory TAG: None"
         INVENTORY_TAG_OPTIONS=""
-  else
+    else
         colored_echo blue " - Inventory TAG: ${INVENTORY_TAG}"
         INVENTORY_TAG_OPTIONS="--inventory-tag=${INVENTORY_TAG}"
-  fi
-  
-  if [[ ${MINIMAL} -eq 1 ]]; then
+    fi
+
+    if [[ ${MINIMAL} -eq 1 ]]; then
         GENERATED_SIZE="--minimal"
         colored_echo blue " - Agent generated: minimal"
-  else
+    else
         colored_echo blue " - Agent generated: full"
-  fi
+    fi
 
-  if [ -z ${VNC_PORT} ]; then
+    if [ -z ${VNC_PORT} ]; then
         colored_echo blue " - VNC server listening port: 5900"
         VNC_PORT_OPTIONS=""
-  else
-  	colored_echo blue " - VNC server listening port: ${VNC_PORT}"
-  	VNC_PORT_OPTIONS="--vnc-port=${VNC_PORT}"
- 
-  fi
+    else
+        colored_echo blue " - VNC server listening port: ${VNC_PORT}"
+        VNC_PORT_OPTIONS="--vnc-port=${VNC_PORT}"
+    fi
 
-colored_echo blue " - Base URL: '${BASE_URL}'"
+    if [ -z ${SSH_PORT} ]; then
+        colored_echo blue " - SSH server listening port: 22"
+        SSH_PORT_OPTIONS=""
+    else
+        colored_echo blue " - SSH server listening port: ${SSH_PORT}"
+        SSH_PORT_OPTIONS="--ssh-port=${SSH_PORT}"
+    fi
+
+    colored_echo blue " - Base URL: '${BASE_URL}'"
 }
 
 update_config_file() {
-  # Update the config file for the agent
-  cp config/agentconf.ini.in config/agentconf.ini
-  sed -i "s/@@AGENT_CONF_XMPP_SERVER@@/${PUBLIC_XMPP_SERVER_ADDRESS}/" config/agentconf.ini
-  sed -i "s/@@AGENT_CONF_XMPP_PORT@@/${PUBLIC_XMPP_SERVER_PORT}/" config/agentconf.ini
-  sed -i "s/@@AGENT_CONF_XMPP_PASSWORD@@/${PUBLIC_XMPP_SERVER_PASSWORD}/" config/agentconf.ini
-  sed -i "s/@@AGENT_CONF_XMPP_MUC_DOMAIN@@/${PUBLIC_XMPP_SERVER_MUCHOST}/" config/agentconf.ini
-  sed -i "s/@@AGENT_CONF_XMPP_MUC_PASSWORD@@/${PUBLIC_XMPP_SERVER_MUCPASSWORD}/" config/agentconf.ini
-  sed -i "s/@@XMPP_PASSWORD@@/${XMPP_SERVER_PASSWORD}/" config/agentconf.ini
-  sed -i "s/@@CHATROOM_SERVER@@/${XMPP_MUC_SERVER}/" config/agentconf.ini
-  sed -i "s/@@CHATROOM_PASSWORD@@/${XMPP_SERVER_MUCPASSWORD}/" config/agentconf.ini
+    # Update the config file for the agent
+    cp config/agentconf.ini.in config/agentconf.ini
+    sed -i "s/@@AGENT_CONF_XMPP_SERVER@@/${PUBLIC_XMPP_SERVER_ADDRESS}/" config/agentconf.ini
+    sed -i "s/@@AGENT_CONF_XMPP_PORT@@/${PUBLIC_XMPP_SERVER_PORT}/" config/agentconf.ini
+    sed -i "s/@@AGENT_CONF_XMPP_PASSWORD@@/${PUBLIC_XMPP_SERVER_PASSWORD}/" config/agentconf.ini
+    sed -i "s/@@AGENT_CONF_XMPP_MUC_DOMAIN@@/${PUBLIC_XMPP_SERVER_MUCHOST}/" config/agentconf.ini
+    sed -i "s/@@AGENT_CONF_XMPP_MUC_PASSWORD@@/${PUBLIC_XMPP_SERVER_MUCPASSWORD}/" config/agentconf.ini
+    sed -i "s/@@XMPP_PASSWORD@@/${XMPP_SERVER_PASSWORD}/" config/agentconf.ini
+    sed -i "s/@@CHATROOM_SERVER@@/${XMPP_MUC_SERVER}/" config/agentconf.ini
+    sed -i "s/@@CHATROOM_PASSWORD@@/${XMPP_SERVER_MUCPASSWORD}/" config/agentconf.ini
 	sed -i "s/@@CHAT_DOMAIN@@/${CHAT_DOMAIN}/" config/agentconf.ini
 	unix2dos config/agentconf.ini
 }
@@ -227,36 +239,42 @@ check_previous_conf() {
 		exit 0
 	fi
 	# Check if inventory tag, agent size and base url are defined
+    if [ -z "${INVENTORY_TAG}" ]; then
+        colored_echo blue " - Inventory TAG: None"
+        INVENTORY_TAG_OPTIONS=""
+    else
+        colored_echo blue " - Inventory TAG: ${INVENTORY_TAG}"
+        INVENTORY_TAG_OPTIONS="--inventory-tag=${INVENTORY_TAG}"
+    fi
 
-        if [ -z "${INVENTORY_TAG}" ]; then
-            colored_echo blue " - Inventory TAG: None"
-            INVENTORY_TAG_OPTIONS=""
-        else
-            colored_echo blue " - Inventory TAG: ${INVENTORY_TAG}"
-            INVENTORY_TAG_OPTIONS="--inventory-tag=${INVENTORY_TAG}"
-        fi
+    if [ -z ${VNC_PORT} ]; then
+        colored_echo blue " - VNC server listening port: 5900"
+        VNC_PORT_OPTIONS=""
+   	else
+        colored_echo blue " - VNC server listening port: ${VNC_PORT}"
+        VNC_PORT_OPTIONS="--vnc-port=${VNC_PORT}"
+   	fi
 
-        if [ -z ${VNC_PORT} ]; then
-            colored_echo blue " - VNC server listening port: 5900"
-            VNC_PORT_OPTIONS=""
-       	else
-            colored_echo blue " - VNC server listening port: ${VNC_PORT}"
-            VNC_PORT_OPTIONS="--vnc-port=${VNC_PORT}"
-       	fi
+    if [ -z ${SSH_PORT} ]; then
+        colored_echo blue " - SSH server listening port: 22"
+        SSH_PORT_OPTIONS=""
+   	else
+        colored_echo blue " - VNC server listening port: ${SSH_PORT}"
+        SSH_PORT_OPTIONS="--ssh-port=${SSH_PORT}"
+   	fi
 
-
-        if [[ ${MINIMAL} -eq 1 ]]; then
-            OPTIONS_MINIMAL="--minimal --base-url=${BASE_URL}"
-            colored_echo blue " - Agent generated: minimal"
-        else
-            colored_echo blue " - Agent generated: full"
-        fi
+    if [[ ${MINIMAL} -eq 1 ]]; then
+        OPTIONS_MINIMAL="--minimal --base-url=${BASE_URL}"
+        colored_echo blue " - Agent generated: minimal"
+    else
+        colored_echo blue " - Agent generated: full"
+    fi
 }
 
 generate_agent_win() {
 	# Generate Pulse Agent for Windows
 	colored_echo blue "Generating Pulse Agent for Windows..."
-	COMMAND="./win/generate-pulse-agent-win.sh ${INVENTORY_TAG_OPTIONS} ${VNC_PORT_OPTIONS} ${OPTIONS_MINIMAL}"
+	COMMAND="./win/generate-pulse-agent-win.sh ${INVENTORY_TAG_OPTIONS} ${VNC_PORT_OPTIONS} ${SSH_PORT_OPTIONS} ${OPTIONS_MINIMAL}"
 	echo "Running "${COMMAND}
 	${COMMAND}
 }
@@ -264,11 +282,7 @@ generate_agent_win() {
 generate_agent_lin() {
     # Generate Pulse Agent for Linux
 	colored_echo blue "Generating Pulse Agent for Linux..."
-	if [ -n "${INVENTORY_TAG}" ]; then
-		COMMAND="./lin/generate-pulse-agent-linux.sh --inventory-tag=${INVENTORY_TAG} ${OPTIONS_MINIMAL}"
-	else
-		COMMAND="./lin/generate-pulse-agent-linux.sh ${OPTIONS_MINIMAL}"
-	fi
+	COMMAND="./lin/generate-pulse-agent-linux.sh ${INVENTORY_TAG_OPTIONS} ${VNC_PORT_OPTIONS} ${SSH_PORT_OPTIONS} ${OPTIONS_MINIMAL}"
 	echo "Running "${COMMAND}
 	${COMMAND}
 }
@@ -276,11 +290,7 @@ generate_agent_lin() {
 generate_agent_mac() {
     # Generate Pulse Agent for MacOS
     colored_echo blue "Generating Pulse Agent for MacOS..."
-    if [ -n "${INVENTORY_TAG}" ]; then
-        COMMAND="./mac/generate-pulse-agent-mac.sh --inventory-tag=${INVENTORY_TAG} ${OPTIONS_MINIMAL}"
-    else
-        COMMAND="./mac/generate-pulse-agent-mac.sh ${OPTIONS_MINIMAL}"
-    fi
+    COMMAND="./mac/generate-pulse-agent-mac.sh ${INVENTORY_TAG_OPTIONS} ${VNC_PORT_OPTIONS} ${SSH_PORT_OPTIONS} ${OPTIONS_MINIMAL}"
     echo "Running "${COMMAND}
     ${COMMAND}
 }

@@ -1,13 +1,13 @@
-%define   rel   13
+%define   rel   18
 
 %define branch  BRANCH
 
-%define VERSION_XMPP_AGENT 1.9.9
+%define VERSION_XMPP_AGENT 2.0.0
 %define VERSION_AGENT_PLUGINS 1.11
 
 Summary:	Files to create pulse windows installer
 Name:		pulse-agent-installers
-Version:	1.9.9
+Version:	2.0.0
 Release:	%{rel}%{?dist}
 Source0:    pulse-agent-installers-%version.tar.gz
 License:	MIT
@@ -89,6 +89,7 @@ cp pulse-xmpp-agent-%version/pulse_xmpp_agent/config/agentconf.ini.in %{buildroo
 cp pulse-xmpp-agent-%version/pulse_xmpp_agent/config/manage_scheduler.ini %{buildroot}/var/lib/pulse2/clients/config/
 cp scripts_installer/generate-pulse-agent.sh %{buildroot}/var/lib/pulse2/clients
 cp scripts_installer/generate-agent-package %{buildroot}/var/lib/pulse2/clients
+cp scripts_installer/generate-agent-deps-package %{buildroot}/var/lib/pulse2/clients
 cp scripts_installer/HEADER.html %{buildroot}/var/lib/pulse2/clients
 cp scripts_installer/style.css %{buildroot}/var/lib/pulse2/clients
 
@@ -119,6 +120,7 @@ cp -fr scripts_installer/win/artwork/* %{buildroot}/var/lib/pulse2/clients/win/a
 
 chmod +x %{buildroot}/var/lib/pulse2/clients/*.sh
 chmod +x %{buildroot}/var/lib/pulse2/clients/generate-agent-package
+chmod +x %{buildroot}/var/lib/pulse2/clients/generate-agent-deps-package
 chmod +x %{buildroot}/var/lib/pulse2/clients/win/generate-kiosk-package
 
 
@@ -130,6 +132,15 @@ mkdir -p %{buildroot}/var/lib/pulse2/clients/lin/rpm/package/SOURCES
 
 cp pulse-filetree-generator %{buildroot}/var/lib/pulse2/clients/lin/rpm/package/SOURCES
 chmod +x %{buildroot}/var/lib/pulse2/clients/lin/rpm/package/SOURCES/pulse-filetree-generator
+
+cp  pulse-filetree-generator %{buildroot}/var/lib/pulse2/clients/mac
+chmod +x %{buildroot}/var/lib/pulse2/clients/mac/pulse-filetree-generator
+
+mkdir -p %{buildroot}/var/lib/pulse2/clients/win/downloads/
+cp scripts_installer/win/create-profile.ps1 %{buildroot}/var/lib/pulse2/clients/win/
+
+cp scripts_installer/win/pulse-service.py %{buildroot}/var/lib/pulse2/clients/win/
+
 
 %pre
 rm -fv /var/lib/pulse2/imaging/postinst/winutils/Pulse-Agent*latest*
