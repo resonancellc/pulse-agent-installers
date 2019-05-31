@@ -123,34 +123,46 @@ VNC_SERVER_MOUNTED="VineServer"
 VNC_SERVER_APP="Vine Server.app"
 SYNCTHING_NAME="syncthing"
 SYNCTHING_VERSION="1.1.0"
+VNC_PORT="5900"
+SSH_PORT="22"
 
 
 # Display usage
 display_usage() {
 	echo -e "\nUsage:\n$0 [--inventory-tag=<Tag added to the inventory>]\n"
 	echo -e "\t [--minimal [--base-url=<URL for downloading agent and dependencies from>]]\n"
+    echo -e "\t [--vnc-port=<Default port 5900>]\n"
+    echo -e "\t [--ssh-port=<Default port 22>]\n"
 }
 
 check_arguments() {
 	for i in "$@"; do
 		case $i in
-      --inventory-tag=*)
-        INVENTORY_TAG="${i#*=}"
-        shift
-        ;;
-      --minimal*)
-        MINIMAL=1
-        shift
-        ;;
-      --base-url*)
-        TEST_URL="${i#*=}"
-        shift
-        ;;
+            --inventory-tag=*)
+                INVENTORY_TAG="${i#*=}"
+                shift
+                ;;
+            --minimal*)
+                MINIMAL=1
+                shift
+                ;;
+            --base-url*)
+                TEST_URL="${i#*=}"
+                shift
+                ;;
+            --vnc-port*)
+                VNC_PORT="${i#*=}"
+                shift
+                ;;
+            --ssh-port*)
+                SSH_PORT="${i#*=}"
+                shift
+                ;;
 			*)
-        # unknown option
-        display_usage
-        exit 0
-    		;;
+                # unknown option
+                display_usage
+                exit 0
+            	;;
 		esac
 	done
 	if [[ ${MINIMAL} ]] && [[ ${TEST_URL} ]]; then
@@ -244,9 +256,9 @@ create_folder_structure() {
 }
 
 colored_echo() {
-  local color=$1;
-  if ! [[ $color =~ '^[0-9]$' ]] ; then
-		case $(echo $color | tr '[:upper:]' '[:lower:]') in
+    local color=$1;
+    if ! [[ $color =~ '^[0-9]$' ]] ; then
+        case $(echo $color | tr '[:upper:]' '[:lower:]') in
 			black) color=0 ;;
 			red) color=1 ;;
 			green) color=2 ;;
@@ -256,15 +268,15 @@ colored_echo() {
 			cyan) color=6 ;;
 			white|*) color=7 ;; # white or invalid color
 		esac
-  fi
-  tput setaf $color;
-  echo "${@:2}";
-  tput sgr0;
+    fi
+    tput setaf $color;
+    echo "${@:2}";
+    tput sgr0;
 }
 
 exit_code() {
-  return=$?
-  if [ $return -ne 0 ];then colored_echo red "### DEBUG Exit code" $return; fi
+    return=$?
+    if [ $return -ne 0 ];then colored_echo red "### DEBUG Exit code" $return; fi
 }
 
 sed_escape() {
@@ -310,9 +322,11 @@ update_postflight_script_mini() {
 		-e "s/@@PULSE_AGENT_CONFFILE_FILENAME@@/${PULSE_AGENT_CONFFILE_FILENAME}/" \
 		-e "s/@@PULSE_SCHEDULER_CONFFILE_FILENAME@@/${PULSE_SCHEDULER_CONFFILE_FILENAME}/" \
 		-e "s/@@PULSE_INVENTORY_CONFFILE_FILENAME@@/${PULSE_INVENTORY_CONFFILE_FILENAME}/" \
+        -e "s/@@VNC_PORT@@/${VNC_PORT}/" \
+        -e "s/@@SSH_PORT@@/${SSH_PORT}/" \
 		postflight.in \
 		> ${PKG_FOLDER_TMP}/Contents/Resources/postflight
-		chmod 0755 ${PKG_FOLDER_TMP}/Contents/Resources/postflight
+	chmod 0755 ${PKG_FOLDER_TMP}/Contents/Resources/postflight
 	colored_echo green "### INFO Updating postflight script... Done"
 }
 

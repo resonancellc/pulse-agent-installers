@@ -37,7 +37,6 @@
 #   https://github.com/PowerShell/Win32-OpenSSH/releases/download/v0.0.21.0/OpenSSH-Win64.zip
 #   https://github.com/fusioninventory/fusioninventory-agent/releases/download/2.4/fusioninventory-agent_windows-x86_2.4.exe
 #   https://github.com/fusioninventory/fusioninventory-agent/releases/download/2.4/fusioninventory-agent_windows-x64_2.4.exe
-#   https://github.com/stascorp/rdpwrap/releases/download/v1.6.1/RDPWrap-v1.6.1.zip
 #   https://www.tightvnc.com/download/2.8.8/tightvnc-2.8.8-gpl-setup-32bit.msi
 #   https://www.tightvnc.com/download/2.8.8/tightvnc-2.8.8-gpl-setup-64bit.msi
 #	In /var/lib/pulse2/clients/win32/downloads/python_modules/:
@@ -71,6 +70,7 @@
 #	https://files.pythonhosted.org/packages/63/cb/6965947c13a94236f6d4b8223e21beb4d576dc72e8130bd7880f600839b8/urllib3-1.22-py2.py3-none-any.whl
 #   https://files.pythonhosted.org/packages/60/75/f692a584e85b7eaba0e03827b3d51f45f571c2e793dd731e598828d380aa/certifi-2019.3.9-py2.py3-none-any.whl
 #   https://files.pythonhosted.org/packages/bc/a9/01ffebfb562e4274b6487b4bb1ddec7ca55ec7510b22e4c51f14098443b8/chardet-3.0.4-py2.py3-none-any.whl
+#   https://files.pythonhosted.org/packages/ac/aa/9b065a76b9af472437a0059f77e8f962fe350438b927cb80184c32f075eb/pathlib-1.0.1.tar.gz
 
 # To be defined for minimal install
 BASE_URL="https://agents.siveo.net" # Overridden if --base-url is defined
@@ -132,6 +132,8 @@ PY_REQUESTS_DEPS_3_MODULE="certifi"
 PY_REQUESTS_DEPS_3_VERSION="2019.3.9"
 PY_REQUESTS_DEPS_4_MODULE="chardet"
 PY_REQUESTS_DEPS_4_VERSION="3.0.4"
+PY_PATHLIB_MODULE="pathlib"
+PY_PATHLIB_VERSION="1.0.1"
 PULSE_AGENT_NAME="pulse-xmpp-agent"
 PULSE_AGENT_MODULE="pulse_xmpp_agent"
 RSYNC_NAME="cwRsync"
@@ -142,41 +144,53 @@ FUSION_INVENTORY_AGENT_NAME="fusioninventory-agent"
 FUSION_INVENTORY_AGENT_VERSION="2.4.2"
 VNC_AGENT_NAME="tightvnc"
 VNC_AGENT_VERSION="2.8.8"
-RDPWRAP_NAME="RDPWrap"
-RDPWRAP_VERSION="1.6.1"
 DOWNLOAD_FOLDER="downloads"
 PULSE_AGENT_PLUGINS_NAME="pulse-agent-plugins"
+VNC_PORT="5900"
+SSH_PORT="22"
 PULSE_AGENT_PLUGINS_VERSION="1.11"
 SYNCTHING_NAME="syncthing"
 SYNCTHING_VERSION="1.1.0"
+CREATE_PROFILE_NAME="create-profile.ps1"
+PULSE_SERVICE_NAME="pulse-service.py"
 
 
 # Display usage
 display_usage() {
-	echo -e "\nUsage:\n$0 [--inventory-tag=<Tag added to the inventory>]\n"
-	echo -e "\t [--minimal [--base-url=<URL for downloading agent and dependencies from>]]\n"
+    echo -e "\nUsage:\n$0 [--inventory-tag=<Tag added to the inventory>]\n"
+    echo -e "\t [--minimal [--base-url=<URL for downloading agent and dependencies from>]]\n"
+    echo -e "\t [--vnc-port=<Default port 5900>]\n"
+    echo -e "\t [--ssh-port=<Default port 22>]\n"
 }
 
 check_arguments() {
 	for i in "$@"; do
 		case $i in
-      --inventory-tag=*)
-        INVENTORY_TAG="${i#*=}"
-        shift
-        ;;
-      --minimal*)
-        MINIMAL=1
-        shift
-        ;;
-      --base-url*)
-        TEST_URL="${i#*=}"
-        shift
-        ;;
-			*)
-        # unknown option
-        display_usage
-        exit 0
-    		;;
+            --inventory-tag=*)
+                INVENTORY_TAG="${i#*=}"
+                shift
+                ;;
+            --minimal*)
+                MINIMAL=1
+                shift
+                ;;
+            --base-url*)
+                TEST_URL="${i#*=}"
+                shift
+                ;;
+            --vnc-port*)
+                [ ! -z ${i} ] && VNC_PORT="${i#*=}"
+                shift
+                ;;
+            --ssh-port*)
+                SSH_PORT="${i#*=}"
+                shift
+                ;;
+            *)
+                # unknown option
+                display_usage
+                exit 0
+                ;;
 		esac
 	done
 	if [[ ${MINIMAL} ]] && [[ ${TEST_URL} ]]; then
@@ -255,6 +269,8 @@ compute_parameters() {
 	PY_REQUESTS_DEPS_3_URL="${BASE_URL}/win/downloads/python_modules/${PY_REQUESTS_DEPS_3_FILENAME}"
 	PY_REQUESTS_DEPS_4_FILENAME="${PY_REQUESTS_DEPS_4_MODULE}-${PY_REQUESTS_DEPS_4_VERSION}-py2.py3-none-any.whl"
 	PY_REQUESTS_DEPS_4_URL="${BASE_URL}/win/downloads/python_modules/${PY_REQUESTS_DEPS_4_FILENAME}"
+	PY_PATHLIB_FILENAME="${PY_PATHLIB_MODULE}-${PY_PATHLIB_VERSION}.tar.gz"
+	PY_PATHLIB_URL="${BASE_URL}/win/downloads/python_modules/${PY_PATHLIB_FILENAME}"
 	PULSE_AGENT_FILENAME="${PULSE_AGENT_NAME}-${AGENT_VERSION}.tar.gz"
 	PULSE_AGENT_CONFFILE_FILENAME="agentconf.ini"
 	PULSE_SCHEDULER_CONFFILE_FILENAME="manage_scheduler.ini"
@@ -271,9 +287,6 @@ compute_parameters() {
 	FUSION_INVENTORY_AGENT64_FILENAME="${FUSION_INVENTORY_AGENT_NAME}_windows-x64_${FUSION_INVENTORY_AGENT_VERSION}.exe"
 	FUSION_INVENTORY_AGENT32_URL="${BASE_URL}/win/downloads/${FUSION_INVENTORY_AGENT32_FILENAME}"
 	FUSION_INVENTORY_AGENT64_URL="${BASE_URL}/win/downloads/${FUSION_INVENTORY_AGENT64_FILENAME}"
-	RDPWRAP_FILENAME="${RDPWRAP_NAME}-v${RDPWRAP_VERSION}.zip"
-	RDPWRAP_FOLDERNAME="${RDPWRAP_NAME}-v${RDPWRAP_VERSION}"
-	RDPWRAP_URL="${BASE_URL}/win/downloads/${RDPWRAP_FILENAME}"
 	VNC_AGENT32_FILENAME="${VNC_AGENT_NAME}-${VNC_AGENT_VERSION}-gpl-setup-32bit.msi"
 	VNC_AGENT64_FILENAME="${VNC_AGENT_NAME}-${VNC_AGENT_VERSION}-gpl-setup-64bit.msi"
 	VNC_AGENT32_URL="${BASE_URL}/win/downloads/${VNC_AGENT32_FILENAME}"
@@ -289,8 +302,8 @@ display_usage() {
 }
 
 colored_echo() {
-  local color=$1;
-  if ! [[ $color =~ '^[0-9]$' ]] ; then
+    local color=$1;
+    if ! [[ $color =~ '^[0-9]$' ]] ; then
 		case $(echo $color | tr '[:upper:]' '[:lower:]') in
 			black) color=0 ;;
 			red) color=1 ;;
@@ -301,15 +314,15 @@ colored_echo() {
 			cyan) color=6 ;;
 			white|*) color=7 ;; # white or invalid color
 		esac
-  fi
-  tput setaf $color;
-  echo "${@:2}";
-  tput sgr0;
+    fi
+    tput setaf $color;
+    echo "${@:2}";
+    tput sgr0;
 }
 
 exit_code() {
-  return=$?
-  if [ $return -ne 0 ];then colored_echo red "### DEBUG Exit code" $return; fi
+    return=$?
+    if [ $return -ne 0 ];then colored_echo red "### DEBUG Exit code" $return; fi
 }
 
 sed_escape() {
@@ -383,11 +396,11 @@ update_nsi_script_full() {
 	FULL_PY_REQUESTS_DEPS_2='File "${DOWNLOADS_DIR}/python_modules/${PY_REQUESTS_DEPS_2_FILENAME}"'
 	FULL_PY_REQUESTS_DEPS_3='File "${DOWNLOADS_DIR}/python_modules/${PY_REQUESTS_DEPS_3_FILENAME}"'
 	FULL_PY_REQUESTS_DEPS_4='File "${DOWNLOADS_DIR}/python_modules/${PY_REQUESTS_DEPS_4_FILENAME}"'
+	FULL_PY_PATHLIB='File "${DOWNLOADS_DIR}/python_modules/${PY_PATHLIB_FILENAME}"'
 	FULL_OPENSSH32='File "${DOWNLOADS_DIR}/${OPENSSH32_FILENAME}"'
 	FULL_OPENSSH64='File "${DOWNLOADS_DIR}/${OPENSSH64_FILENAME}"'
 	FULL_FUSION_INVENTORY_AGENT32='File "${DOWNLOADS_DIR}/${FUSION_INVENTORY_AGENT32_FILENAME}"'
 	FULL_FUSION_INVENTORY_AGENT64='File "${DOWNLOADS_DIR}/${FUSION_INVENTORY_AGENT64_FILENAME}"'
-	FULL_RDPWRAP='File "${DOWNLOADS_DIR}/${RDPWRAP_FILENAME}"'
 	FULL_VNC_AGENT32='File "${DOWNLOADS_DIR}/${VNC_AGENT32_FILENAME}"'
 	FULL_VNC_AGENT64='File "${DOWNLOADS_DIR}/${VNC_AGENT64_FILENAME}"'
 	FULL_SYNCTHING32='File "${DOWNLOADS_DIR}/${SYNCTHING32_FILENAME}"'
@@ -412,6 +425,7 @@ update_nsi_script_full() {
 	INSTALL_FULL_PY_SFTP='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_SFTP_FILENAME}`'
 	INSTALL_FULL_PY_SYNCTHING='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_SYNCTHING_FILENAME}`'
 	INSTALL_FULL_PY_REQUESTS='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_REQUESTS_FILENAME}`'
+	INSTALL_FULL_PY_PATHLIB='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_PATHLIB_FILENAME}`'
 
 	sed -e "s/@@PRODUCT_VERSION@@/${AGENT_VERSION}/" \
 		-e "s/@@DOWNLOADS_DIR@@/${DOWNLOAD_FOLDER}/" \
@@ -501,6 +515,9 @@ update_nsi_script_full() {
 		-e "s/@@FULL_OR_DL_PY_REQUESTS_DEPS_3@@/$(sed_escape ${FULL_PY_REQUESTS_DEPS_3})/" \
 		-e "s/@@PY_REQUESTS_DEPS_4_FILENAME@@/${PY_REQUESTS_DEPS_4_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_REQUESTS_DEPS_4@@/$(sed_escape ${FULL_PY_REQUESTS_DEPS_4})/" \
+		-e "s/@@PY_PATHLIB_FILENAME@@/${PY_PATHLIB_FILENAME}/" \
+		-e "s/@@FULL_OR_DL_PY_PATHLIB@@/$(sed_escape ${FULL_PY_PATHLIB})/" \
+		-e "s/@@INSTALL_FULL_OR_DL_PY_PATHLIB@@/$(sed_escape ${INSTALL_FULL_PY_PATHLIB})/" \
 		-e "s/@@PULSE_AGENT@@/${PULSE_AGENT_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_CONFFILE@@/${PULSE_AGENT_CONFFILE_FILENAME}/" \
 		-e "s/@@PULSE_SCHEDULER_CONFFILE@@/${PULSE_SCHEDULER_CONFFILE_FILENAME}/" \
@@ -519,9 +536,6 @@ update_nsi_script_full() {
 		-e "s/@@FULL_OR_DL_FUSION_INVENTORY_AGENT32@@/$(sed_escape ${FULL_FUSION_INVENTORY_AGENT32})/" \
 		-e "s/@@FULL_OR_DL_FUSION_INVENTORY_AGENT64@@/$(sed_escape ${FULL_FUSION_INVENTORY_AGENT64})/" \
 		-e "s/@@INVENTORY_TAG@@/${INVENTORY_TAG}/" \
-		-e "s/@@RDPWRAP_FILENAME@@/${RDPWRAP_FILENAME}/" \
-		-e "s/@@RDPWRAP_FOLDERNAME@@/${RDPWRAP_FOLDERNAME}/" \
-		-e "s/@@FULL_OR_DL_RDPWRAP@@/$(sed_escape ${FULL_RDPWRAP})/" \
 		-e "s/@@VNC_AGENT32_FILENAME@@/${VNC_AGENT32_FILENAME}/" \
 		-e "s/@@VNC_AGENT64_FILENAME@@/${VNC_AGENT64_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_VNC_AGENT32@@/$(sed_escape ${FULL_VNC_AGENT32})/" \
@@ -534,6 +548,10 @@ update_nsi_script_full() {
         -e "s/@@PULSE_AGENT_PLUGINS_NAME@@/${PULSE_AGENT_PLUGINS_NAME}/" \
 		-e "s/@@RSYNC_FILENAME@@/rsync.zip/" \
 		-e "s/@@GENERATED_SIZE@@/FULL/" \
+        -e "s/@@RFB_PORT@@/${VNC_PORT}/" \
+        -e "s/@@SSH_PORT@@/${SSH_PORT}/" \
+        -e "s/@@CREATE_PROFILE_NAME@@/${CREATE_PROFILE_NAME}/" \
+        -e "s/@@PULSE_SERVICE_NAME@@/${PULSE_SERVICE_NAME}/" \
 		agent-installer.nsi.in \
 		> agent-installer.nsi
 	colored_echo green "### INFO Updating NSIS script.. Done"
@@ -572,11 +590,11 @@ update_nsi_script_dl() {
 	DL_PY_REQUESTS_DEPS_2='${DownloadFile} '"${PY_REQUESTS_DEPS_2_URL}"' ${PY_REQUESTS_DEPS_2_FILENAME}'
 	DL_PY_REQUESTS_DEPS_3='${DownloadFile} '"${PY_REQUESTS_DEPS_3_URL}"' ${PY_REQUESTS_DEPS_3_FILENAME}'
 	DL_PY_REQUESTS_DEPS_4='${DownloadFile} '"${PY_REQUESTS_DEPS_4_URL}"' ${PY_REQUESTS_DEPS_4_FILENAME}'
+	DL_PY_PATHLIB='${DownloadFile} '"${PY_PATHLIB_URL}"' ${PY_PATHLIB_FILENAME}'
 	DL_OPENSSH32='${DownloadFile} '"${OPENSSH32_URL}"' ${OPENSSH32_FILENAME}'
 	DL_OPENSSH64='${DownloadFile} '"${OPENSSH64_URL}"' ${OPENSSH64_FILENAME}'
 	DL_FUSION_INVENTORY_AGENT32='${DownloadFile} '"${FUSION_INVENTORY_AGENT32_URL}"' ${FUSION_INVENTORY_AGENT32_FILENAME}'
 	DL_FUSION_INVENTORY_AGENT64='${DownloadFile} '"${FUSION_INVENTORY_AGENT64_URL}"' ${FUSION_INVENTORY_AGENT64_FILENAME}'
-	DL_RDPWRAP='${DownloadFile} '"$RDPWRAP_URL"' ${RDPWRAP_FILENAME}'
 	DL_VNC_AGENT32='${DownloadFile} '"$VNC_AGENT32_URL"' ${VNC_AGENT32_FILENAME}'
 	DL_VNC_AGENT64='${DownloadFile} '"$VNC_AGENT64_URL"' ${VNC_AGENT64_FILENAME}'
 	DL_SYNCTHING32='${DownloadFile} '"$SYNCTHING32_URL"' ${SYNCTHING32_FILENAME}'
@@ -601,6 +619,7 @@ update_nsi_script_dl() {
 	INSTALL_DL_PY_SFTP='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_SFTP_FILENAME}`'
 	INSTALL_DL_PY_SYNCTHING='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_SYNCTHING_FILENAME}`'
 	INSTALL_DL_PY_REQUESTS='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_REQUESTS_FILENAME}`'
+	INSTALL_DL_PY_PATHLIB='StrCpy $0 `C:\Python27\Scripts\pip install --quiet --upgrade --no-index --find-links="$INSTDIR\tmp" ${PY_PATHLIB_FILENAME}`'
 
 	sed -e "s/@@PRODUCT_VERSION@@/${AGENT_VERSION}/" \
 		-e "s/@@DOWNLOADS_DIR@@/${DOWNLOAD_FOLDER}/" \
@@ -690,6 +709,9 @@ update_nsi_script_dl() {
 		-e "s/@@FULL_OR_DL_PY_REQUESTS_DEPS_3@@/$(sed_escape ${DL_PY_REQUESTS_DEPS_3})/" \
 		-e "s/@@PY_REQUESTS_DEPS_4_FILENAME@@/${PY_REQUESTS_DEPS_4_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_PY_REQUESTS_DEPS_4@@/$(sed_escape ${DL_PY_REQUESTS_DEPS_4})/" \
+		-e "s/@@PY_PATHLIB_FILENAME@@/${PY_PATHLIB_FILENAME}/" \
+		-e "s/@@FULL_OR_DL_PY_PATHLIB@@/$(sed_escape ${DL_PY_PATHLIB})/" \
+		-e "s/@@INSTALL_FULL_OR_DL_PY_PATHLIB@@/$(sed_escape ${INSTALL_DL_PY_PATHLIB})/" \
 		-e "s/@@PULSE_AGENT@@/${PULSE_AGENT_FILENAME}/" \
 		-e "s/@@PULSE_AGENT_CONFFILE@@/${PULSE_AGENT_CONFFILE_FILENAME}/" \
 		-e "s/@@PULSE_SCHEDULER_CONFFILE@@/${PULSE_SCHEDULER_CONFFILE_FILENAME}/" \
@@ -708,9 +730,6 @@ update_nsi_script_dl() {
 		-e "s/@@FULL_OR_DL_FUSION_INVENTORY_AGENT32@@/$(sed_escape ${DL_FUSION_INVENTORY_AGENT32})/" \
 		-e "s/@@FULL_OR_DL_FUSION_INVENTORY_AGENT64@@/$(sed_escape ${DL_FUSION_INVENTORY_AGENT64})/" \
 		-e "s/@@INVENTORY_TAG@@/${INVENTORY_TAG}/" \
-		-e "s/@@RDPWRAP_FILENAME@@/${RDPWRAP_FILENAME}/" \
-		-e "s/@@RDPWRAP_FOLDERNAME@@/${RDPWRAP_FOLDERNAME}/" \
-		-e "s/@@FULL_OR_DL_RDPWRAP@@/$(sed_escape ${DL_RDPWRAP})/" \
 		-e "s/@@VNC_AGENT32_FILENAME@@/${VNC_AGENT32_FILENAME}/" \
 		-e "s/@@VNC_AGENT64_FILENAME@@/${VNC_AGENT64_FILENAME}/" \
 		-e "s/@@FULL_OR_DL_VNC_AGENT32@@/$(sed_escape ${DL_VNC_AGENT32})/" \
@@ -723,6 +742,10 @@ update_nsi_script_dl() {
         -e "s/@@PULSE_AGENT_PLUGINS_NAME@@/${PULSE_AGENT_PLUGINS_NAME}/" \
 		-e "s/@@RSYNC_FILENAME@@/rsync.zip/" \
 		-e "s/@@GENERATED_SIZE@@/MINIMAL/" \
+        -e "s/@@RFB_PORT@@/${VNC_PORT}/" \
+        -e "s/@@SSH_PORT@@/${SSH_PORT}/" \
+        -e "s/@@CREATE_PROFILE_NAME@@/${CREATE_PROFILE_NAME}/" \
+        -e "s/@@PULSE_SERVICE_NAME@@/${PULSE_SERVICE_NAME}/" \
 		agent-installer.nsi.in \
 		> agent-installer.nsi
 	colored_echo green "### INFO Updating NSIS script.. Done"

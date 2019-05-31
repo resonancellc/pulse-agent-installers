@@ -30,6 +30,10 @@ RequestExecutionLevel admin
 !define PRODUCT_DIR_REGKEY "Software\${PRODUCT_PUBLISHER}\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
+!define AGENT_DEPS_NAME "${PRODUCT_NAME} dependencies"
+!define PRODUCT_DEPS_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${AGENT_DEPS_NAME}"
+!define USERDIR "c:\Users"
+!define PROGRAMDATA "C:\ProgramData"
 
 ; Variables replaced by the script calling the nsi
 !define DOWNLOADS_DIR "@@DOWNLOADS_DIR@@"
@@ -65,6 +69,7 @@ RequestExecutionLevel admin
 !define PY_REQUESTS_DEPS_2_FILENAME "@@PY_REQUESTS_DEPS_2_FILENAME@@"
 !define PY_REQUESTS_DEPS_3_FILENAME "@@PY_REQUESTS_DEPS_3_FILENAME@@"
 !define PY_REQUESTS_DEPS_4_FILENAME "@@PY_REQUESTS_DEPS_4_FILENAME@@"
+!define PY_PATHLIB_FILENAME "@@PY_PATHLIB_FILENAME@@"
 !define PULSE_AGENT "@@PULSE_AGENT@@"
 !define PULSE_AGENT_CONFFILE "@@PULSE_AGENT_CONFFILE@@"
 !define PULSE_SCHEDULER_CONFFILE "@@PULSE_SCHEDULER_CONFFILE@@"
@@ -76,6 +81,7 @@ RequestExecutionLevel admin
 !define OPENSSH32_FILENAME "@@OPENSSH32_FILENAME@@"
 !define OPENSSH64_FILENAME "@@OPENSSH64_FILENAME@@"
 !define LAUNCHER_SSH_KEY "@@LAUNCHER_SSH_KEY@@"
+!define SSH_PORT "@@SSH_PORT@@"
 !define FUSION_INVENTORY_AGENT32_FILENAME "@@FUSION_INVENTORY_AGENT32_FILENAME@@"
 !define FUSION_INVENTORY_AGENT64_FILENAME "@@FUSION_INVENTORY_AGENT64_FILENAME@@"
 !define INVENTORY_TAG "@@INVENTORY_TAG@@"
@@ -83,12 +89,14 @@ RequestExecutionLevel admin
 !define PULSE_AGENT_PLUGINS_NAME "@@PULSE_AGENT_PLUGINS_NAME@@"
 !define RSYNC_FILENAME "@@RSYNC_FILENAME@@"
 !define GENERATED_SIZE "@@GENERATED_SIZE@@"
-!define RDPWRAP_FILENAME "@@RDPWRAP_FILENAME@@"
-!define RDPWRAP_FOLDERNAME "@@RDPWRAP_FOLDERNAME@@"
 !define VNC_AGENT32_FILENAME "@@VNC_AGENT32_FILENAME@@"
 !define VNC_AGENT64_FILENAME "@@VNC_AGENT64_FILENAME@@"
+!define RFB_PORT "@@RFB_PORT@@"
 !define SYNCTHING32_FILENAME "@@SYNCTHING32_FILENAME@@"
 !define SYNCTHING64_FILENAME "@@SYNCTHING64_FILENAME@@"
+!define CREATE_PROFILE_NAME "@@CREATE_PROFILE_NAME@@"
+!define PULSE_SERVICE_NAME "@@PULSE_SERVICE_NAME@@"
+
 SetCompressor lzma
 
 ; Modern UI installer stuff
@@ -244,6 +252,7 @@ Section "Python Modules" sec_pymod
   @@FULL_OR_DL_PY_REQUESTS_DEPS_2@@
   @@FULL_OR_DL_PY_REQUESTS_DEPS_3@@
   @@FULL_OR_DL_PY_REQUESTS_DEPS_4@@
+  @@FULL_OR_DL_PY_PATHLIB@@
   File "${DOWNLOADS_DIR}/usr/bin/${LIBCURL_FILENAME}"
   ${LogString} "Python modules Installation...."
   ${LogString} "------------------------------------------------------"
@@ -400,6 +409,14 @@ Section "Python Modules" sec_pymod
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
 
+  ; Install of Python requests module
+  @@INSTALL_FULL_OR_DL_PY_PATHLIB@@
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
+  ${LogString} "-------------------"
+
   Delete $INSTDIR\tmp\${PY_WIN3232_FILENAME}
   Delete $INSTDIR\tmp\${PY_WIN3264_FILENAME}
   Delete $INSTDIR\tmp\${PY_NETIFACES_FILENAME}
@@ -428,17 +445,54 @@ Section "Python Modules" sec_pymod
   Delete $INSTDIR\tmp\${PY_REQUESTS_DEPS_2_FILENAME}
   Delete $INSTDIR\tmp\${PY_REQUESTS_DEPS_3_FILENAME}
   Delete $INSTDIR\tmp\${PY_REQUESTS_DEPS_4_FILENAME}
+  Delete $INSTDIR\tmp\${PY_PATHLIB_FILENAME}
   Delete $INSTDIR\tmp\${LIBCURL_FILENAME}
 SectionEnd
 
-; rsync installation
-Section "rsync" sec_rsync
+; OpenSSH installation
+Section "OpenSSH" sec_openssh
   SetOutPath "$INSTDIR\tmp"
   @@FULL_OR_DL_OPENSSH32@@
   @@FULL_OR_DL_OPENSSH64@@
   File "${DOWNLOADS_DIR}/${RSYNC_FILENAME}"
-  SetOutPath "$INSTDIR\.ssh\"
-  File /oname=authorized_keys "${LAUNCHER_SSH_KEY}"
+
+  ; Remove previous Pulse profile 
+  Var /GLOBAL P_PROFILE
+  !insertmacro StrRep $0 ${USERDIR} "\" "\\"
+  Pop $0
+  StrCpy $P_PROFILE $0
+  StrCpy $0 `wmic /node:localhost path win32_UserProfile where "LocalPath like '$P_PROFILE\\pulse%%'" Delete`
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
+  RMDir /r "${USERDIR}\pulse*"
+
+
+  ; Create Pulse user and copy laucher public key
+  pwgen::GeneratePassword 12
+  Pop $0
+  Var /GLOBAL Password
+  StrCpy $Password "$0"
+  StrCpy $0 `net user "pulseuser" "$Password" /ADD /COMMENT:"Pulse user with admin rights on the system"`
+  ${LogString} "Running net user pulseuser ************ /ADD /COMMENT:Pulse user with admin rights on the system "
+  nsExec::ExecToLog $0
+
+  ; Create pulse user profile
+  ${LogString} "-------------------"
+  ${LogString} "Create pulseuser profile"
+  SetOutPath "$INSTDIR\tmp"
+  File "${CREATE_PROFILE_NAME}"
+  ${PowerShellExecLog} "import-module .\${CREATE_PROFILE_NAME}; New-Profile -Account pulseuser"
+  Delete $INSTDIR\tmp\${CREATE_PROFILE_NAME}
+
+  ; Create Pulse user and copy laucher public key
+  CreateDirectory ${USERDIR}\pulseuser\.ssh
+  AccessControl::GRANTONFILE /NOINHERIT "${USERDIR}\pulseuser" "(BA)" "FullAccess"
+  AccessControl::GRANTONFILE /NOINHERIT "${USERDIR}\pulseuser\.ssh" "(BA)" "FullAccess"
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
+  ${LogString} "-------------------"
   ${LogString} "OpenSSH Installation...."
   ${LogString} "------------------------------------------------------"
 
@@ -469,18 +523,31 @@ Section "rsync" sec_rsync
   ; Extract OpenSSH
   ZipDLL::extractall "$INSTDIR\tmp\$OPENSSH_FILENAME" "$INSTDIR\tmp\"
   Rename "$INSTDIR\tmp\$OPENSSH_CONTENTS_FOLDER" "$SSH_PATH"
-  ${PowerShellExecFileLog} "$SSH_PATH\install-sshd.ps1"
-
-  ; Generate config file of SSH server
-  StrCpy $0 `icacls "$SSH_PATH\sshd_config" /save "$WINDIR\Temp\aclfile"`
-  ${LogString} "Running $0"
+  ${LogString} "-------------------"
+  SetOutPath "${USERDIR}\pulseuser\.ssh"
+  File /oname=authorized_keys "${LAUNCHER_SSH_KEY}"
+  StrCpy $0 `attrib +h ${USERDIR}\pulseuser`
+  ${LogString} "Running ATTR $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
-  ${textreplace::ReplaceInFile} "$SSH_PATH\sshd_config" "$SSH_PATH\sshd_config" "#PubkeyAuthentication yes" "PubkeyAuthentication yes" "/S=1 /C=1 /AO=1" $0
-  ${textreplace::ReplaceInFile} "$SSH_PATH\sshd_config" "$SSH_PATH\sshd_config" "#PasswordAuthentication yes" "PasswordAuthentication no" "/S=1 /C=1 /AO=1" $0
-  ${textreplace::ReplaceInFile} "$SSH_PATH\sshd_config" "$SSH_PATH\sshd_config" "#PidFile /var/run/sshd.pid" "PidFile C:\Windows\Temp\sshd.pid" "/S=1 /C=1 /AO=1" $0
-  ${textreplace::ReplaceInFile} "$SSH_PATH\sshd_config" "$SSH_PATH\sshd_config" "AuthorizedKeysFile	.ssh/authorized_keys" "AuthorizedKeysFile	$\"$INSTDIR\.ssh\authorized_keys$\"" "/S=1 /C=1 /AO=1" $0
+  ${PowerShellExecFileLog} "$SSH_PATH\install-sshd.ps1"
+
+  ; Configure SSH server
+  CreateDirectory "${PROGRAMDATA}\ssh"
+  CopyFiles /SILENT "$SSH_PATH\sshd_config_default" "${PROGRAMDATA}\ssh\sshd_config"
+
+  ${textreplace::ReplaceInFile} "${PROGRAMDATA}\ssh\sshd_config" "${PROGRAMDATA}\ssh\sshd_config" "#Port 22" "Port ${SSH_PORT}" "/S=1 /C=1 /AO=1" $0
+  ${textreplace::ReplaceInFile} "${PROGRAMDATA}\ssh\sshd_config" "${PROGRAMDATA}\ssh\sshd_config" "#PubkeyAuthentication yes" "PubkeyAuthentication yes" "/S=1 /C=1 /AO=1" $0
+  ${textreplace::ReplaceInFile} "${PROGRAMDATA}\ssh\sshd_config" "${PROGRAMDATA}\ssh\sshd_config" "#PasswordAuthentication yes" "PasswordAuthentication no" "/S=1 /C=1 /AO=1" $0
+  ${textreplace::ReplaceInFile} "${PROGRAMDATA}\ssh\sshd_config" "${PROGRAMDATA}\ssh\sshd_config" "#PidFile /var/run/sshd.pid" "PidFile C:\Windows\Temp\sshd.pid" "/S=1 /C=1 /AO=1" $0
+  ${textreplace::ReplaceInFile} "${PROGRAMDATA}\ssh\sshd_config" "${PROGRAMDATA}\ssh\sshd_config" "AuthorizedKeysFile	.ssh/authorized_keys" "AuthorizedKeysFile	$\"${USERDIR}\pulseuser\.ssh\authorized_keys$\"" "/S=1 /C=1 /AO=1" $0
+  ${textreplace::ReplaceInFile} "${PROGRAMDATA}\ssh\sshd_config" "${PROGRAMDATA}\ssh\sshd_config" "#SyslogFacility AUTH" "SyslogFacility LOCAL0" "/S=1 /C=1 /AO=1" $0
+  ${textreplace::ReplaceInFile} "${PROGRAMDATA}\ssh\sshd_config" "${PROGRAMDATA}\ssh\sshd_config" "Match Group administrators" "#Match Group administrators" "/S=1 /C=1 /AO=1" $0
+  ${textreplace::ReplaceInFile} "${PROGRAMDATA}\ssh\sshd_config" "${PROGRAMDATA}\ssh\sshd_config" "       AuthorizedKeysFile __PROGRAMDATA__/ssh/administrators_authorized_keys" "#       AuthorizedKeysFile __{PROGRAMDATA}__/ssh/administrators_authorized_keys" "/S=1 /C=1 /AO=1" $0
+  nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
 
   ; Configure SSH server to start automatically at boot
   StrCpy $0 `sc.exe config ssh-agent start= auto`
@@ -505,19 +572,8 @@ Section "rsync" sec_rsync
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
 
-  ; Create Pulse user and copy laucher public key
-  pwgen::GeneratePassword 12
-  Pop $0
-  Var /GLOBAL Password
-  StrCpy $Password "$0"
-  StrCpy $0 `net user "pulse" "$Password" /ADD /COMMENT:"Pulse user with admin rights on the system" /PROFILEPATH:"$INSTDIR"`
-  ${LogString} "Running net user pulse ************ /ADD /COMMENT:Pulse user with admin rights on the system /PROFILEPATH:$INSTDIR"
-  nsExec::ExecToLog $0
-  Pop $1 # return value/error/timeout
-  ${LogString} "Return code was: $1"
-  ${LogString} "-------------------"
   ${LogString} "Setting permissions on pulse user profile folder"
-  StrCpy $0 `wmic useraccount where name="pulse" get sid /VALUE`
+  StrCpy $0 `wmic useraccount where name="pulseuser" get sid /VALUE`
   ${LogString} "Running $0"
   nsExec::ExecToStack $0
   Pop $0
@@ -528,11 +584,10 @@ Section "rsync" sec_rsync
     Var /GLOBAL SID
     StrCpy $SID "$0"
     ${LogString} "User SID: $SID"
-    WriteRegExpandStr HKLM "Software\Microsoft\Windows NT\CurrentVersion\ProfileList\$SID" "ProfileImagePath" "$INSTDIR"
+    WriteRegExpandStr HKLM "Software\Microsoft\Windows NT\CurrentVersion\ProfileList\$SID" "ProfileImagePath" "${USERDIR}\pulseuser"
   ${Else}
     ${LogString} "Return code was: $0"
   ${EndIf}
-  AccessControl::ClearOnFile /NOINHERIT "$INSTDIR" pulse FullAccess
   Pop $R0
   ${If} $R0 == error
     Pop $R0
@@ -540,86 +595,35 @@ Section "rsync" sec_rsync
   ${EndIf}
   ${LogString} "-------------------"
   ; Set pulse account password to not expire
-  StrCpy $0 `wmic useraccount where "Name='pulse'" set PasswordExpires=False`
+  StrCpy $0 `wmic useraccount where "Name='pulseuser'" set PasswordExpires=False`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
   ; Add pulse user to administrators group in English, French and Portugese
-  StrCpy $0 `net localgroup administrators "pulse" /ADD`
+  StrCpy $0 `net localgroup administrators "pulseuser" /ADD`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
-  StrCpy $0 `net localgroup administrateurs "pulse" /ADD`
+  StrCpy $0 `net localgroup administrateurs "pulseuser" /ADD`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
-  StrCpy $0 `net localgroup administradores "pulse" /ADD`
+  StrCpy $0 `net localgroup administradores "pulseuser" /ADD`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
   ; Hide the account
-  WriteRegDWORD HKLM "Software\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList" "pulse" 0
-
-  ; Set permissions for keys etc
-  ${PowerShellExecLog} "cd $\"$SSH_PATH$\" ; .\FixHostFilePermissions.ps1 -Confirm:$$false"
-  StrCpy $0 `icacls "$INSTDIR\.ssh\authorized_keys" /setowner Pulse`
+  WriteRegDWORD HKLM "Software\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList" "pulseuser" 0
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
-  StrCpy $0 `icacls "$INSTDIR\.ssh\authorized_keys" /grant BUILTIN\Administrators:F`
-  ${LogString} "Running $0"
-  nsExec::ExecToLog $0
-  Pop $1 # return value/error/timeout
-  ${LogString} "Return code was: $1"
-  StrCpy $0 `icacls "$INSTDIR\.ssh\authorized_keys" /grant BUILTIN\Administrateurs:F`
-  ${LogString} "Running $0"
-  nsExec::ExecToLog $0
-  Pop $1 # return value/error/timeout
-  ${LogString} "Return code was: $1"
-  StrCpy $0 `icacls "$INSTDIR\.ssh\authorized_keys" /grant BUILTIN\Administradores:F`
-  ${LogString} "Running $0"
-  nsExec::ExecToLog $0
-  Pop $1 # return value/error/timeout
-  ${LogString} "Return code was: $1"
-  StrCpy $0 `icacls "$INSTDIR\.ssh\authorized_keys" /grant Pulse:F`
-  ${LogString} "Running $0"
-  nsExec::ExecToLog $0
-  Pop $1 # return value/error/timeout
-  ${LogString} "Return code was: $1"
-  StrCpy $0 `icacls "$INSTDIR\.ssh\authorized_keys" /remove "NT SERVICE\sshd"`
-  ${LogString} "Running $0"
-  nsExec::ExecToLog $0
-  Pop $1 # return value/error/timeout
-  ${LogString} "Return code was: $1"
-  StrCpy $0 `icacls "$INSTDIR\.ssh\authorized_keys" /grant "NT SERVICE\sshd:(R)"`
-  ${LogString} "Running $0"
-  nsExec::ExecToLog $0
-  Pop $1 # return value/error/timeout
-  ${LogString} "Return code was: $1"
-  StrCpy $0 `icacls "$INSTDIR\.ssh\authorized_keys" /inheritance:r`
-  ${LogString} "Running $0"
-  nsExec::ExecToLog $0
-  Pop $1 # return value/error/timeout
-  ${LogString} "Return code was: $1"
-  ${LogString} "-------------------"
-  StrCpy $0 `icacls "$SSH_PATH" /restore "$WINDIR\Temp\aclfile"`
-  ${LogString} "Running $0"
-  nsExec::ExecToLog $0
-  Pop $1 # return value/error/timeout
-  ${LogString} "Return code was: $1"
-  StrCpy $0 `icacls "$SSH_PATH\sshd_config" /grant "NT SERVICE\sshd:(R)"`
-  ${LogString} "Running $0"
-  nsExec::ExecToLog $0
-  Pop $1 # return value/error/timeout
-  ${LogString} "Return code was: $1"
-  ${LogString} "-------------------"
 
   ; Start the service
   StrCpy $0 `sc start ssh-agent`
@@ -637,9 +641,9 @@ Section "rsync" sec_rsync
 
   ; Setup of Windows firewall to allow ssh
   ${If} ${IsWinXP}
-    StrCpy $0 `netsh firewall add portopening TCP 22 "SSH for Pulse"`
+    StrCpy $0 `netsh firewall add portopening TCP ${SSH_PORT} "SSH for Pulse"`
   ${Else}
-    StrCpy $0 `netsh advfirewall firewall add rule name="SSH for Pulse" dir=in action=allow protocol=TCP localport=22`
+    StrCpy $0 `netsh advfirewall firewall add rule name="SSH for Pulse" dir=in action=allow protocol=TCP localport=${SSH_PORT}`
   ${EndIf}
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
@@ -673,22 +677,8 @@ SectionEnd
 
 ; Setup of RDP & Firewall
 Section "RDP Setup" sec_rdp
-  SetOutPath "$INSTDIR\tmp"
-  @@FULL_OR_DL_RDPWRAP@@
   ${LogString} "RDP setup for remote control of machine via Pulse...."
   ${LogString} "------------------------------------------------------"
-
-  ; Setup of RDPWrap
-  ; Extract RDPWrap
-  CreateDirectory $INSTDIR\tmp\${RDPWRAP_FOLDERNAME}
-  ZipDLL::extractall "$INSTDIR\tmp\${RDPWRAP_FILENAME}" "$INSTDIR\tmp\${RDPWRAP_FOLDERNAME}"
-  ; Install
-  StrCpy $0 `"$INSTDIR\tmp\${RDPWRAP_FOLDERNAME}\RDPWInst.exe" -i`
-  ${LogString} "Running $0"
-  nsExec::ExecToLog $0
-  Pop $1 # return value/error/timeout
-  ${LogString} "Return code was: $1"
-  ${LogString} "-------------------"
 
   ; Setup of rdp
   WriteRegDWORD HKLM "SYSTEM\CurrentControlSet\Control\Terminal Server" "fDenyTSConnections" 0
@@ -699,12 +689,17 @@ Section "RDP Setup" sec_rdp
   ${If} ${AtLeastWin7}
     WriteRegDWORD HKLM "SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" "SecurityLayer" 0
   ${EndIf}
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
+  ${LogString} "-------------------"
 
-  ; Setup of Windows firewall to allow rdp
+  ; Setup of Windows firewall to allow vnc
   ${If} ${IsWinXP}
-    StrCpy $0 `netsh firewall add portopening TCP 3389 "Remote Desktop for Pulse"`
+    StrCpy $0 `netsh firewall add portopening TCP ${RFB_PORT} "Remote Desktop for Pulse"`
   ${Else}
-    StrCpy $0 `netsh advfirewall firewall add rule name="Remote Desktop for Pulse" dir=in action=allow protocol=TCP localport=3389`
+    StrCpy $0 `netsh advfirewall firewall add rule name="Remote Desktop for Pulse VNC" dir=in action=allow protocol=TCP localport=${RFB_PORT}`
   ${EndIf}
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
@@ -712,8 +707,18 @@ Section "RDP Setup" sec_rdp
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
 
-  Delete $INSTDIR\tmp\${RDPWRAP_FILENAME}
-  RMDir /r $INSTDIR\tmp\${RDPWRAP_FOLDERNAME}
+  ; Setup of Windows firewall to allow rdp
+  ${If} ${IsWinXP}
+    StrCpy $0 `netsh firewall add portopening TCP 3389 "Remote Desktop for Pulse RDP"`
+  ${Else}
+    StrCpy $0 `netsh advfirewall firewall add rule name="Remote Desktop for Pulse RDP" dir=in action=allow protocol=TCP localport=3389`
+  ${EndIf}
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
+  ${LogString} "-------------------"
+
 SectionEnd
 
 Section "VNC Setup" sec_vnc
@@ -775,6 +780,9 @@ Section "VNC Setup" sec_vnc
   StrCpy $0 `$0 SET_BLOCKREMOTEINPUT=1 VALUE_OF_BLOCKREMOTEINPUT=0`
   ; Don't do anything when terminating VNC session
   StrCpy $0 `$0 SET_DISCONNECTACTION=1 VALUE_OF_DISCONNECTACTION=0`
+  ; Set the server listening port
+  StrCpy $0 `$0 SET_RFBPORT=1 VALUE_OF_RFBPORT=${RFB_PORT}`
+
 
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
@@ -910,29 +918,32 @@ Section "!${PRODUCT_NAME}" sec_app
   SetOutPath "$INSTDIR\etc"
   File "../config/${PULSE_INVENTORY_CONFFILE}"
 
-  ; Creation of the task
-  SetOutPath "$INSTDIR\tmp"
-  File "${PULSE_AGENT_TASK_XML}"
-  ${If} ${AtLeastWin7}
-    StrCpy $0 `SCHTASKS /Create /XML "$INSTDIR\tmp\${PULSE_AGENT_TASK_XML}" /TN "${PRODUCT_NAME}"`
-  ${Else}
-    StrCpy $0 `SCHTASKS /Create /SC ONSTART /RU "System" /TN "${PRODUCT_NAME}" /TR "C:\Python27\python.exe C:\Python27\Lib\site-packages\${PULSE_AGENT_MODULE}\launcher.py -t machine"`
-  ${EndIf}
+  ; Create log folder to hold agent logs
+  CreateDirectory $INSTDIR\var\log
+
+  ; Create Pulse service
+  SetOutPath "$INSTDIR\bin"
+  File "${PULSE_SERVICE_NAME}"
+  StrCpy $0 `SCHTASKS /Delete /TN "${PRODUCT_NAME}" /F`
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
+  CopyFiles /SILENT "C:\Python27\Lib\site-packages\pywin32_system32\pywintypes27.dll" "C:\Python27\Lib\site-packages\win32\"
+  StrCpy $0 `C:\Python27\python.exe "$INSTDIR\bin\${PULSE_SERVICE_NAME}" --startup=auto install`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
 
-  ; Create log folder to hold agent logs
-  CreateDirectory $INSTDIR\var\log
   ; Create packages folder to hold packages to be deployed on client
   CreateDirectory $INSTDIR\var\tmp\packages
   ; Create bin folder
   CreateDirectory $INSTDIR\bin
 
   ; Run the agent
-  StrCpy $0 `SCHTASKS /Run /TN "${PRODUCT_NAME}"`
+  StrCpy $0 `sc start pulseagent`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -952,6 +963,9 @@ Section "!${PRODUCT_NAME}" sec_app
       WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "InstallLocation" "$INSTDIR"
       WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoModify" 1
       WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoRepair" 1
+      WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_DEPS_UNINST_KEY}" "DisplayName" "${AGENT_DEPS_NAME}"
+      WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_DEPS_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
+      WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_DEPS_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
   ${Else}
       SetRegView 32
       WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "${PRODUCT_NAME}"
@@ -962,6 +976,9 @@ Section "!${PRODUCT_NAME}" sec_app
       WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "InstallLocation" "$INSTDIR"
       WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoModify" 1
       WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoRepair" 1
+      WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_DEPS_UNINST_KEY}" "DisplayName" "${AGENT_DEPS_NAME}"
+      WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_DEPS_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
+      WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_DEPS_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
   ${EndIf}
 
   ; Write the version installed in registry
@@ -992,7 +1009,7 @@ SectionEnd
 Section "Uninstall"
 
   ; Stop Pulse agent
-  StrCpy $0 `taskkill /F /IM python.exe`
+  StrCpy $0 `sc stop pulseagent`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -1004,6 +1021,11 @@ Section "Uninstall"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
+  RMDir /r "${USERDIR}/pulse*"
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "RMDir Return code was: $1"
 
   ; Remove OpenSSH
   StrCpy $0 `sc.exe stop sshd`
@@ -1027,19 +1049,26 @@ Section "Uninstall"
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
   Delete "$SYSDIR\ssh-lsa.dll"
-  ${If} ${RunningX64}
-    ${PowerShellExecFileLog} "$PROGRAMFILES64\OpenSSH\uninstall-sshd.ps1"
+
+  ; Uninstall OpenSSH
+  ${If} ${FileExists} "$PROGRAMFILES64\${OPENSSH_NAME}\uninstall-sshd.ps1"
+    ${LogString} "OpenSSH uninstall.."
+    ${LogString} "------------------------------------------------------"
+    ${PowerShellExecFileLog} "$PROGRAMFILES64\${OPENSSH_NAME}\uninstall-sshd.ps1"
     RMDir /r "$PROGRAMFILES64\OpenSSH"
   ${Else}
-    ${PowerShellExecFileLog} "$PROGRAMFILES\OpenSSH\uninstall-sshd.ps1"
-    RMDir /r "$PROGRAMFILES\OpenSSH"
+    ${LogString} "OpenSSH uninstall.."
+    ${LogString} "------------------------------------------------------"
+    ${PowerShellExecFileLog} "$PROGRAMFILES\${OPENSSH_NAME}\uninstall-sshd.ps1"
+    RMDir /r "$PROGRAMFILES\${OPENSSH_NAME}"
   ${EndIf}
 
+  RMDir /r "${PROGRAMDATA}\ssh"
   ; Remove libcurl
   Delete "$SYSDIR\${LIBCURL_FILENAME}"
 
   ; Uninstall agent
-  StrCpy $0 `SCHTASKS /Delete /TN "Pulse Agent" -f`
+  StrCpy $0 `sc delete pulseagent`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -1070,27 +1099,22 @@ Section "Uninstall"
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
   RMDir /r "C:\Python27\Lib\site-packages\pulse_xmpp_agent\"
+  RMDir /r "C:\Program Files\OpenSSH"
   RMDir /r "$INSTDIR"
 
   ; Remove Pulse profile
-  Var /GLOBAL P_PROFILE
-  !insertmacro StrRep $0 $INSTDIR "\" "\\"
+  !insertmacro StrRep $0 ${USERDIR} "\" "\\"
   Pop $0
   StrCpy $P_PROFILE $0
-  StrCpy $0 `wmic /node:localhost path win32_UserProfile where LocalPath="$P_PROFILE" Delete`
+  StrCpy $0 `wmic /node:localhost path win32_UserProfile where "LocalPath like '$P_PROFILE\\pulse%%'" Delete`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
-
-  ; Remove SSHD profile
-  StrCpy $0 `wmic /node:localhost path win32_UserProfile where LocalPath="c:\\Users\\SSHD" Delete`
-  ${LogString} "Running $0"
-  nsExec::ExecToLog $0
-  Pop $1 # return value/error/timeout
-  ${LogString} "Return code was: $1"
+  RMDir /r /REBOOTOK "${USERDIR}\pulse*"
 
   DeleteRegKey HKLM "${PRODUCT_UNINST_KEY}"
+  DeleteRegKey HKLM "${PRODUCT_DEPS_UNINST_KEY}"
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
 
 SectionEnd
@@ -1130,14 +1154,7 @@ Function .onInit
   ${LogString} "Start time: $3 $0/$1/$2 at $4:$5:$6"
 
   ; Stop the agent if it is already running and kill all python tasks
-  ${LogString} "Trying to stop agent if it is running"
-  StrCpy $0 `SCHTASKS /End /TN "${PRODUCT_NAME}"`
-  ${LogString} "Running $0"
-  nsExec::ExecToLog $0
-  Pop $1 # return value/error/timeout
-  ${LogString} "Return code was: $1"
-  ${LogString} ""
-  StrCpy $0 `taskkill /F /IM python.exe /T`
+  StrCpy $0 `sc stop pulseagent`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -1167,8 +1184,8 @@ Function .onMouseOverSection
   StrCmp $0 ${sec_pymod} 0 +2
     SendMessage $R0 ${WM_SETTEXT} 0 "STR:Python modules required by ${PRODUCT_NAME}."
 
-  StrCmp $0 ${sec_rsync} 0 +2
-    SendMessage $R0 ${WM_SETTEXT} 0 "STR:rsync required for deployment, backup, etc."
+  StrCmp $0 ${sec_openssh} 0 +2
+    SendMessage $R0 ${WM_SETTEXT} 0 "STR:OpenSSH required for deployment, backup, etc."
 
   StrCmp $0 ${sec_rdp} "" +2
     SendMessage $R0 ${WM_SETTEXT} 0 "STR:Setup RDP protocol required for remote control"

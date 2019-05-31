@@ -44,28 +44,38 @@ cd "$(dirname $0)"
 display_usage() {
 	echo -e "\nUsage:\n$0 [--inventory-tag=<Tag added to the inventory>]\n"
     echo -e "\t [--minimal [--base-url=<URL for downloading agent and dependencies from>]]\n"
+    echo -e "\t [--vnc-port=<Default port 5900>]\n"
+    echo -e "\t [--ssh-port=<Default port 22>]\n"
 }
 
 check_arguments() {
 	for i in "$@"; do
-		case $i in
-	  --inventory-tag=*)
-		INVENTORY_TAG="${i#*=}"
-		shift
-		;;
-      --minimal*)
-        MINIMAL=1
-        shift
-        ;;
-      --base-url*)
-        TEST_URL="${i#*=}"
-        shift
-        ;;
+        case $i in
+            --inventory-tag=*)
+        		INVENTORY_TAG="${i#*=}"
+        		shift
+        		;;
+            --minimal*)
+                MINIMAL=1
+                shift
+                ;;
+            --base-url*)
+                TEST_URL="${i#*=}"
+                shift
+                ;;
+            --vnc-port*)
+                VNC_PORT="${i#*=}"
+                shift
+                ;;
+            --ssh-port*)
+                SSH_PORT="${i#*=}"
+                shift
+                ;;
 			*)
-		# unknown option
-		display_usage
-		exit 0
-			;;
+        		# unknown option
+        		display_usage
+        		exit 1
+                ;;
 		esac
 	done
 
@@ -83,13 +93,9 @@ check_arguments() {
 	fi
 }
 
-display_usage() {
-	echo -e "\nUsage:\n$0 \n"
-}
-
 colored_echo() {
-  local color=$1;
-  if ! [[ $color =~ '^[0-9]$' ]] ; then
+    local color=$1;
+    if ! [[ $color =~ '^[0-9]$' ]] ; then
 		case $(echo $color | tr '[:upper:]' '[:lower:]') in
 			black) color=0 ;;
 			red) color=1 ;;
@@ -100,15 +106,15 @@ colored_echo() {
 			cyan) color=6 ;;
 			white|*) color=7 ;; # white or invalid color
 		esac
-  fi
-  tput setaf $color;
-  echo "${@:2}";
-  tput sgr0;
+    fi
+    tput setaf $color;
+    echo "${@:2}";
+    tput sgr0;
 }
 
 exit_code() {
-  return=$?
-  if [ $return -ne 0 ];then coloredEcho red "### DEBUG Exit code" $return; fi
+    return=$?
+    if [ $return -ne 0 ];then coloredEcho red "### DEBUG Exit code" $return; fi
 }
 
 sed_escape() {
@@ -131,6 +137,8 @@ update_installer_scripts() {
 		-e "s/@@PULSE_AGENT_CONFFILE_FILENAME@@/${PULSE_AGENT_CONFFILE_FILENAME}/" \
 		-e "s/@@PULSE_SCHEDULER_CONFFILE_FILENAME@@/${PULSE_SCHEDULER_CONFFILE_FILENAME}/" \
 		-e "s/@@PULSE_INVENTORY_CONFFILE_FILENAME@@/${PULSE_INVENTORY_CONFFILE_FILENAME}/" \
+        -e "s/@@VNC_PORT@@/${VNC_PORT}/" \
+        -e "s/@@SSH_PORT@@/${SSH_PORT}/" \
 		deb/pulse-agent-linux/debian/pulse-agent-linux.postinst.in \
 		> deb/pulse-agent-linux/debian/pulse-agent-linux.postinst
     sed -e "s/@@AGENT_VERSION@@/${AGENT_VERSION}/" \
@@ -177,14 +185,14 @@ build_deb() {
         if [ -d "debian/9" ]; then
             cp -fv *.deb debian/9
             pushd debian/9
-               dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
+                dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
             popd
         fi
 
         if [ -d "ubuntu/16.04" ]; then
             cp -fv *.deb ubuntu/16.04
             pushd ubuntu/16.04
-               dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
+                dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
             popd
         fi
 
