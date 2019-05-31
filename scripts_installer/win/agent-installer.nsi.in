@@ -624,6 +624,12 @@ Section "OpenSSH" sec_openssh
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
+  ${PowerShellExecLog} "cd $\"$SSH_PATH$\" ; .\FixHostFilePermissions.ps1 -Confirm:$$false"
+  ${LogString} "Running $0"
+  nsExec::ExecToLog $0
+  Pop $1 # return value/error/timeout
+  ${LogString} "Return code was: $1"
+
 
   ; Start the service
   StrCpy $0 `sc start ssh-agent`
