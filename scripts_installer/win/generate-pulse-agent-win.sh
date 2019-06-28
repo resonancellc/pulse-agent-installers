@@ -79,7 +79,7 @@ BASE_URL="https://agents.siveo.net" # Overridden if --base-url is defined
 cd "`dirname $0`"
 
 # To be defined
-AGENT_VERSION="2.0.0"
+AGENT_VERSION="2.0.1"
 PYTHON_VERSION="2.7.9"
 PY_WIN32_MODULE="pypiwin32"
 PY_WIN32_VERSION="219"
@@ -148,7 +148,7 @@ DOWNLOAD_FOLDER="downloads"
 PULSE_AGENT_PLUGINS_NAME="pulse-agent-plugins"
 VNC_PORT="5900"
 SSH_PORT="22"
-PULSE_AGENT_PLUGINS_VERSION="1.11"
+PULSE_AGENT_PLUGINS_VERSION="1.12"
 SYNCTHING_NAME="syncthing"
 SYNCTHING_VERSION="1.1.0"
 CREATE_PROFILE_NAME="create-profile.ps1"

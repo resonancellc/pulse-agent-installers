@@ -63,7 +63,7 @@ BASE_URL="https://agents.siveo.net" # Overridden if --base-url is defined
 cd "`dirname $0`"
 
 # To be defined
-AGENT_VERSION="2.0.0"
+AGENT_VERSION="2.0.1"
 HOMEBREW_VERSION="1.5.12"
 FUSION_INVENTORY_AGENT_NAME="FusionInventory-Agent"
 FUSION_INVENTORY_AGENT_VERSION="2.4-1"
@@ -115,7 +115,7 @@ PULSE_AGENT_NAME="pulse-xmpp-agent"
 PULSE_AGENT_MODULE="pulse_xmpp_agent"
 SSH_PUB_KEY="/root/.ssh/id_rsa.pub"
 PULSE_AGENT_PLUGINS_NAME="pulse-agent-plugins"
-PULSE_AGENT_PLUGINS_VERSION="1.11"
+PULSE_AGENT_PLUGINS_VERSION="1.12"
 PKG_FOLDER_TMP="mac_package_tmp"
 VNC_SERVER_NAME="OSXvnc"
 VNC_SERVER_VERSION="5.2.1"
