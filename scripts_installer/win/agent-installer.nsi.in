@@ -510,6 +510,16 @@ Section "OpenSSH" sec_openssh
     StrCpy $SSH_PATH "$PROGRAMFILES\${OPENSSH_NAME}"
     StrCpy $OPENSSH_CONTENTS_FOLDER "${OPENSSH_NAME}-Win32"
   ${EndIf}
+  ; Update service installer and uninstaller scripts
+  ${textreplace::ReplaceInFile} "$SSH_PATH\install-sshd.ps1" "$SSH_PATH\install-sshd.ps1" "Get-Service sshd" "Get-Service sshdaemon" "/S=1 /C=1 /AO=1" $0
+  ${textreplace::ReplaceInFile} "$SSH_PATH\install-sshd.ps1" "$SSH_PATH\install-sshd.ps1" "Stop-Service sshd" "Stop-Service sshdaemon" "/S=1 /C=1 /AO=1" $0
+  ${textreplace::ReplaceInFile} "$SSH_PATH\install-sshd.ps1" "$SSH_PATH\install-sshd.ps1" "sc.exe delete sshd" "sc.exe delete sshdaemon" "/S=1 /C=1 /AO=1" $0
+  ${textreplace::ReplaceInFile} "$SSH_PATH\install-sshd.ps1" "$SSH_PATH\install-sshd.ps1" "New-Service -Name sshd" "New-Service -Name sshdaemon" "/S=1 /C=1 /AO=1" $0
+  ${textreplace::ReplaceInFile} "$SSH_PATH\install-sshd.ps1" "$SSH_PATH\install-sshd.ps1" "sc.exe config sshd" "sc.exe config sshdaemon" "/S=1 /C=1 /AO=1" $0
+  ${textreplace::ReplaceInFile} "$SSH_PATH\install-sshd.ps1" "$SSH_PATH\install-sshd.ps1" "sc.exe privs sshd" "sc.exe privs sshdaemon" "/S=1 /C=1 /AO=1" $0
+  ${textreplace::ReplaceInFile} "$SSH_PATH\uninstall-sshd.ps1" "$SSH_PATH\uninstall-sshd.ps1" "Get-Service sshd" "Get-Service sshdaemon" "/S=1 /C=1 /AO=1" $0
+  ${textreplace::ReplaceInFile} "$SSH_PATH\uninstall-sshd.ps1" "$SSH_PATH\uninstall-sshd.ps1" "Stop-Service sshd" "Stop-Service sshdaemon" "/S=1 /C=1 /AO=1" $0
+  ${textreplace::ReplaceInFile} "$SSH_PATH\uninstall-sshd.ps1" "$SSH_PATH\uninstall-sshd.ps1" "sc.exe delete sshd" "sc.exe delete sshdaemon" "/S=1 /C=1 /AO=1" $0
   ; Uninstall OpenSSH if found
   IfFileExists "$SSH_PATH" 0 +3
   ${PowerShellExecFileLog} "$SSH_PATH\uninstall-sshd.ps1"
@@ -545,9 +555,6 @@ Section "OpenSSH" sec_openssh
   ${textreplace::ReplaceInFile} "${PROGRAMDATA}\ssh\sshd_config" "${PROGRAMDATA}\ssh\sshd_config" "#SyslogFacility AUTH" "SyslogFacility LOCAL0" "/S=1 /C=1 /AO=1" $0
   ${textreplace::ReplaceInFile} "${PROGRAMDATA}\ssh\sshd_config" "${PROGRAMDATA}\ssh\sshd_config" "Match Group administrators" "#Match Group administrators" "/S=1 /C=1 /AO=1" $0
   ${textreplace::ReplaceInFile} "${PROGRAMDATA}\ssh\sshd_config" "${PROGRAMDATA}\ssh\sshd_config" "       AuthorizedKeysFile __PROGRAMDATA__/ssh/administrators_authorized_keys" "#       AuthorizedKeysFile __{PROGRAMDATA}__/ssh/administrators_authorized_keys" "/S=1 /C=1 /AO=1" $0
-  nsExec::ExecToLog $0
-  Pop $1 # return value/error/timeout
-  ${LogString} "Return code was: $1"
 
   ; Configure SSH server to start automatically at boot
   StrCpy $0 `sc.exe config ssh-agent start= auto`
@@ -556,7 +563,7 @@ Section "OpenSSH" sec_openssh
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
-  StrCpy $0 `sc.exe config sshd start= auto`
+  StrCpy $0 `sc.exe config sshdaemon start= auto`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -638,7 +645,7 @@ Section "OpenSSH" sec_openssh
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
   ${LogString} "-------------------"
-  StrCpy $0 `sc start sshd`
+  StrCpy $0 `sc start sshdaemon`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -1034,7 +1041,7 @@ Section "Uninstall"
   ${LogString} "RMDir Return code was: $1"
 
   ; Remove OpenSSH
-  StrCpy $0 `sc.exe stop sshd`
+  StrCpy $0 `sc.exe stop sshdaemon`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
@@ -1049,7 +1056,7 @@ Section "Uninstall"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
   ${LogString} "Return code was: $1"
-  StrCpy $0 `sc.exe delete sshd`
+  StrCpy $0 `sc.exe delete sshdaemon`
   ${LogString} "Running $0"
   nsExec::ExecToLog $0
   Pop $1 # return value/error/timeout
