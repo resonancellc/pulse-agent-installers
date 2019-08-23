@@ -99,7 +99,7 @@ else
         "name": "Python v${PYTHON_VERSION}",
         "software": "Python",
         "transferfile": true,
-        "methodetransfert": "pullcurl",
+        "methodetransfert": "pushrsync",
         "Dependency": [],
         "version": "${PYTHON_VERSION}",
         "metagenerator": "manual"

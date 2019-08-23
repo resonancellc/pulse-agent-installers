@@ -65,7 +65,7 @@ cat <<EOF > xmppdeploy.json
         "name": "${PACKAGE_NAME} v${AGENT_VERSION}",
         "software": "agentxmpp",
         "transferfile": true,
-        "methodetransfert": "pullcurl",
+        "methodetransfert": "pushrsync",
         "Dependency": [
             "${DEPS_UUID}"
         ],

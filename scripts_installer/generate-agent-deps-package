@@ -157,7 +157,7 @@ cat <<EOF > xmppdeploy.json
         "name": "${PACKAGE_NAME} v${AGENT_VERSION}",
         "software": "${PACKAGE_NAME}",
         "transferfile": true,
-        "methodetransfert": "pullcurl",
+        "methodetransfert": "pushrsync",
         "Dependency": [],
         "version": "${AGENT_VERSION}",
         "metagenerator": "manual"
