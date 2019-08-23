@@ -229,6 +229,11 @@ update_config_file() {
 	unix2dos config/agentconf.ini
 }
 
+update_generation_options_file() {
+    # Save arguments to file for future use
+    echo "${INVENTORY_TAG_OPTIONS} ${VNC_PORT_OPTIONS} ${SSH_PORT_OPTIONS}" > .generation_options
+}
+
 check_previous_conf() {
 	# Check that agentconf.ini is present
 	if [ -e config/agentconf.ini ]; then
@@ -238,31 +243,8 @@ check_previous_conf() {
 		display_usage
 		exit 0
 	fi
-	# Check if inventory tag, agent size and base url are defined
-    if [ -z "${INVENTORY_TAG}" ]; then
-        colored_echo blue " - Inventory TAG: None"
-        INVENTORY_TAG_OPTIONS=""
-    else
-        colored_echo blue " - Inventory TAG: ${INVENTORY_TAG}"
-        INVENTORY_TAG_OPTIONS="--inventory-tag=${INVENTORY_TAG}"
-    fi
 
-    if [ -z ${VNC_PORT} ]; then
-        colored_echo blue " - VNC server listening port: 5900"
-        VNC_PORT_OPTIONS=""
-   	else
-        colored_echo blue " - VNC server listening port: ${VNC_PORT}"
-        VNC_PORT_OPTIONS="--vnc-port=${VNC_PORT}"
-   	fi
-
-    if [ -z ${SSH_PORT} ]; then
-        colored_echo blue " - SSH server listening port: 22"
-        SSH_PORT_OPTIONS=""
-   	else
-        colored_echo blue " - VNC server listening port: ${SSH_PORT}"
-        SSH_PORT_OPTIONS="--ssh-port=${SSH_PORT}"
-   	fi
-
+    # Generate options for minimal version
     if [[ ${MINIMAL} -eq 1 ]]; then
         OPTIONS_MINIMAL="--minimal --base-url=${BASE_URL}"
         colored_echo blue " - Agent generated: minimal"
@@ -271,10 +253,14 @@ check_previous_conf() {
     fi
 }
 
+read_generation_options_file() {
+    GENERATION_OPTIONS=$(cat .generation_options)
+}
+
 generate_agent_win() {
 	# Generate Pulse Agent for Windows
 	colored_echo blue "Generating Pulse Agent for Windows..."
-	COMMAND="./win/generate-pulse-agent-win.sh ${INVENTORY_TAG_OPTIONS} ${VNC_PORT_OPTIONS} ${SSH_PORT_OPTIONS} ${OPTIONS_MINIMAL}"
+	COMMAND="./win/generate-pulse-agent-win.sh ${GENERATION_OPTIONS} ${OPTIONS_MINIMAL}"
 	echo "Running "${COMMAND}
 	${COMMAND}
 }
@@ -282,7 +268,7 @@ generate_agent_win() {
 generate_agent_lin() {
     # Generate Pulse Agent for Linux
 	colored_echo blue "Generating Pulse Agent for Linux..."
-	COMMAND="./lin/generate-pulse-agent-linux.sh ${INVENTORY_TAG_OPTIONS} ${VNC_PORT_OPTIONS} ${SSH_PORT_OPTIONS} ${OPTIONS_MINIMAL}"
+	COMMAND="./lin/generate-pulse-agent-linux.sh ${GENERATION_OPTIONS} ${OPTIONS_MINIMAL}"
 	echo "Running "${COMMAND}
 	${COMMAND}
 }
@@ -290,7 +276,7 @@ generate_agent_lin() {
 generate_agent_mac() {
     # Generate Pulse Agent for MacOS
     colored_echo blue "Generating Pulse Agent for MacOS..."
-    COMMAND="./mac/generate-pulse-agent-mac.sh ${INVENTORY_TAG_OPTIONS} ${VNC_PORT_OPTIONS} ${SSH_PORT_OPTIONS} ${OPTIONS_MINIMAL}"
+    COMMAND="./mac/generate-pulse-agent-mac.sh ${GENERATION_OPTIONS} ${OPTIONS_MINIMAL}"
     echo "Running "${COMMAND}
     ${COMMAND}
 }
@@ -303,7 +289,9 @@ if [ $# -lt 3 ]; then
 else
 	compute_settings
 	update_config_file
+    update_generation_options_file
 fi
+read_generation_options_file
 generate_agent_win
 generate_agent_lin
 generate_agent_mac
